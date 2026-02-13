@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback — Rate Routing Results</title>
+  <meta name="description" content="Rate and improve LLM routing accuracy with your feedback.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="router.css">
+  <style>
+    .feedback-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .fb-stat {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    .fb-stat .value {
+      font-size: 2rem;
+      font-weight: 700;
+      display: block;
+    }
+    .fb-stat .label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+    .accuracy-bar {
+      margin-bottom: 32px;
+      padding: 20px;
+      background: var(--light-bg);
+      border-radius: 12px;
+    }
+    .accuracy-bar h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+    .acc-bar-bg {
+      width: 100%;
+      height: 24px;
+      background: #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .acc-bar-fill {
+      height: 100%;
+      border-radius: 12px;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+    }
+    .acc-bar-fill.good { background: #333; }
+    .acc-bar-fill.medium { background: #666; }
+    .acc-bar-fill.low { background: #999; }
+    .feedback-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .fb-card {
+      background: white;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .fb-vote {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 50px;
+    }
+    .vote-btn {
+      width: 36px;
+      height: 36px;
+      border: 2px solid #e0e0e0;
+      border-radius: 50%;
+      background: white;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .vote-btn:hover { border-color: #333; }
+    .vote-btn.up.active { background: #1a1a1a; color: white; border-color: #1a1a1a; }
+    .vote-btn.down.active { background: #666; color: white; border-color: #666; }
+    .fb-content { flex: 1; }
+    .fb-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .fb-content p { font-size: 13px; color: var(--gray); line-height: 1.4; }
+    .fb-meta {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--gray);
+    }
+    .route-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .route-badge.claude { background: #1a1a1a; color: white; }
+    .route-badge.cheap_llm { background: #e0e0e0; color: #333; }
+    .route-badge.split { background: #86868b; color: white; }
+    .comment-input {
+      display: none;
+      margin-top: 8px;
+    }
+    .comment-input textarea {
+      width: 100%;
+      min-height: 60px;
+      font-size: 12px;
+    }
+    .comment-input .btn { margin-top: 4px; font-size: 11px; padding: 4px 10px; }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray);
+    }
+    .empty-state h3 { font-size: 20px; color: var(--black); margin-bottom: 8px; }
+    @media (max-width: 734px) {
+      .feedback-stats { grid-template-columns: 1fr; }
+      .fb-card { flex-direction: column; }
+      .fb-vote { flex-direction: row; min-width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="/index.html#hero" class="nav-logo">SSH</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Portfolio</a></li>
+        <li><a href="/router.html">Splitter</a></li>
+        <li><a href="/saveToken.html">TokenSaver</a></li>
+        <li><a href="/costTracker.html">Cost</a></li>
+        <li><a href="/history.html">History</a></li>
+        <li><a href="/batch.html">Batch</a></li>
+        <li><a href="/prompts.html">Prompts</a></li>
+        <li><a href="/feedback.html" class="active">Feedback</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/index.html">Portfolio</a></li>
+      <li><a href="/router.html">Task Splitter</a></li>
+      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html">Cost Tracker</a></li>
+      <li><a href="/history.html">History</a></li>
+      <li><a href="/batch.html">Batch Router</a></li>
+      <li><a href="/prompts.html">Prompt Library</a></li>
+      <li><a href="/feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
+  <main class="router-main">
+    <header class="router-header">
+      <p class="section-label">Quality</p>
+      <h1 class="section-title">Feedback</h1>
+      <p class="router-sub">Rate routing results to help improve accuracy over time.</p>
+    </header>
+
+    <div class="feedback-stats">
+      <div class="fb-stat">
+        <span class="value" id="total-feedback">0</span>
+        <span class="label">Total Ratings</span>
+      </div>
+      <div class="fb-stat">
+        <span class="value" id="positive-rate">N/A</span>
+        <span class="label">Positive Rate</span>
+      </div>
+      <div class="fb-stat">
+        <span class="value" id="total-comments">0</span>
+        <span class="label">Comments</span>
+      </div>
+    </div>
+
+    <div class="accuracy-bar">
+      <h3>Routing Accuracy</h3>
+      <div class="acc-bar-bg">
+        <div class="acc-bar-fill good" id="accuracy-fill" style="width:0%">0%</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;">Recent Sessions</h3>
+
+    <div class="feedback-list" id="feedback-list">
+      <div class="empty-state"><h3>Loading...</h3></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" id="btn-refresh" type="button">Refresh</button>
+      <button class="btn" id="btn-export" type="button">Export Feedback</button>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="feedback.js"></script>
+</body>
+</html>

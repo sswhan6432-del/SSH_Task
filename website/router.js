@@ -127,6 +127,11 @@
       max_tickets: document.getElementById("inp-max-tickets").value.trim() || "0",
       min_tickets: document.getElementById("inp-min-tickets").value.trim() || "1",
       merge: document.getElementById("inp-merge").value.trim(),
+      // v5.0 NLP/ML params
+      v5_enabled: document.getElementById("opt-v5-enabled").checked,
+      compress: document.getElementById("opt-v5-compress").checked,
+      compression_level: parseInt(document.getElementById("sel-v5-level").value, 10),
+      show_stats: document.getElementById("opt-v5-stats").checked,
     };
   }
 
@@ -175,6 +180,21 @@
           ticketSelect.appendChild(opt);
         });
         ticketSelector.style.display = "flex";
+      }
+
+      // Show v5.0 stats if available
+      const statsEl = document.getElementById("v5-stats");
+      const statsContent = document.getElementById("v5-stats-content");
+      if (data.v5_stats && data.v5_stats.enabled) {
+        const s = data.v5_stats;
+        const parts = ["NLP: ON"];
+        if (s.compress) parts.push("Compression: Level " + s.compression_level);
+        if (s.token_reduction_rate) parts.push("Token Reduction: " + (s.token_reduction_rate * 100).toFixed(1) + "%");
+        if (s.processing_time_ms) parts.push("Time: " + s.processing_time_ms.toFixed(0) + "ms");
+        statsContent.textContent = parts.join(" | ");
+        statsEl.style.display = "block";
+      } else {
+        statsEl.style.display = "none";
       }
 
       refreshPreflight();
@@ -258,4 +278,11 @@
   // --- Init ---
   loadRouters();
   refreshPreflight();
+
+  // Check for prompt from Prompt Library "Use in Splitter" action
+  const promptFromLib = sessionStorage.getItem("ssh_prompt_use");
+  if (promptFromLib) {
+    requestInput.value = promptFromLib;
+    sessionStorage.removeItem("ssh_prompt_use");
+  }
 })();

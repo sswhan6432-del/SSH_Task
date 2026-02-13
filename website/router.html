@@ -16,7 +16,13 @@
       <a href="/index.html#hero" class="nav-logo">SSH</a>
       <ul class="nav-links">
         <li><a href="/index.html">Portfolio</a></li>
-        <li><a href="/router.html" class="active">Task Splitter</a></li>
+        <li><a href="/router.html" class="active">Splitter</a></li>
+        <li><a href="/saveToken.html">TokenSaver</a></li>
+        <li><a href="/costTracker.html">Cost</a></li>
+        <li><a href="/history.html">History</a></li>
+        <li><a href="/batch.html">Batch</a></li>
+        <li><a href="/prompts.html">Prompts</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
       </ul>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span>
@@ -30,6 +36,12 @@
     <ul>
       <li><a href="/index.html">Portfolio</a></li>
       <li><a href="/router.html">Task Splitter</a></li>
+      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html">Cost Tracker</a></li>
+      <li><a href="/history.html">History</a></li>
+      <li><a href="/batch.html">Batch Router</a></li>
+      <li><a href="/prompts.html">Prompt Library</a></li>
+      <li><a href="/feedback.html">Feedback</a></li>
     </ul>
   </div>
 
@@ -90,6 +102,12 @@
         <button class="btn btn-primary" id="btn-copy-block" type="button">Copy This Task</button>
         <button class="btn" id="btn-clear-output" type="button">Clear</button>
       </div>
+
+      <!-- v5.0 Stats -->
+      <div id="v5-stats" style="display:none;margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--card-bg,#f8f9fa);border:1px solid var(--border,#e0e0e0);font-size:0.85rem;">
+        <strong>v5.0 Stats</strong>
+        <span id="v5-stats-content" style="margin-left:8px;color:var(--text-secondary,#666);"></span>
+      </div>
     </section>
 
     <!-- Advanced Settings (hidden by default) -->
@@ -113,6 +131,27 @@
           </label>
           <label class="check-label">
             <input type="checkbox" id="opt-groq-translate" checked> Auto-translate
+          </label>
+        </div>
+
+        <h4 style="margin-top:12px;margin-bottom:6px;color:var(--text-secondary,#666);">v5.0 NLP/ML</h4>
+        <div class="options-grid">
+          <label class="check-label">
+            <input type="checkbox" id="opt-v5-enabled" checked> Enable NLP
+          </label>
+          <label class="check-label">
+            <input type="checkbox" id="opt-v5-compress" checked> Compression
+          </label>
+          <label class="check-label" style="display:flex;align-items:center;gap:4px;">
+            Level:
+            <select id="sel-v5-level" style="padding:2px 4px;">
+              <option value="1">1 (Mild)</option>
+              <option value="2" selected>2 (Balanced)</option>
+              <option value="3">3 (Aggressive)</option>
+            </select>
+          </label>
+          <label class="check-label">
+            <input type="checkbox" id="opt-v5-stats" checked> Show Stats
           </label>
         </div>
       </div>

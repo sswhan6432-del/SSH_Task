@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cost Tracker — Token Usage Dashboard</title>
+  <meta name="description" content="Track and visualize your LLM token usage and costs.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="router.css">
+  <style>
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    .stat-card .value {
+      font-size: 2rem;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .chart-section {
+      background: var(--light-bg);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .chart-section h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 200px;
+      padding: 0 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      height: 100%;
+      justify-content: flex-end;
+    }
+    .bar {
+      width: 100%;
+      max-width: 40px;
+      border-radius: 4px 4px 0 0;
+      transition: height 0.5s ease;
+      position: relative;
+    }
+    .bar.claude { background: #1a1a1a; }
+    .bar.groq { background: #86868b; }
+    .bar-label {
+      font-size: 11px;
+      color: var(--gray);
+      margin-top: 6px;
+      text-align: center;
+    }
+    .bar-value {
+      font-size: 10px;
+      color: var(--gray);
+      text-align: center;
+    }
+    .legend {
+      display: flex;
+      gap: 20px;
+      margin-top: 16px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gray);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+    .legend-dot.claude { background: #1a1a1a; }
+    .legend-dot.groq { background: #86868b; }
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .cost-table th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .cost-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      color: var(--black);
+    }
+    .cost-table tr:hover td {
+      background: rgba(0,0,0,0.02);
+    }
+    .route-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .route-badge.claude { background: #1a1a1a; color: white; }
+    .route-badge.cheap_llm { background: #e0e0e0; color: #333; }
+    .route-badge.split { background: #86868b; color: white; }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray);
+    }
+    .empty-state h3 {
+      font-size: 20px;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+    @media (max-width: 734px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .bar-chart { height: 150px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="/index.html#hero" class="nav-logo">SSH</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Portfolio</a></li>
+        <li><a href="/router.html">Splitter</a></li>
+        <li><a href="/saveToken.html">TokenSaver</a></li>
+        <li><a href="/costTracker.html" class="active">Cost</a></li>
+        <li><a href="/history.html">History</a></li>
+        <li><a href="/batch.html">Batch</a></li>
+        <li><a href="/prompts.html">Prompts</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/index.html">Portfolio</a></li>
+      <li><a href="/router.html">Task Splitter</a></li>
+      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html">Cost Tracker</a></li>
+      <li><a href="/history.html">History</a></li>
+      <li><a href="/batch.html">Batch Router</a></li>
+      <li><a href="/prompts.html">Prompt Library</a></li>
+      <li><a href="/feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <main class="router-main">
+
+    <header class="router-header">
+      <p class="section-label">Analytics</p>
+      <h1 class="section-title">Cost Tracker</h1>
+      <p class="router-sub">Track token usage and estimated costs across all routing sessions.</p>
+    </header>
+
+    <!-- Summary Stats -->
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card">
+        <span class="value" id="total-tasks">0</span>
+        <span class="label">Total Tasks</span>
+      </div>
+      <div class="stat-card">
+        <span class="value" id="total-tokens">0</span>
+        <span class="label">Est. Tokens</span>
+      </div>
+      <div class="stat-card">
+        <span class="value" id="total-cost">$0.00</span>
+        <span class="label">Est. Cost</span>
+      </div>
+      <div class="stat-card">
+        <span class="value" id="avg-confidence">0%</span>
+        <span class="label">Avg Confidence</span>
+      </div>
+    </div>
+
+    <!-- Route Distribution Chart -->
+    <div class="chart-section">
+      <h3>Route Distribution (Last 30 Sessions)</h3>
+      <div class="bar-chart" id="bar-chart"></div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot claude"></span> Claude (High)</div>
+        <div class="legend-item"><span class="legend-dot groq"></span> Groq (Low)</div>
+      </div>
+    </div>
+
+    <!-- Cost Breakdown Table -->
+    <div class="chart-section">
+      <h3>Recent Sessions</h3>
+      <div id="table-container">
+        <div class="empty-state" id="empty-state">
+          <h3>No routing data yet</h3>
+          <p>Run some tasks through the Task Splitter to see cost data here.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-refresh" type="button">Refresh Data</button>
+      <button class="btn" id="btn-export" type="button">Export CSV</button>
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="costTracker.js"></script>
+</body>
+</html>

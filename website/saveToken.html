@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TokenSaver Pro — Optimize Claude Performance</title>
+  <meta name="description" content="Generate optimized CLAUDE.md configuration to reduce token usage and boost AI performance.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="router.css">
+  <style>
+    .category-section {
+      margin-bottom: 32px;
+      padding: 20px;
+      background: var(--card-bg, #f8f9fa);
+      border: 1px solid var(--border, #e0e0e0);
+      border-radius: 12px;
+    }
+    .category-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .category-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary, #666);
+      margin-bottom: 16px;
+    }
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .option-card {
+      padding: 12px 14px;
+      background: white;
+      border: 2px solid var(--border, #e0e0e0);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .option-card:hover {
+      border-color: #333;
+      background: #f5f5f5;
+    }
+    .option-card.selected {
+      border-color: #000;
+      background: #e8e8e8;
+    }
+    .option-card input[type="checkbox"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .option-content {
+      flex: 1;
+    }
+    .option-name {
+      font-weight: 600;
+      color: var(--text-primary, #000);
+      margin-bottom: 2px;
+    }
+    .option-detail {
+      font-size: 0.8rem;
+      color: var(--text-secondary, #666);
+    }
+    .preview-section {
+      margin-top: 32px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+    }
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .preview-code {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .stats-bar {
+      display: flex;
+      gap: 20px;
+      padding: 16px;
+      background: #2a2a2a;
+      border-radius: 12px;
+      color: white;
+      margin-bottom: 24px;
+      border: 1px solid #404040;
+    }
+    .stat-item {
+      flex: 1;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      display: block;
+      margin-top: 4px;
+    }
+    .category-icon {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #666;
+      display: inline-block;
+      width: 24px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="/index.html#hero" class="nav-logo">SSH</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Portfolio</a></li>
+        <li><a href="/router.html">Splitter</a></li>
+        <li><a href="/saveToken.html" class="active">TokenSaver</a></li>
+        <li><a href="/costTracker.html">Cost</a></li>
+        <li><a href="/history.html">History</a></li>
+        <li><a href="/batch.html">Batch</a></li>
+        <li><a href="/prompts.html">Prompts</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/index.html">Portfolio</a></li>
+      <li><a href="/router.html">Task Splitter</a></li>
+      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html">Cost Tracker</a></li>
+      <li><a href="/history.html">History</a></li>
+      <li><a href="/batch.html">Batch Router</a></li>
+      <li><a href="/prompts.html">Prompt Library</a></li>
+      <li><a href="/feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <main class="router-main">
+
+    <!-- Header -->
+    <header class="router-header">
+      <p class="section-label">Performance Optimization</p>
+      <h1 class="section-title">TokenSaver Pro</h1>
+      <p class="router-sub">
+        Generate optimized CLAUDE.md configuration for maximum performance.<br>
+        Reduce token usage by up to 87% with smart AI settings.
+      </p>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-value" id="selected-count">0</span>
+        <span class="stat-label">Features Selected</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="token-savings">0%</span>
+        <span class="stat-label">Est. Token Savings</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="config-size">0</span>
+        <span class="stat-label">Config Lines</span>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <section>
+      <!-- Performance Optimization -->
+      <div class="category-section">
+        <h2 class="category-title">
+          <span class="category-icon">[P]</span>
+          Performance Optimization
+        </h2>
+        <p class="category-desc">Reduce token usage and increase response speed</p>
+        <div class="option-grid">
+          <label class="option-card" data-category="performance">
+            <input type="checkbox" value="fast_mode" data-tokens="15" data-lines="3">
+            <div class="option-content">
+              <div class="option-name">Fast Mode</div>
+              <div class="option-detail">Enable faster output with same quality</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="performance">
+            <input type="checkbox" value="parallel_exec" data-tokens="25" data-lines="4">
+            <div class="option-content">
+              <div class="option-name">Parallel Execution</div>
+              <div class="option-detail">Run independent tool calls simultaneously</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="performance">
+            <input type="checkbox" value="auto_compress" data-tokens="30" data-lines="5">
+            <div class="option-content">
+              <div class="option-name">Auto Compression</div>
+              <div class="option-detail">Automatic context compression at limits</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Response Style -->
+      <div class="category-section">
+        <h2 class="category-title">
+          <span class="category-icon">[S]</span>
+          Response Style
+        </h2>
+        <p class="category-desc">Control how Claude communicates with you</p>
+        <div class="option-grid">
+          <label class="option-card" data-category="style">
+            <input type="checkbox" value="concise" data-tokens="20" data-lines="6">
+            <div class="option-content">
+              <div class="option-name">Concise Answers</div>
+              <div class="option-detail">Short, focused responses without fluff</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="style">
+            <input type="checkbox" value="no_emoji" data-tokens="5" data-lines="2">
+            <div class="option-content">
+              <div class="option-name">No Emojis</div>
+              <div class="option-detail">Professional text-only output</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="style">
+            <input type="checkbox" value="korean_explain" data-tokens="0" data-lines="3">
+            <div class="option-content">
+              <div class="option-name">Korean Explanations</div>
+              <div class="option-detail">Use Korean for explanations, English for code</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="style">
+            <input type="checkbox" value="bullet_points" data-tokens="10" data-lines="3">
+            <div class="option-content">
+              <div class="option-name">Bullet Points</div>
+              <div class="option-detail">Prefer lists over paragraphs</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Workflow Efficiency -->
+      <div class="category-section">
+        <h2 class="category-title">
+          <span class="category-icon">[W]</span>
+          Workflow Efficiency
+        </h2>
+        <p class="category-desc">Optimize how Claude performs tasks</p>
+        <div class="option-grid">
+          <label class="option-card" data-category="workflow">
+            <input type="checkbox" value="smart_delegation" data-tokens="35" data-lines="5">
+            <div class="option-content">
+              <div class="option-name">Smart Delegation</div>
+              <div class="option-detail">Auto-delegate tasks to specialized agents</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="workflow">
+            <input type="checkbox" value="tool_priority" data-tokens="15" data-lines="4">
+            <div class="option-content">
+              <div class="option-name">Tool Prioritization</div>
+              <div class="option-detail">Use dedicated tools before Bash commands</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="workflow">
+            <input type="checkbox" value="minimal_reads" data-tokens="20" data-lines="4">
+            <div class="option-content">
+              <div class="option-name">Minimal File Reads</div>
+              <div class="option-detail">Read only essential sections with offset/limit</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Memory Management -->
+      <div class="category-section">
+        <h2 class="category-title">
+          <span class="category-icon">[M]</span>
+          Memory Management
+        </h2>
+        <p class="category-desc">Handle context and session memory</p>
+        <div class="option-grid">
+          <label class="option-card" data-category="memory">
+            <input type="checkbox" value="session_memory" data-tokens="40" data-lines="6">
+            <div class="option-content">
+              <div class="option-name">Session Memory</div>
+              <div class="option-detail">Auto-save learnings to persistent memory</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="memory">
+            <input type="checkbox" value="context_limit" data-tokens="25" data-lines="4">
+            <div class="option-content">
+              <div class="option-name">Context Limits</div>
+              <div class="option-detail">Set max file read limits per session</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="category-section">
+        <h2 class="category-title">
+          <span class="category-icon">[X]</span>
+          Security & Safety
+        </h2>
+        <p class="category-desc">Protect sensitive information</p>
+        <div class="option-grid">
+          <label class="option-card" data-category="security">
+            <input type="checkbox" value="secret_protection" data-tokens="0" data-lines="8">
+            <div class="option-content">
+              <div class="option-name">Secret Protection</div>
+              <div class="option-detail">Block .env, credentials, and key files</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="security">
+            <input type="checkbox" value="git_safety" data-tokens="0" data-lines="6">
+            <div class="option-content">
+              <div class="option-name">Git Safety</div>
+              <div class="option-detail">Prevent force-push and destructive operations</div>
+            </div>
+          </label>
+          <label class="option-card" data-category="security">
+            <input type="checkbox" value="file_limit" data-tokens="0" data-lines="3">
+            <div class="option-content">
+              <div class="option-name">Change Limit</div>
+              <div class="option-detail">Max 3 files modified per session</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Buttons -->
+    <section class="input-section">
+      <div class="btn-row">
+        <button class="btn btn-primary btn-large" id="btn-generate" type="button">
+          Generate CLAUDE.md
+        </button>
+        <button class="btn" id="btn-select-all" type="button">Select All</button>
+        <button class="btn" id="btn-reset" type="button">Reset</button>
+      </div>
+    </section>
+
+    <!-- Preview Section -->
+    <section class="preview-section" id="preview-section" style="display:none;">
+      <div class="preview-header">
+        <label class="area-label">Generated Configuration</label>
+        <div>
+          <button class="btn btn-primary" id="btn-download" type="button">Download CLAUDE.md</button>
+          <button class="btn" id="btn-copy-config" type="button">Copy to Clipboard</button>
+        </div>
+      </div>
+      <div class="preview-code" id="preview-code"></div>
+    </section>
+
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="saveToken.js"></script>
+</body>
+</html>

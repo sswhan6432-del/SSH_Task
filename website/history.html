@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History — Routing History</title>
+  <meta name="description" content="View and filter your routing history.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="router.css">
+  <style>
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      background: var(--light-bg);
+      border-radius: 12px;
+    }
+    .filter-bar label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .filter-bar select, .filter-bar input[type="text"] {
+      padding: 6px 10px;
+      font-size: 13px;
+    }
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .history-card {
+      background: white;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px;
+      padding: 16px 20px;
+      transition: box-shadow 0.2s;
+      cursor: pointer;
+    }
+    .history-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .history-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .history-card-header h4 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .history-time {
+      font-size: 12px;
+      color: var(--gray);
+    }
+    .history-card-body {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+    .history-tasks {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .task-chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: #f0f0f0;
+    }
+    .task-chip.claude { background: #1a1a1a; color: white; }
+    .task-chip.cheap_llm { background: #e0e0e0; color: #333; }
+    .task-chip.split { background: #86868b; color: white; }
+    .summary-row {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .summary-item {
+      font-size: 14px;
+      color: var(--gray);
+    }
+    .summary-item strong {
+      color: var(--black);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray);
+    }
+    .empty-state h3 { font-size: 20px; color: var(--black); margin-bottom: 8px; }
+    .history-detail {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      font-family: "SF Mono", "Menlo", monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .history-card.expanded .history-detail { display: block; }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="/index.html#hero" class="nav-logo">SSH</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Portfolio</a></li>
+        <li><a href="/router.html">Splitter</a></li>
+        <li><a href="/saveToken.html">TokenSaver</a></li>
+        <li><a href="/costTracker.html">Cost</a></li>
+        <li><a href="/history.html" class="active">History</a></li>
+        <li><a href="/batch.html">Batch</a></li>
+        <li><a href="/prompts.html">Prompts</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/index.html">Portfolio</a></li>
+      <li><a href="/router.html">Task Splitter</a></li>
+      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html">Cost Tracker</a></li>
+      <li><a href="/history.html">History</a></li>
+      <li><a href="/batch.html">Batch Router</a></li>
+      <li><a href="/prompts.html">Prompt Library</a></li>
+      <li><a href="/feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
+  <main class="router-main">
+    <header class="router-header">
+      <p class="section-label">Analytics</p>
+      <h1 class="section-title">Routing History</h1>
+      <p class="router-sub">Browse and filter all past routing sessions.</p>
+    </header>
+
+    <div class="filter-bar">
+      <label>Route:</label>
+      <select id="filter-route">
+        <option value="all">All</option>
+        <option value="claude">Claude</option>
+        <option value="cheap_llm">Groq</option>
+        <option value="split">Split</option>
+      </select>
+      <label>Search:</label>
+      <input type="text" id="filter-search" placeholder="Search tasks..." style="width:200px;">
+      <button class="btn btn-sm" id="btn-refresh" type="button">Refresh</button>
+    </div>
+
+    <div class="summary-row" id="summary-row">
+      <div class="summary-item">Total: <strong id="sum-total">0</strong></div>
+      <div class="summary-item">Claude: <strong id="sum-claude">0</strong></div>
+      <div class="summary-item">Groq: <strong id="sum-groq">0</strong></div>
+      <div class="summary-item">Split: <strong id="sum-split">0</strong></div>
+    </div>
+
+    <div class="history-list" id="history-list">
+      <div class="empty-state"><h3>Loading...</h3></div>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="history.js"></script>
+</body>
+</html>

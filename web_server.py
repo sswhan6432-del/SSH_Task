@@ -10,9 +10,11 @@ Usage:
 
 import json
 import os
+import re
 import ssl
 import sys
 import subprocess
+import threading
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
 
@@ -101,11 +103,36 @@ def _translate_remaining_korean(text: str, api_key: str) -> str:
     return "\n".join(lines)
 
 WEBSITE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "website")
+DATA_DIR = os.path.dirname(os.path.abspath(__file__))
+HISTORY_FILE = os.path.join(DATA_DIR, "task_history.json")
+PROMPTS_FILE = os.path.join(DATA_DIR, "prompts.json")
+FEEDBACK_FILE = os.path.join(DATA_DIR, "feedback.json")
 DEFAULT_PORT = 8080
 
+# Thread-safe lock for file writes
+_file_lock = threading.Lock()
 
-class ReusableHTTPServer(HTTPServer):
-    """HTTPServer with SO_REUSEADDR enabled to allow immediate port reuse."""
+
+def _read_json_file(path, default=None):
+    """Read a JSON file safely, return default on failure."""
+    if default is None:
+        default = {}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default
+
+
+def _write_json_file(path, data):
+    """Write JSON file safely with lock."""
+    with _file_lock:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+class ThreadedHTTPServer(HTTPServer):
+    """HTTPServer with threading + SO_REUSEADDR for concurrent requests."""
 
     allow_reuse_address = True
 
@@ -114,6 +141,21 @@ class ReusableHTTPServer(HTTPServer):
         import socket
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         super().server_bind()
+
+    def process_request(self, request, client_address):
+        """Handle each request in a new thread for non-blocking I/O."""
+        t = threading.Thread(target=self._handle_request_thread,
+                             args=(request, client_address))
+        t.daemon = True
+        t.start()
+
+    def _handle_request_thread(self, request, client_address):
+        try:
+            self.finish_request(request, client_address)
+        except Exception:
+            self.handle_error(request, client_address)
+        finally:
+            self.shutdown_request(request)
 
 
 class RouterHandler(SimpleHTTPRequestHandler):
@@ -140,6 +182,14 @@ class RouterHandler(SimpleHTTPRequestHandler):
             return self._api_routers()
         if path == "/api/preflight":
             return self._api_preflight()
+        if path == "/api/history":
+            return self._api_history_get()
+        if path == "/api/prompts":
+            return self._api_prompts_get()
+        if path == "/api/feedback":
+            return self._api_feedback_get()
+        if path == "/api/cost-stats":
+            return self._api_cost_stats()
 
         # Default file: router.html
         if path == "/":
@@ -154,6 +204,10 @@ class RouterHandler(SimpleHTTPRequestHandler):
             return self._api_route()
         if path == "/api/extract-block":
             return self._api_extract_block()
+        if path == "/api/prompts":
+            return self._api_prompts_save()
+        if path == "/api/feedback":
+            return self._api_feedback_save()
 
         self._json_response({"error": "Not found"}, 404)
 
@@ -257,6 +311,17 @@ class RouterHandler(SimpleHTTPRequestHandler):
         if merge:
             cmd.extend(["--merge", merge])
 
+        # v5.0 NLP/ML flags
+        if body.get("v5_enabled", False):
+            cmd.append("--v5")
+            if body.get("compress", True):
+                cmd.append("--compress")
+            cl = str(body.get("compression_level", 2)).strip()
+            if cl in ("1", "2", "3"):
+                cmd.extend(["--compression-level", cl])
+            if body.get("show_stats", False):
+                cmd.append("--show-stats")
+
         cmd.append(request_text)
 
         # Execute
@@ -292,12 +357,23 @@ class RouterHandler(SimpleHTTPRequestHandler):
         # Detect tickets
         tickets = detect_ticket_ids(combined)
 
-        self._json_response({
+        # Build response
+        resp = {
             "output": combined,
             "tickets": tickets,
             "error": "",
             "translate_status": translate_status,
-        })
+        }
+
+        # Add v5.0 stats if v5 was enabled
+        if body.get("v5_enabled", False):
+            resp["v5_stats"] = {
+                "enabled": True,
+                "compress": body.get("compress", True),
+                "compression_level": int(body.get("compression_level", 2)),
+            }
+
+        self._json_response(resp)
 
     def _api_extract_block(self):
         try:
@@ -361,6 +437,81 @@ class RouterHandler(SimpleHTTPRequestHandler):
 
         self._json_response({"block": block, "success": True})
 
+    # ---------- History API ----------
+
+    def _api_history_get(self):
+        data = _read_json_file(HISTORY_FILE, [])
+        # task_history.json can be a list or dict with "entries" key
+        if isinstance(data, list):
+            entries = data
+        elif isinstance(data, dict):
+            entries = data.get("entries", data.get("history", []))
+        else:
+            entries = []
+        self._json_response({"entries": entries})
+
+    # ---------- Cost Stats API ----------
+
+    def _api_cost_stats(self):
+        data = _read_json_file(HISTORY_FILE, [])
+        entries = data if isinstance(data, list) else data.get("entries", [])
+
+        cost_per_1k = {"claude": 0.015, "cheap_llm": 0.0005, "split": 0.008}
+        tokens_per_task = {"claude": 2000, "cheap_llm": 500, "split": 1200}
+
+        total_tokens = 0
+        total_cost = 0.0
+        route_counts = {"claude": 0, "cheap_llm": 0, "split": 0}
+
+        for entry in entries:
+            tasks = entry.get("tasks", [{"route": entry.get("route", "claude")}])
+            for t in tasks:
+                r = t.get("route", "claude")
+                tk = tokens_per_task.get(r, 1000)
+                total_tokens += tk
+                total_cost += (tk / 1000) * cost_per_1k.get(r, 0.01)
+                if r in route_counts:
+                    route_counts[r] += 1
+
+        self._json_response({
+            "total_sessions": len(entries),
+            "total_tokens": total_tokens,
+            "total_cost": round(total_cost, 4),
+            "route_counts": route_counts,
+        })
+
+    # ---------- Prompts API ----------
+
+    def _api_prompts_get(self):
+        data = _read_json_file(PROMPTS_FILE, {"prompts": []})
+        self._json_response(data)
+
+    def _api_prompts_save(self):
+        try:
+            body = self._read_json_body()
+        except Exception as e:
+            return self._json_response({"error": f"Bad JSON: {e}"}, 400)
+
+        prompts = body.get("prompts", [])
+        _write_json_file(PROMPTS_FILE, {"prompts": prompts})
+        self._json_response({"success": True, "count": len(prompts)})
+
+    # ---------- Feedback API ----------
+
+    def _api_feedback_get(self):
+        data = _read_json_file(FEEDBACK_FILE, {"feedback": {}})
+        self._json_response(data)
+
+    def _api_feedback_save(self):
+        try:
+            body = self._read_json_body()
+        except Exception as e:
+            return self._json_response({"error": f"Bad JSON: {e}"}, 400)
+
+        feedback = body.get("feedback", {})
+        _write_json_file(FEEDBACK_FILE, {"feedback": feedback})
+        self._json_response({"success": True, "count": len(feedback)})
+
 
 def main():
     port = DEFAULT_PORT
@@ -369,7 +520,7 @@ def main():
         if idx + 1 < len(sys.argv):
             port = int(sys.argv[idx + 1])
 
-    server = ReusableHTTPServer(("127.0.0.1", port), RouterHandler)
+    server = ThreadedHTTPServer(("127.0.0.1", port), RouterHandler)
     groq_key = os.environ.get("GROQ_API_KEY", "").strip()
     print(f"Router Web UI running at http://localhost:{port}")
     print(f"Serving files from {WEBSITE_DIR}")

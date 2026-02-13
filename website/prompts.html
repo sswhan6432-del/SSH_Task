@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Library — Reusable Templates</title>
+  <meta name="description" content="Save and manage reusable prompt templates.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="router.css">
+  <style>
+    .prompt-toolbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .prompt-toolbar input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 8px 12px;
+    }
+    .category-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .cat-tab {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cat-tab:hover { border-color: #333; }
+    .cat-tab.active { background: #1a1a1a; color: white; border-color: #1a1a1a; }
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+    .prompt-card {
+      background: white;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px;
+      padding: 20px;
+      transition: box-shadow 0.2s;
+    }
+    .prompt-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .prompt-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .prompt-card-header h4 {
+      font-size: 15px;
+      font-weight: 600;
+      flex: 1;
+      margin-right: 8px;
+    }
+    .prompt-category {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #f0f0f0;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .prompt-body {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.5;
+      margin-bottom: 12px;
+      max-height: 80px;
+      overflow: hidden;
+    }
+    .prompt-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .prompt-actions .btn { padding: 4px 10px; font-size: 11px; }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1500;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      width: 90%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h3 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+    }
+    .form-group textarea { min-height: 120px; }
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray);
+    }
+    .empty-state h3 { font-size: 20px; color: var(--black); margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="/index.html#hero" class="nav-logo">SSH</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Portfolio</a></li>
+        <li><a href="/router.html">Splitter</a></li>
+        <li><a href="/saveToken.html">TokenSaver</a></li>
+        <li><a href="/costTracker.html">Cost</a></li>
+        <li><a href="/history.html">History</a></li>
+        <li><a href="/batch.html">Batch</a></li>
+        <li><a href="/prompts.html" class="active">Prompts</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/index.html">Portfolio</a></li>
+      <li><a href="/router.html">Task Splitter</a></li>
+      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html">Cost Tracker</a></li>
+      <li><a href="/history.html">History</a></li>
+      <li><a href="/batch.html">Batch Router</a></li>
+      <li><a href="/prompts.html">Prompt Library</a></li>
+      <li><a href="/feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
+  <main class="router-main">
+    <header class="router-header">
+      <p class="section-label">Templates</p>
+      <h1 class="section-title">Prompt Library</h1>
+      <p class="router-sub">Save, organize, and reuse your best prompt templates.</p>
+    </header>
+
+    <div class="prompt-toolbar">
+      <input type="text" id="search-input" placeholder="Search prompts...">
+      <button class="btn btn-primary" id="btn-new" type="button">New Prompt</button>
+    </div>
+
+    <div class="category-tabs" id="category-tabs">
+      <button class="cat-tab active" data-cat="all">All</button>
+      <button class="cat-tab" data-cat="feature">Feature</button>
+      <button class="cat-tab" data-cat="bugfix">Bug Fix</button>
+      <button class="cat-tab" data-cat="refactor">Refactor</button>
+      <button class="cat-tab" data-cat="ui">UI/UX</button>
+      <button class="cat-tab" data-cat="api">API</button>
+      <button class="cat-tab" data-cat="other">Other</button>
+    </div>
+
+    <div class="prompt-grid" id="prompt-grid">
+      <div class="empty-state"><h3>Loading...</h3></div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <h3 id="modal-title">New Prompt</h3>
+      <div class="form-group">
+        <label for="prompt-name">Name</label>
+        <input type="text" id="prompt-name" placeholder="e.g., Login Page with OAuth">
+      </div>
+      <div class="form-group">
+        <label for="prompt-category">Category</label>
+        <select id="prompt-category">
+          <option value="feature">Feature</option>
+          <option value="bugfix">Bug Fix</option>
+          <option value="refactor">Refactor</option>
+          <option value="ui">UI/UX</option>
+          <option value="api">API</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="prompt-content">Prompt Template</label>
+        <textarea id="prompt-content" rows="8" placeholder="Write your reusable prompt template here..."></textarea>
+      </div>
+      <input type="hidden" id="prompt-edit-id" value="">
+      <div class="modal-actions">
+        <button class="btn" id="btn-cancel" type="button">Cancel</button>
+        <button class="btn btn-primary" id="btn-save" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="prompts.js"></script>
+</body>
+</html>
