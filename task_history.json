@@ -1,0 +1,332 @@
+[
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "A",
+    "summary": "Create a new HTML file for the login page.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "B",
+    "summary": "Write the HTML header with the title and meta tags.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "C",
+    "summary": "Create a container element for the login form.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "D",
+    "summary": "Add a form element to the container.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "E",
+    "summary": "Add a label and input field for the username.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "F",
+    "summary": "Add a label and input field for the password.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "G",
+    "summary": "Add a submit button to the form.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "H",
+    "summary": "Style the login form with CSS.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "I",
+    "summary": "Add JavaScript to handle form submission.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "J",
+    "summary": "Validate user input for username and password.",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "K",
+    "summary": "Send a request to the server to authenticate the user.",
+    "priority": 11,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "L",
+    "summary": "Handle server response and redirect to dashboard or display error message.",
+    "priority": 12,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "M",
+    "summary": "Implement password hashing and salting for secure storage.",
+    "priority": 13,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "N",
+    "summary": "Implement user registration functionality.",
+    "priority": 14,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "O",
+    "summary": "Implement forgot password functionality.",
+    "priority": 15,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "P",
+    "summary": "Implement two-factor authentication.",
+    "priority": 16,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "Q",
+    "summary": "Implement accessibility features for the login page.",
+    "priority": 17,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "R",
+    "summary": "Test the login page for cross-browser compatibility.",
+    "priority": 18,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "S",
+    "summary": "Optimize the login page for performance.",
+    "priority": 19,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "T",
+    "summary": "Deploy the login page to a production environment.",
+    "priority": 20,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:10.500242",
+    "id": "A",
+    "summary": "Test",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:10.500242",
+    "id": "B",
+    "summary": "Request",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "A",
+    "summary": "ㄴ",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "B",
+    "summary": "ㅁ",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "C",
+    "summary": "ㅇ",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "D",
+    "summary": "ㄹ",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "E",
+    "summary": "ㅁ",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "F",
+    "summary": "ㄴ",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "G",
+    "summary": "ㄹ",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "H",
+    "summary": "ㄴ",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  }
+]

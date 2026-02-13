@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Task Splitter — Simple & Free</title>
+  <meta name="description" content="Split your complex tasks into simple steps for AI assistants like Claude.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="router.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="/index.html#hero" class="nav-logo">SSH</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Portfolio</a></li>
+        <li><a href="/router.html" class="active">Task Splitter</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/index.html">Portfolio</a></li>
+      <li><a href="/router.html">Task Splitter</a></li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <main class="router-main">
+
+    <!-- Header -->
+    <header class="router-header">
+      <p class="section-label">Free Tool</p>
+      <h1 class="section-title">AI Task Splitter</h1>
+      <p class="router-sub">Break down complex requests into simple tasks for Claude AI.<br>No signup. No cost. Just paste and go.</p>
+    </header>
+
+    <!-- How it works -->
+    <section class="how-it-works">
+      <h2>How to use</h2>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">1</span>
+          <p>Type your request below (like "Build a login page and add dark mode")</p>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <p>Click "Split Tasks" and get simple, numbered steps</p>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <p>Copy each task block and paste it to Claude, one at a time</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Request Input -->
+    <section class="input-section">
+      <label class="area-label" for="request-input">What do you want to build?</label>
+      <textarea id="request-input" rows="6" placeholder="Example: Build a contact form with email validation and add a thank you page"></textarea>
+      <div class="btn-row">
+        <button class="btn btn-primary btn-large" id="btn-run" type="button">
+          Split Tasks
+        </button>
+        <button class="btn" id="btn-clear-input" type="button">Clear</button>
+      </div>
+    </section>
+
+    <!-- Output -->
+    <section class="output-section">
+      <div class="output-header">
+        <label class="area-label">Your Tasks (Copy one at a time)</label>
+        <div class="ticket-selector" id="ticket-selector" style="display:none;">
+          <label for="ticket-select">Select task:</label>
+          <select id="ticket-select"></select>
+        </div>
+      </div>
+      <div class="output-display" id="output-display">
+        <pre id="output-text">Your split tasks will appear here...</pre>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-copy-block" type="button">Copy This Task</button>
+        <button class="btn" id="btn-clear-output" type="button">Clear</button>
+      </div>
+    </section>
+
+    <!-- Advanced Settings (hidden by default) -->
+    <details class="advanced-settings">
+      <summary>Advanced Settings (for experts)</summary>
+      <div class="config-body" id="config-body">
+        <div class="config-row">
+          <div class="config-field config-field-wide">
+            <label for="router-select">Router Script</label>
+            <select id="router-select"></select>
+          </div>
+          <button class="btn btn-sm" id="btn-refresh" type="button">Refresh</button>
+        </div>
+
+        <div class="options-grid">
+          <label class="check-label">
+            <input type="checkbox" id="opt-friendly" checked> Beginner Mode
+          </label>
+          <label class="check-label">
+            <input type="checkbox" id="opt-force-split" checked> Force Split
+          </label>
+          <label class="check-label">
+            <input type="checkbox" id="opt-groq-translate" checked> Auto-translate
+          </label>
+        </div>
+      </div>
+    </details>
+
+    <!-- Hidden config fields (set to sensible defaults) -->
+    <input type="hidden" id="opt-desktop-edit" value="false">
+    <input type="hidden" id="opt-opus-only" value="false">
+    <input type="hidden" id="opt-tickets-md" value="false">
+    <input type="hidden" id="opt-translate" value="true">
+    <input type="hidden" id="sel-economy" value="strict">
+    <input type="hidden" id="sel-phase" value="implement">
+    <input type="hidden" id="inp-one-task" value="">
+    <input type="hidden" id="inp-max-tickets" value="0">
+    <input type="hidden" id="inp-min-tickets" value="0">
+    <input type="hidden" id="inp-merge" value="">
+    <span id="preflight-badge" style="display:none;"></span>
+
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loading-overlay" style="display:none;">
+    <div class="spinner"></div>
+    <p>Splitting your tasks...</p>
+  </div>
+
+  <script src="router.js"></script>
+</body>
+</html>

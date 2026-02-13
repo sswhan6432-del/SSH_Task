@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Song Seunghwan — Developer Portfolio</title>
+  <meta name="description" content="AI-powered tools, Flutter apps, and intelligent routing systems.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">SSH</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#workflow">Workflow</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="/router.html">Router</a></li>
+      </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#workflow">Workflow</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="/router.html">Router</a></li>
+    </ul>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="hero-line" style="--i:0">Build.</span>
+        <span class="hero-line" style="--i:1">Ship.</span>
+        <span class="hero-line" style="--i:2">Iterate.</span>
+      </h1>
+      <p class="hero-sub">AI-powered tools and applications that solve real problems.</p>
+    </div>
+    <div class="scroll-indicator" id="scroll-indicator">
+      <span></span>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section section-light" id="about">
+    <div class="container">
+      <div class="fade-in">
+        <p class="section-label">About</p>
+        <h2 class="section-title">Developer who builds<br>intelligent systems.</h2>
+        <p class="section-body">
+          I design and build AI-integrated applications — from intelligent task routers
+          that protect your codebase, to cross-platform apps powered by large language models.
+          Every tool I create focuses on practical automation and developer productivity.
+        </p>
+      </div>
+      <div class="skills fade-in">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">Flutter</span>
+        <span class="skill-tag">Dart</span>
+        <span class="skill-tag">TypeScript</span>
+        <span class="skill-tag">Groq API</span>
+        <span class="skill-tag">Supabase</span>
+        <span class="skill-tag">Tkinter</span>
+        <span class="skill-tag">LLM Integration</span>
+        <span class="skill-tag">Prompt Engineering</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section section-white" id="projects">
+    <div class="container">
+      <div class="fade-in">
+        <p class="section-label">Projects</p>
+        <h2 class="section-title">Things I've built.</h2>
+      </div>
+
+      <!-- Featured Project: LLM Router GUI -->
+      <div class="project-featured fade-in">
+        <div class="project-featured-info">
+          <span class="project-badge">Featured</span>
+          <h3>LLM Router GUI</h3>
+          <p>
+            A desktop application that acts as a safe bridge between your requests and Claude.
+            It analyzes task complexity, detects risk levels, routes work to the right LLM,
+            and generates fence-safe prompts with multi-ticket isolation.
+          </p>
+          <ul class="project-features">
+            <li>Risk scoring with regex-based pattern matching</li>
+            <li>Fence-safe parsing for code block handling</li>
+            <li>Multi-ticket isolation and priority routing</li>
+            <li>Groq-powered automatic English translation</li>
+            <li>One-click Claude block copy with implementation rules</li>
+          </ul>
+          <div class="project-tech">
+            <span>Python</span>
+            <span>Tkinter</span>
+            <span>Groq API</span>
+          </div>
+        </div>
+        <div class="project-featured-visual">
+          <div class="gui-mockup">
+            <div class="gui-titlebar">
+              <div class="gui-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+              <span class="gui-title">LLM Router GUI v1.4</span>
+            </div>
+            <div class="gui-body">
+              <div class="gui-input">
+                <div class="gui-placeholder">Enter your task request...</div>
+              </div>
+              <div class="gui-output">
+                <div class="gui-line accent">Route: Claude (High Risk)</div>
+                <div class="gui-line dim">Confidence: 92%</div>
+                <div class="gui-line dim">Tickets: 3 isolated</div>
+                <div class="gui-line accent">Status: Ready to copy</div>
+              </div>
+              <div class="gui-buttons">
+                <div class="gui-btn primary">Run Router</div>
+                <div class="gui-btn">Copy Claude Block</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other Projects -->
+      <div class="project-grid">
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow -->
+  <section class="section section-dark" id="workflow">
+    <div class="container">
+      <div class="fade-in">
+        <p class="section-label">Workflow</p>
+        <h2 class="section-title">How I work.</h2>
+      </div>
+      <div class="workflow-steps">
+        <div class="workflow-step fade-in">
+          <div class="step-number">01</div>
+          <h3>Analyze</h3>
+          <p>Break down the problem. Identify risks, dependencies, and the right tools for the job.</p>
+        </div>
+        <div class="workflow-step fade-in">
+          <div class="step-number">02</div>
+          <h3>Route</h3>
+          <p>Match each task to the optimal approach — whether it needs AI assistance, manual precision, or both.</p>
+        </div>
+        <div class="workflow-step fade-in">
+          <div class="step-number">03</div>
+          <h3>Implement</h3>
+          <p>Build incrementally with isolated changes. Each piece is tested before moving to the next.</p>
+        </div>
+        <div class="workflow-step fade-in">
+          <div class="step-number">04</div>
+          <h3>Verify</h3>
+          <p>Gap analysis between design and implementation. Iterate until quality criteria are met.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section section-light" id="contact">
+    <div class="container">
+      <div class="fade-in">
+        <p class="section-label">Contact</p>
+        <h2 class="section-title">Let's connect.</h2>
+      </div>
+      <div class="contact-links fade-in">
+        <a href="mailto:hello@example.com" class="contact-row">
+          <span class="contact-type">Email</span>
+          <span class="contact-value">ssw007@hanyang.ac.kr</span>
+          <span class="contact-arrow">&rarr;</span>
+        </a>
+        <a href="https://github.com" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-type">GitHub</span>
+          <span class="contact-value">github.com</span>
+          <span class="contact-arrow">&rarr;</span>
+        </a>
+        <a href="https://linkedin.com" class="contact-row" target="_blank" rel="noopener">
+          <span class="contact-type">LinkedIn</span>
+          <span class="contact-value">linkedin.com</span>
+          <span class="contact-arrow">&rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Song Seunghwan. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
