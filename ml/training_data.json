@@ -1,0 +1,1776 @@
+[
+  {
+    "text": "Fix critical security vulnerability in authentication system",
+    "urgency": 10,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Urgent: Payment processing is broken, customers can't checkout",
+    "urgency": 10,
+    "importance": 9,
+    "category": "bug"
+  },
+  {
+    "text": "Database connection failing in production",
+    "urgency": 9,
+    "importance": 9,
+    "category": "critical"
+  },
+  {
+    "text": "Fix login bug preventing user access",
+    "urgency": 9,
+    "importance": 8,
+    "category": "bug"
+  },
+  {
+    "text": "Implement user authentication for security",
+    "urgency": 8,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Critical bug in data validation causing crashes",
+    "urgency": 9,
+    "importance": 8,
+    "category": "bug"
+  },
+  {
+    "text": "Emergency: API endpoint returning 500 errors",
+    "urgency": 10,
+    "importance": 8,
+    "category": "bug"
+  },
+  {
+    "text": "Implement encryption for sensitive user data",
+    "urgency": 7,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Fix broken search functionality",
+    "urgency": 8,
+    "importance": 7,
+    "category": "bug"
+  },
+  {
+    "text": "Add database backup and recovery system",
+    "urgency": 7,
+    "importance": 9,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Implement payment integration with Stripe",
+    "urgency": 6,
+    "importance": 9,
+    "category": "feature"
+  },
+  {
+    "text": "Build user dashboard with analytics",
+    "urgency": 5,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "Add email notification system",
+    "urgency": 6,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "Create admin panel for content management",
+    "urgency": 5,
+    "importance": 8,
+    "category": "feature"
+  },
+  {
+    "text": "Implement file upload functionality",
+    "urgency": 6,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Add search filters and sorting",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Build REST API endpoints",
+    "urgency": 6,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "Create user profile page",
+    "urgency": 4,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Implement pagination for large datasets",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Add export to CSV functionality",
+    "urgency": 4,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "Update API documentation",
+    "urgency": 3,
+    "importance": 5,
+    "category": "docs"
+  },
+  {
+    "text": "Write user guide for new features",
+    "urgency": 3,
+    "importance": 4,
+    "category": "docs"
+  },
+  {
+    "text": "Create README for project setup",
+    "urgency": 4,
+    "importance": 5,
+    "category": "docs"
+  },
+  {
+    "text": "Document database schema",
+    "urgency": 3,
+    "importance": 6,
+    "category": "docs"
+  },
+  {
+    "text": "Add code comments for complex logic",
+    "urgency": 2,
+    "importance": 3,
+    "category": "docs"
+  },
+  {
+    "text": "Update changelog for release",
+    "urgency": 4,
+    "importance": 4,
+    "category": "docs"
+  },
+  {
+    "text": "Polish UI button styles",
+    "urgency": 2,
+    "importance": 3,
+    "category": "ui"
+  },
+  {
+    "text": "Improve responsive design for mobile",
+    "urgency": 4,
+    "importance": 6,
+    "category": "ui"
+  },
+  {
+    "text": "Add dark mode theme",
+    "urgency": 3,
+    "importance": 4,
+    "category": "ui"
+  },
+  {
+    "text": "Refactor CSS for better organization",
+    "urgency": 2,
+    "importance": 3,
+    "category": "refactor"
+  },
+  {
+    "text": "Fix typo in error message",
+    "urgency": 1,
+    "importance": 2,
+    "category": "minor"
+  },
+  {
+    "text": "Update footer copyright year",
+    "urgency": 1,
+    "importance": 1,
+    "category": "minor"
+  },
+  {
+    "text": "Optimize database queries for performance",
+    "urgency": 6,
+    "importance": 7,
+    "category": "optimization"
+  },
+  {
+    "text": "Add caching layer to reduce API calls",
+    "urgency": 5,
+    "importance": 7,
+    "category": "optimization"
+  },
+  {
+    "text": "Implement lazy loading for images",
+    "urgency": 4,
+    "importance": 5,
+    "category": "optimization"
+  },
+  {
+    "text": "Add unit tests for authentication module",
+    "urgency": 6,
+    "importance": 8,
+    "category": "testing"
+  },
+  {
+    "text": "Write integration tests for API",
+    "urgency": 5,
+    "importance": 7,
+    "category": "testing"
+  },
+  {
+    "text": "Add end-to-end tests for checkout flow",
+    "urgency": 6,
+    "importance": 8,
+    "category": "testing"
+  },
+  {
+    "text": "Set up CI/CD pipeline",
+    "urgency": 5,
+    "importance": 8,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Configure monitoring and alerts",
+    "urgency": 6,
+    "importance": 9,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Implement rate limiting for API",
+    "urgency": 7,
+    "importance": 8,
+    "category": "security"
+  },
+  {
+    "text": "Add input validation and sanitization",
+    "urgency": 8,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Implement CSRF protection",
+    "urgency": 7,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Add XSS prevention measures",
+    "urgency": 8,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Set up SSL certificates",
+    "urgency": 7,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Refactor legacy code for maintainability",
+    "urgency": 4,
+    "importance": 6,
+    "category": "refactor"
+  },
+  {
+    "text": "Remove deprecated API endpoints",
+    "urgency": 5,
+    "importance": 6,
+    "category": "refactor"
+  },
+  {
+    "text": "Update dependencies to latest versions",
+    "urgency": 5,
+    "importance": 7,
+    "category": "maintenance"
+  },
+  {
+    "text": "Fix memory leak in background jobs",
+    "urgency": 8,
+    "importance": 8,
+    "category": "bug"
+  },
+  {
+    "text": "Resolve race condition in concurrent requests",
+    "urgency": 7,
+    "importance": 8,
+    "category": "bug"
+  },
+  {
+    "text": "버그 수정: 로그인 실패 시 에러 메시지 누락",
+    "urgency": 7,
+    "importance": 6,
+    "category": "bug"
+  },
+  {
+    "text": "긴급: 결제 시스템 장애 발생",
+    "urgency": 10,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "보안 취약점 패치 적용",
+    "urgency": 9,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "데이터베이스 백업 자동화 구현",
+    "urgency": 6,
+    "importance": 9,
+    "category": "infrastructure"
+  },
+  {
+    "text": "사용자 대시보드 UI 개선",
+    "urgency": 4,
+    "importance": 5,
+    "category": "ui"
+  },
+  {
+    "text": "API 문서 업데이트",
+    "urgency": 3,
+    "importance": 4,
+    "category": "docs"
+  },
+  {
+    "text": "코드 주석 추가",
+    "urgency": 2,
+    "importance": 3,
+    "category": "docs"
+  },
+  {
+    "text": "디자인 시스템 구축",
+    "urgency": 5,
+    "importance": 7,
+    "category": "ui"
+  },
+  {
+    "text": "성능 최적화: 쿼리 속도 개선",
+    "urgency": 6,
+    "importance": 7,
+    "category": "optimization"
+  },
+  {
+    "text": "단위 테스트 작성",
+    "urgency": 5,
+    "importance": 7,
+    "category": "testing"
+  },
+  {
+    "text": "나중에 할 일: UI 색상 조정",
+    "urgency": 2,
+    "importance": 2,
+    "category": "minor"
+  },
+  {
+    "text": "선택사항: 다크모드 추가",
+    "urgency": 3,
+    "importance": 4,
+    "category": "feature"
+  },
+  {
+    "text": "고려사항: 소셜 로그인 통합",
+    "urgency": 4,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "필수: 사용자 인증 구현",
+    "urgency": 8,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "핵심 기능: 결제 연동",
+    "urgency": 7,
+    "importance": 9,
+    "category": "feature"
+  },
+  {
+    "text": "미래 계획: AI 추천 시스템",
+    "urgency": 2,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "Add loading spinner animation",
+    "urgency": 3,
+    "importance": 3,
+    "category": "ui"
+  },
+  {
+    "text": "Implement error boundary for React components",
+    "urgency": 6,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "Add analytics tracking",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Configure logging system",
+    "urgency": 6,
+    "importance": 8,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Implement feature flags",
+    "urgency": 4,
+    "importance": 6,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Add internationalization support",
+    "urgency": 4,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "Optimize bundle size",
+    "urgency": 5,
+    "importance": 6,
+    "category": "optimization"
+  },
+  {
+    "text": "Add accessibility features (ARIA labels)",
+    "urgency": 5,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "Implement real-time notifications",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Add PWA support",
+    "urgency": 4,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "Set up error reporting (Sentry)",
+    "urgency": 6,
+    "importance": 8,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Implement data migration script",
+    "urgency": 7,
+    "importance": 7,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Add API versioning",
+    "urgency": 5,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "Someday: Consider adding tooltip animations",
+    "urgency": 1,
+    "importance": 2
+  },
+  {
+    "text": "Maybe later: Improve button hover effects",
+    "urgency": 1,
+    "importance": 3
+  },
+  {
+    "text": "Future: Add sound effects to UI",
+    "urgency": 1,
+    "importance": 1
+  },
+  {
+    "text": "Low priority: Update placeholder text",
+    "urgency": 1,
+    "importance": 2
+  },
+  {
+    "text": "Eventually: Add more color themes",
+    "urgency": 1,
+    "importance": 3
+  },
+  {
+    "text": "Sometime: Refine shadow effects",
+    "urgency": 1,
+    "importance": 2
+  },
+  {
+    "text": "Later: Adjust padding in footer",
+    "urgency": 2,
+    "importance": 1
+  },
+  {
+    "text": "Eventually: Update icon set",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "Low: Improve tooltip positioning",
+    "urgency": 2,
+    "importance": 1
+  },
+  {
+    "text": "Critical: Server down, users cannot access app",
+    "urgency": 9,
+    "importance": 10
+  },
+  {
+    "text": "Urgent bug: Data corruption in recent update",
+    "urgency": 9,
+    "importance": 9
+  },
+  {
+    "text": "Emergency: SQL injection vulnerability discovered",
+    "urgency": 9,
+    "importance": 10
+  },
+  {
+    "text": "Critical issue: Password reset not working",
+    "urgency": 9,
+    "importance": 9
+  },
+  {
+    "text": "URGENT: Production server crashed, immediate fix required",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "ASAP: Data breach detected, security patch needed now",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "Emergency fix: Payment gateway down, losing revenue",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "Critical hotfix: User data exposed, patch immediately",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "Update sidebar background color",
+    "urgency": 2,
+    "importance": 1
+  },
+  {
+    "text": "Change button border radius",
+    "urgency": 1,
+    "importance": 1
+  },
+  {
+    "text": "Adjust font weight in footer",
+    "urgency": 2,
+    "importance": 1
+  },
+  {
+    "text": "Tweak hover animation speed",
+    "urgency": 1,
+    "importance": 1
+  },
+  {
+    "text": "Update placeholder image",
+    "urgency": 2,
+    "importance": 1
+  },
+  {
+    "text": "Change icon color slightly",
+    "urgency": 1,
+    "importance": 1
+  },
+  {
+    "text": "Adjust spacing in sidebar",
+    "urgency": 2,
+    "importance": 1
+  },
+  {
+    "text": "Update about page text",
+    "urgency": 3,
+    "importance": 2
+  },
+  {
+    "text": "Improve FAQ formatting",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "Add team member photos",
+    "urgency": 3,
+    "importance": 2
+  },
+  {
+    "text": "Update company logo on footer",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "Refine carousel transition",
+    "urgency": 3,
+    "importance": 2
+  },
+  {
+    "text": "Add social media icons",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "Improve help section layout",
+    "urgency": 3,
+    "importance": 3
+  },
+  {
+    "text": "Add search icon to header",
+    "urgency": 2,
+    "importance": 3
+  },
+  {
+    "text": "Update contact form styling",
+    "urgency": 3,
+    "importance": 3
+  },
+  {
+    "text": "Add breadcrumb navigation",
+    "urgency": 4,
+    "importance": 4
+  },
+  {
+    "text": "Implement tab navigation",
+    "urgency": 3,
+    "importance": 4
+  },
+  {
+    "text": "Add print stylesheet",
+    "urgency": 3,
+    "importance": 4
+  },
+  {
+    "text": "긴급하지 않음: 로고 크기 조정",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "여유롭게: 메뉴 순서 변경",
+    "urgency": 1,
+    "importance": 2
+  },
+  {
+    "text": "필수 아님: 배너 이미지 교체",
+    "urgency": 2,
+    "importance": 3
+  },
+  {
+    "text": "선택: 애니메이션 효과 추가",
+    "urgency": 3,
+    "importance": 3
+  },
+  {
+    "text": "Fix SQL injection in user input",
+    "urgency": 8,
+    "importance": 10
+  },
+  {
+    "text": "Patch XSS vulnerability in comments",
+    "urgency": 8,
+    "importance": 9
+  },
+  {
+    "text": "긴급 버그: 파일 업로드 실패",
+    "urgency": 8,
+    "importance": 7
+  },
+  {
+    "text": "Implement two-factor authentication",
+    "urgency": 7,
+    "importance": 10
+  },
+  {
+    "text": "Add data encryption at rest",
+    "urgency": 6,
+    "importance": 10
+  },
+  {
+    "text": "Set up automated backups",
+    "urgency": 6,
+    "importance": 10
+  },
+  {
+    "text": "Add user feedback form",
+    "urgency": 4,
+    "importance": 5
+  },
+  {
+    "text": "Implement bookmark feature",
+    "urgency": 5,
+    "importance": 5
+  },
+  {
+    "text": "Add tags to posts",
+    "urgency": 4,
+    "importance": 4
+  },
+  {
+    "text": "Create admin activity log",
+    "urgency": 5,
+    "importance": 6
+  },
+  {
+    "text": "Add bulk edit functionality",
+    "urgency": 5,
+    "importance": 6
+  },
+  {
+    "text": "Implement user preferences",
+    "urgency": 4,
+    "importance": 5
+  },
+  {
+    "text": "나중에: 글꼴 변경 고려",
+    "urgency": 1,
+    "importance": 2
+  },
+  {
+    "text": "선택사항: 애니메이션 개선",
+    "urgency": 2,
+    "importance": 3
+  },
+  {
+    "text": "여유시: 레이아웃 조정",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "긴급: 로그인 시스템 오류",
+    "urgency": 9,
+    "importance": 9
+  },
+  {
+    "text": "즉시 수정: 보안 결함 발견",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "필수 구현: 데이터 암호화",
+    "urgency": 7,
+    "importance": 10
+  },
+  {
+    "text": "핵심 기능: 검색 기능 추가",
+    "urgency": 6,
+    "importance": 8
+  },
+  {
+    "text": "중요: 알림 시스템 구축",
+    "urgency": 6,
+    "importance": 7
+  },
+  {
+    "text": "Someday: Update brand colors slightly",
+    "urgency": 1,
+    "importance": 2
+  },
+  {
+    "text": "Future idea: Add emoji reactions",
+    "urgency": 1,
+    "importance": 3
+  },
+  {
+    "text": "Maybe: Try different font for headings",
+    "urgency": 1,
+    "importance": 1
+  },
+  {
+    "text": "나중에: 배경 이미지 교체",
+    "urgency": 1,
+    "importance": 2
+  },
+  {
+    "text": "Eventually: Add hover tooltips to icons",
+    "urgency": 2,
+    "importance": 3
+  },
+  {
+    "text": "Low priority: Improve button spacing",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "Later: Add more example data",
+    "urgency": 2,
+    "importance": 3
+  },
+  {
+    "text": "여유시: 메뉴 아이콘 변경",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "Consider: Add breadcrumb trail",
+    "urgency": 3,
+    "importance": 4
+  },
+  {
+    "text": "Nice to have: Keyboard shortcuts",
+    "urgency": 3,
+    "importance": 5
+  },
+  {
+    "text": "Improve: Help documentation layout",
+    "urgency": 3,
+    "importance": 4
+  },
+  {
+    "text": "선택사항: FAQ 페이지 추가",
+    "urgency": 3,
+    "importance": 3
+  },
+  {
+    "text": "Add user profile avatars",
+    "urgency": 4,
+    "importance": 5
+  },
+  {
+    "text": "Implement drag-and-drop sorting",
+    "urgency": 4,
+    "importance": 6
+  },
+  {
+    "text": "Create onboarding tutorial",
+    "urgency": 4,
+    "importance": 6
+  },
+  {
+    "text": "사용자 설정 페이지 개선",
+    "urgency": 4,
+    "importance": 5
+  },
+  {
+    "text": "Build notification center",
+    "urgency": 5,
+    "importance": 6
+  },
+  {
+    "text": "Add search autocomplete",
+    "urgency": 5,
+    "importance": 7
+  },
+  {
+    "text": "Implement data export feature",
+    "urgency": 5,
+    "importance": 6
+  },
+  {
+    "text": "알림 시스템 구현",
+    "urgency": 5,
+    "importance": 7
+  },
+  {
+    "text": "Add two-step verification",
+    "urgency": 6,
+    "importance": 8
+  },
+  {
+    "text": "Implement audit logging",
+    "urgency": 6,
+    "importance": 8
+  },
+  {
+    "text": "Set up automated backups",
+    "urgency": 6,
+    "importance": 9
+  },
+  {
+    "text": "데이터 백업 시스템 구축",
+    "urgency": 6,
+    "importance": 8
+  },
+  {
+    "text": "Fix security headers configuration",
+    "urgency": 7,
+    "importance": 9
+  },
+  {
+    "text": "Implement session management",
+    "urgency": 7,
+    "importance": 8
+  },
+  {
+    "text": "Add SQL query optimization",
+    "urgency": 7,
+    "importance": 7
+  },
+  {
+    "text": "보안 헤더 설정",
+    "urgency": 7,
+    "importance": 9
+  },
+  {
+    "text": "Critical: Fix authentication bypass",
+    "urgency": 8,
+    "importance": 10
+  },
+  {
+    "text": "Urgent: Resolve data leak issue",
+    "urgency": 8,
+    "importance": 9
+  },
+  {
+    "text": "Fix CORS misconfiguration",
+    "urgency": 8,
+    "importance": 8
+  },
+  {
+    "text": "긴급: 인증 버그 수정",
+    "urgency": 8,
+    "importance": 9
+  },
+  {
+    "text": "Emergency: Production outage",
+    "urgency": 9,
+    "importance": 10
+  },
+  {
+    "text": "Critical bug: Users locked out",
+    "urgency": 9,
+    "importance": 9
+  },
+  {
+    "text": "Urgent: Data inconsistency detected",
+    "urgency": 9,
+    "importance": 9
+  },
+  {
+    "text": "긴급 장애: 서비스 중단",
+    "urgency": 9,
+    "importance": 10
+  },
+  {
+    "text": "CRITICAL: Zero-day exploit patch",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "ASAP: Complete system failure",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "Immediate: Security breach active",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "즉시: 보안 침해 발생",
+    "urgency": 10,
+    "importance": 10
+  },
+  {
+    "text": "Change icon size in sidebar",
+    "urgency": 1,
+    "importance": 1
+  },
+  {
+    "text": "Update tooltip text",
+    "urgency": 2,
+    "importance": 1
+  },
+  {
+    "text": "Adjust button opacity",
+    "urgency": 1,
+    "importance": 1
+  },
+  {
+    "text": "아이콘 색상 조정",
+    "urgency": 2,
+    "importance": 1
+  },
+  {
+    "text": "Add loading animation",
+    "urgency": 3,
+    "importance": 2
+  },
+  {
+    "text": "Improve modal transitions",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "Update placeholder images",
+    "urgency": 3,
+    "importance": 2
+  },
+  {
+    "text": "로딩 애니메이션 개선",
+    "urgency": 2,
+    "importance": 2
+  },
+  {
+    "text": "Add syntax highlighting to docs",
+    "urgency": 3,
+    "importance": 3
+  },
+  {
+    "text": "Improve code examples",
+    "urgency": 3,
+    "importance": 3
+  },
+  {
+    "text": "Add more FAQ entries",
+    "urgency": 2,
+    "importance": 3
+  },
+  {
+    "text": "문서 예제 추가",
+    "urgency": 3,
+    "importance": 3
+  },
+  {
+    "text": "Add changelog page",
+    "urgency": 3,
+    "importance": 4
+  },
+  {
+    "text": "Implement version history",
+    "urgency": 4,
+    "importance": 4
+  },
+  {
+    "text": "Create release notes template",
+    "urgency": 3,
+    "importance": 4
+  },
+  {
+    "text": "버전 히스토리 추가",
+    "urgency": 4,
+    "importance": 4
+  },
+  {
+    "text": "Add user preferences storage",
+    "urgency": 4,
+    "importance": 5
+  },
+  {
+    "text": "Implement theme customization",
+    "urgency": 4,
+    "importance": 5
+  },
+  {
+    "text": "Add bookmark system",
+    "urgency": 5,
+    "importance": 5
+  },
+  {
+    "text": "사용자 환경설정 저장",
+    "urgency": 4,
+    "importance": 5
+  },
+  {
+    "text": "Build reporting dashboard",
+    "urgency": 5,
+    "importance": 6
+  },
+  {
+    "text": "Add data visualization",
+    "urgency": 5,
+    "importance": 6
+  },
+  {
+    "text": "Implement export formats",
+    "urgency": 4,
+    "importance": 6
+  },
+  {
+    "text": "대시보드 차트 추가",
+    "urgency": 5,
+    "importance": 6
+  },
+  {
+    "text": "Set up logging infrastructure",
+    "urgency": 6,
+    "importance": 7
+  },
+  {
+    "text": "Implement error tracking",
+    "urgency": 6,
+    "importance": 7
+  },
+  {
+    "text": "Add performance monitoring",
+    "urgency": 5,
+    "importance": 7
+  },
+  {
+    "text": "모니터링 시스템 구축",
+    "urgency": 6,
+    "importance": 7
+  },
+  {
+    "text": "Implement access control",
+    "urgency": 7,
+    "importance": 8
+  },
+  {
+    "text": "Add role-based permissions",
+    "urgency": 6,
+    "importance": 8
+  },
+  {
+    "text": "Set up CI/CD pipeline",
+    "urgency": 6,
+    "importance": 8
+  },
+  {
+    "text": "권한 관리 시스템 구현",
+    "urgency": 7,
+    "importance": 8
+  },
+  {
+    "text": "Implement data encryption",
+    "urgency": 7,
+    "importance": 9
+  },
+  {
+    "text": "Add compliance auditing",
+    "urgency": 6,
+    "importance": 9
+  },
+  {
+    "text": "Set up disaster recovery",
+    "urgency": 7,
+    "importance": 9
+  },
+  {
+    "text": "데이터 암호화 구현",
+    "urgency": 7,
+    "importance": 9
+  },
+  {
+    "text": "Build authentication system",
+    "urgency": 8,
+    "importance": 10
+  },
+  {
+    "text": "Implement payment processing",
+    "urgency": 7,
+    "importance": 10
+  },
+  {
+    "text": "Add GDPR compliance",
+    "urgency": 7,
+    "importance": 10
+  },
+  {
+    "text": "결제 시스템 구현",
+    "urgency": 7,
+    "importance": 10
+  },
+  {
+    "text": "Update footer copyright year to 2026",
+    "urgency": 1,
+    "importance": 1,
+    "category": "minor"
+  },
+  {
+    "text": "Change placeholder text color slightly",
+    "urgency": 1,
+    "importance": 1,
+    "category": "ui"
+  },
+  {
+    "text": "Adjust sidebar icon spacing by 2px",
+    "urgency": 1,
+    "importance": 2,
+    "category": "ui"
+  },
+  {
+    "text": "Eventually add tooltip animation effects",
+    "urgency": 1,
+    "importance": 2,
+    "category": "ui"
+  },
+  {
+    "text": "Someday consider adding sound effects",
+    "urgency": 1,
+    "importance": 1,
+    "category": "feature"
+  },
+  {
+    "text": "Maybe update team member photos",
+    "urgency": 1,
+    "importance": 3,
+    "category": "content"
+  },
+  {
+    "text": "Future: Try different font for headings",
+    "urgency": 1,
+    "importance": 2,
+    "category": "ui"
+  },
+  {
+    "text": "나중에: 로고 이미지 교체 고려",
+    "urgency": 1,
+    "importance": 2,
+    "category": "ui"
+  },
+  {
+    "text": "여유시: 배경색 변경 검토",
+    "urgency": 1,
+    "importance": 1,
+    "category": "ui"
+  },
+  {
+    "text": "언젠가: 애니메이션 효과 추가",
+    "urgency": 1,
+    "importance": 3,
+    "category": "feature"
+  },
+  {
+    "text": "Improve button hover transition speed",
+    "urgency": 2,
+    "importance": 2,
+    "category": "ui"
+  },
+  {
+    "text": "Add more placeholder images to gallery",
+    "urgency": 2,
+    "importance": 2,
+    "category": "content"
+  },
+  {
+    "text": "Update about page company description",
+    "urgency": 2,
+    "importance": 3,
+    "category": "content"
+  },
+  {
+    "text": "Later: Refine modal dialog animations",
+    "urgency": 2,
+    "importance": 3,
+    "category": "ui"
+  },
+  {
+    "text": "Eventually update FAQ section formatting",
+    "urgency": 2,
+    "importance": 3,
+    "category": "docs"
+  },
+  {
+    "text": "Low priority: Add social media icons",
+    "urgency": 2,
+    "importance": 2,
+    "category": "feature"
+  },
+  {
+    "text": "Improve help section layout spacing",
+    "urgency": 2,
+    "importance": 3,
+    "category": "ui"
+  },
+  {
+    "text": "나중에: 메뉴 아이콘 변경",
+    "urgency": 2,
+    "importance": 2,
+    "category": "ui"
+  },
+  {
+    "text": "여유있게: 글꼴 크기 조정",
+    "urgency": 2,
+    "importance": 1,
+    "category": "ui"
+  },
+  {
+    "text": "선택사항: 로딩 스피너 디자인 개선",
+    "urgency": 2,
+    "importance": 3,
+    "category": "ui"
+  },
+  {
+    "text": "Add breadcrumb navigation trail",
+    "urgency": 3,
+    "importance": 4,
+    "category": "feature"
+  },
+  {
+    "text": "Improve code examples in documentation",
+    "urgency": 3,
+    "importance": 4,
+    "category": "docs"
+  },
+  {
+    "text": "Add syntax highlighting to code blocks",
+    "urgency": 3,
+    "importance": 4,
+    "category": "docs"
+  },
+  {
+    "text": "Consider adding keyboard shortcuts",
+    "urgency": 3,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "Update contact form styling",
+    "urgency": 3,
+    "importance": 3,
+    "category": "ui"
+  },
+  {
+    "text": "Add search icon to header navigation",
+    "urgency": 3,
+    "importance": 4,
+    "category": "ui"
+  },
+  {
+    "text": "Nice to have: User preference settings",
+    "urgency": 3,
+    "importance": 4,
+    "category": "feature"
+  },
+  {
+    "text": "선택: 다크모드 테마 추가",
+    "urgency": 3,
+    "importance": 4,
+    "category": "feature"
+  },
+  {
+    "text": "고려사항: 검색 필터 기능",
+    "urgency": 3,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "여유시: 튜토리얼 페이지 추가",
+    "urgency": 3,
+    "importance": 4,
+    "category": "docs"
+  },
+  {
+    "text": "Create changelog page for releases",
+    "urgency": 4,
+    "importance": 4,
+    "category": "docs"
+  },
+  {
+    "text": "Add user profile avatar upload",
+    "urgency": 4,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "Implement drag-and-drop file sorting",
+    "urgency": 4,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Add export to CSV functionality",
+    "urgency": 4,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "Improve responsive design for tablets",
+    "urgency": 4,
+    "importance": 6,
+    "category": "ui"
+  },
+  {
+    "text": "Create onboarding tutorial for new users",
+    "urgency": 4,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Add print stylesheet for reports",
+    "urgency": 4,
+    "importance": 4,
+    "category": "feature"
+  },
+  {
+    "text": "사용자 프로필 페이지 개선",
+    "urgency": 4,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "대시보드 레이아웃 조정",
+    "urgency": 4,
+    "importance": 5,
+    "category": "ui"
+  },
+  {
+    "text": "버전 히스토리 기능 추가",
+    "urgency": 4,
+    "importance": 4,
+    "category": "feature"
+  },
+  {
+    "text": "Build notification center for alerts",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Add search autocomplete suggestions",
+    "urgency": 5,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "Implement data export in multiple formats",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Add caching layer to reduce API calls",
+    "urgency": 5,
+    "importance": 7,
+    "category": "optimization"
+  },
+  {
+    "text": "Implement pagination for large datasets",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Create admin dashboard with analytics",
+    "urgency": 5,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "Add user activity tracking",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "알림 시스템 구축",
+    "urgency": 5,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "북마크 기능 구현",
+    "urgency": 5,
+    "importance": 5,
+    "category": "feature"
+  },
+  {
+    "text": "검색 자동완성 추가",
+    "urgency": 5,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Implement file upload with progress bar",
+    "urgency": 6,
+    "importance": 6,
+    "category": "feature"
+  },
+  {
+    "text": "Add two-step verification option",
+    "urgency": 6,
+    "importance": 8,
+    "category": "security"
+  },
+  {
+    "text": "Set up automated database backups",
+    "urgency": 6,
+    "importance": 9,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Configure monitoring and alerting system",
+    "urgency": 6,
+    "importance": 9,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Optimize database queries for performance",
+    "urgency": 6,
+    "importance": 7,
+    "category": "optimization"
+  },
+  {
+    "text": "Add audit logging for admin actions",
+    "urgency": 6,
+    "importance": 8,
+    "category": "security"
+  },
+  {
+    "text": "Build REST API endpoints for mobile app",
+    "urgency": 6,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "데이터 백업 시스템 구축",
+    "urgency": 6,
+    "importance": 9,
+    "category": "infrastructure"
+  },
+  {
+    "text": "API 엔드포인트 추가",
+    "urgency": 6,
+    "importance": 7,
+    "category": "feature"
+  },
+  {
+    "text": "성능 모니터링 도구 설치",
+    "urgency": 6,
+    "importance": 8,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Implement session management and timeout",
+    "urgency": 7,
+    "importance": 8,
+    "category": "security"
+  },
+  {
+    "text": "Add SQL injection prevention measures",
+    "urgency": 7,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Set up CI/CD pipeline for deployments",
+    "urgency": 7,
+    "importance": 8,
+    "category": "infrastructure"
+  },
+  {
+    "text": "Implement rate limiting for API endpoints",
+    "urgency": 7,
+    "importance": 8,
+    "category": "security"
+  },
+  {
+    "text": "Add CSRF protection to forms",
+    "urgency": 7,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Configure SSL certificates for HTTPS",
+    "urgency": 7,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Implement data migration script for upgrade",
+    "urgency": 7,
+    "importance": 7,
+    "category": "infrastructure"
+  },
+  {
+    "text": "보안 헤더 설정 강화",
+    "urgency": 7,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "데이터 암호화 구현",
+    "urgency": 7,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "세션 관리 시스템 개선",
+    "urgency": 7,
+    "importance": 8,
+    "category": "security"
+  },
+  {
+    "text": "Fix critical authentication bypass vulnerability",
+    "urgency": 8,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Urgent: Resolve data leak in API response",
+    "urgency": 8,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Fix XSS vulnerability in user comments",
+    "urgency": 8,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Implement user authentication system",
+    "urgency": 8,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Add input validation and sanitization",
+    "urgency": 8,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Fix broken search functionality affecting users",
+    "urgency": 8,
+    "importance": 7,
+    "category": "bug"
+  },
+  {
+    "text": "Resolve memory leak in background jobs",
+    "urgency": 8,
+    "importance": 8,
+    "category": "bug"
+  },
+  {
+    "text": "긴급: 로그인 버그 수정",
+    "urgency": 8,
+    "importance": 9,
+    "category": "bug"
+  },
+  {
+    "text": "긴급: 인증 시스템 오류",
+    "urgency": 8,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "심각: 데이터 유출 취약점",
+    "urgency": 8,
+    "importance": 9,
+    "category": "security"
+  },
+  {
+    "text": "Critical: Production database connection failing",
+    "urgency": 9,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "Emergency: API endpoint returning 500 errors",
+    "urgency": 9,
+    "importance": 9,
+    "category": "bug"
+  },
+  {
+    "text": "Urgent: Users cannot login to system",
+    "urgency": 9,
+    "importance": 9,
+    "category": "bug"
+  },
+  {
+    "text": "Critical bug: Data validation causing crashes",
+    "urgency": 9,
+    "importance": 8,
+    "category": "bug"
+  },
+  {
+    "text": "Fix race condition in concurrent requests",
+    "urgency": 9,
+    "importance": 8,
+    "category": "bug"
+  },
+  {
+    "text": "Apply security patch for vulnerability",
+    "urgency": 9,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Urgent: Data inconsistency detected in reports",
+    "urgency": 9,
+    "importance": 9,
+    "category": "bug"
+  },
+  {
+    "text": "긴급 장애: 서비스 중단 발생",
+    "urgency": 9,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "긴급: 데이터베이스 연결 실패",
+    "urgency": 9,
+    "importance": 9,
+    "category": "critical"
+  },
+  {
+    "text": "심각한 버그: 결제 처리 오류",
+    "urgency": 9,
+    "importance": 10,
+    "category": "bug"
+  },
+  {
+    "text": "CRITICAL: Production server crashed completely",
+    "urgency": 10,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "URGENT: Payment processing broken, losing revenue",
+    "urgency": 10,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "ASAP: Security breach detected, patch immediately",
+    "urgency": 10,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Emergency: Zero-day exploit actively being used",
+    "urgency": 10,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "CRITICAL: All users locked out of system",
+    "urgency": 10,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "Immediate: Customer data exposed publicly",
+    "urgency": 10,
+    "importance": 10,
+    "category": "security"
+  },
+  {
+    "text": "Emergency hotfix: Site completely down",
+    "urgency": 10,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "즉시 조치: 전체 시스템 장애",
+    "urgency": 10,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "긴급: 결제 시스템 완전 중단",
+    "urgency": 10,
+    "importance": 10,
+    "category": "critical"
+  },
+  {
+    "text": "즉각 대응: 보안 침해 발생",
+    "urgency": 10,
+    "importance": 10,
+    "category": "security"
+  }
+]

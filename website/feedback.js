@@ -37,6 +37,7 @@
         fetch("/api/feedback"),
         fetch("/api/history"),
       ]);
+      if (!fbRes.ok || !histRes.ok) throw new Error("API error");
       const fbData = await fbRes.json();
       const histData = await histRes.json();
       feedbackData = fbData.feedback || {};
@@ -108,8 +109,8 @@
 
       card.innerHTML =
         '<div class="fb-vote">' +
-        '<button class="vote-btn up' + (fb.vote === "up" ? " active" : "") + '" data-id="' + escapeAttr(entryId) + '" data-vote="up" title="Good routing">+</button>' +
-        '<button class="vote-btn down' + (fb.vote === "down" ? " active" : "") + '" data-id="' + escapeAttr(entryId) + '" data-vote="down" title="Bad routing">-</button>' +
+        '<button class="vote-btn up' + (fb.vote === "up" ? " active" : "") + '" data-id="' + escapeAttr(entryId) + '" data-vote="up" title="Good routing" aria-label="Rate positive">+</button>' +
+        '<button class="vote-btn down' + (fb.vote === "down" ? " active" : "") + '" data-id="' + escapeAttr(entryId) + '" data-vote="down" title="Bad routing" aria-label="Rate negative">-</button>' +
         "</div>" +
         '<div class="fb-content">' +
         "<h4>" + escapeHtml(request.substring(0, 120)) + (request.length > 120 ? "..." : "") + "</h4>" +

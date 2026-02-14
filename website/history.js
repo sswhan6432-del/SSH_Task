@@ -36,6 +36,7 @@
   async function loadData() {
     try {
       const res = await fetch("/api/history");
+      if (!res.ok) throw new Error("HTTP " + res.status);
       const data = await res.json();
       allEntries = (data.entries || []).reverse();
       applyFilters();
@@ -152,8 +153,18 @@
     return div.innerHTML;
   }
 
+  function debounce(fn, ms) {
+    let timer;
+    return function () {
+      var args = arguments;
+      var ctx = this;
+      clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(ctx, args); }, ms);
+    };
+  }
+
   document.getElementById("filter-route").addEventListener("change", applyFilters);
-  document.getElementById("filter-search").addEventListener("input", applyFilters);
+  document.getElementById("filter-search").addEventListener("input", debounce(applyFilters, 300));
   document.getElementById("btn-refresh").addEventListener("click", () => { loadData(); showToast("Refreshed"); });
 
   loadData();

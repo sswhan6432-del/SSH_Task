@@ -38,6 +38,7 @@
   async function loadData() {
     try {
       const res = await fetch("/api/history");
+      if (!res.ok) throw new Error("HTTP " + res.status);
       const data = await res.json();
       historyData = data.entries || [];
       render();

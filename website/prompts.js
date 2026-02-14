@@ -187,7 +187,17 @@
     renderGrid();
   });
 
-  document.getElementById("search-input").addEventListener("input", renderGrid);
+  function debounce(fn, ms) {
+    let timer;
+    return function () {
+      var args = arguments;
+      var ctx = this;
+      clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(ctx, args); }, ms);
+    };
+  }
+
+  document.getElementById("search-input").addEventListener("input", debounce(renderGrid, 300));
   document.getElementById("btn-new").addEventListener("click", () => openModal(null));
   document.getElementById("btn-cancel").addEventListener("click", closeModal);
   document.getElementById("btn-save").addEventListener("click", saveFromModal);

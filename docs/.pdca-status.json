@@ -1,10 +1,15 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-02-13T06:09:10.555Z",
+  "lastUpdated": "2026-02-14T10:09:11.192Z",
   "activeFeatures": [
     "tools",
     "website",
-    "tools - Gap analysis (Design vs Implementation)"
+    "tools - Gap analysis (Design vs Implementation)",
+    "nlp",
+    "ml",
+    "tests",
+    "SSH_WEB",
+    "benchmarks"
   ],
   "primaryFeature": "tools",
   "features": {
@@ -17,9 +22,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-11T12:13:47.421Z",
-        "lastUpdated": "2026-02-13T06:08:42.086Z"
+        "lastUpdated": "2026-02-13T09:50:16.117Z"
       },
-      "lastFile": "/Users/songseunghwan/Desktop/tools/web_server.py"
+      "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/llm_router_v5.py"
     },
     "website": {
       "phase": "do",
@@ -30,9 +35,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-11T13:56:44.848Z",
-        "lastUpdated": "2026-02-13T06:09:10.555Z"
+        "lastUpdated": "2026-02-14T10:09:11.192Z"
       },
-      "lastFile": "/Users/songseunghwan/Desktop/tools/website/router.js"
+      "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/website/batch.js"
     },
     "tools - Gap analysis (Design vs Implementation)": {
       "phase": "act",
@@ -47,6 +52,71 @@
       },
       "previousPhase": "check",
       "autoAdvanced": true
+    },
+    "nlp": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-13T06:41:38.737Z",
+        "lastUpdated": "2026-02-13T15:43:53.177Z"
+      },
+      "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/nlp/cache_manager.py"
+    },
+    "ml": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-13T06:41:40.684Z",
+        "lastUpdated": "2026-02-13T15:18:40.796Z"
+      },
+      "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/ml/train_priority_model.py"
+    },
+    "tests": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-13T06:44:42.420Z",
+        "lastUpdated": "2026-02-13T15:35:07.676Z"
+      },
+      "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/tests/test_chunker.py"
+    },
+    "SSH_WEB": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-13T12:58:13.591Z",
+        "lastUpdated": "2026-02-14T10:07:23.117Z"
+      },
+      "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/web_server.py"
+    },
+    "benchmarks": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-13T15:44:53.678Z",
+        "lastUpdated": "2026-02-13T15:44:53.678Z"
+      },
+      "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/benchmarks/token_efficiency.py"
     }
   },
   "pipeline": {
@@ -57,7 +127,7 @@
   "session": {
     "startedAt": "2026-02-11T12:11:41.754Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-02-13T06:09:10.555Z"
+    "lastActivity": "2026-02-14T10:09:11.192Z"
   },
   "history": [
     {
@@ -680,6 +750,702 @@
     },
     {
       "timestamp": "2026-02-13T06:09:10.555Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:41:38.737Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:41:40.684Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:44:42.420Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:57:08.866Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T06:58:22.791Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:05:29.218Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:06:06.591Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:06:48.870Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:33:49.634Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:34:24.012Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:34:24.936Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:34:26.104Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:34:27.007Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:34:56.529Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:35:26.068Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:35:28.031Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T07:35:44.022Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:35:02.301Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:35:42.610Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:35:51.152Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:36:02.972Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:36:07.998Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:36:18.184Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:36:24.287Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:37:02.286Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:37:10.525Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:50:01.193Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:50:16.117Z",
+      "feature": "tools",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:50:50.112Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:51:00.117Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T09:51:33.165Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T10:06:39.737Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T10:12:20.594Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T11:24:23.239Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T11:25:00.171Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:53:09.265Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:53:56.064Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:54:55.289Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:55:54.688Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:56:58.166Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:58:13.591Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:58:21.540Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:58:30.166Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:58:43.565Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:58:51.668Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:58:56.337Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T12:59:03.097Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:19:21.673Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:27:15.593Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:43:00.572Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:51:02.331Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:51:18.086Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:51:29.199Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:51:36.891Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:51:45.087Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:52:00.116Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:52:11.527Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T14:52:22.008Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:01:09.502Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:03:24.708Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:07:53.260Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:16:59.665Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:17:16.106Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:17:32.943Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:17:39.557Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:17:54.976Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:18:15.497Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:18:23.689Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:18:35.945Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:18:40.796Z",
+      "feature": "ml",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:18:59.448Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:19:17.828Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:32:55.497Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:33:14.385Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:33:41.941Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:34:08.527Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:34:40.407Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:35:07.676Z",
+      "feature": "tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:43:53.177Z",
+      "feature": "nlp",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:44:00.185Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:44:18.726Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:44:27.060Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T15:44:53.678Z",
+      "feature": "benchmarks",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T23:29:02.647Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-13T23:29:10.731Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:13:14.641Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:13:20.526Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:23:56.954Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:25:09.114Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:29:07.389Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:34:09.040Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:34:14.361Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:34:21.773Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:53:35.516Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:53:40.789Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T00:53:48.687Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T01:02:10.879Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T01:06:47.518Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T01:15:32.492Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T01:21:42.286Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T01:24:22.055Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:18.156Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:20.995Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:23.117Z",
+      "feature": "SSH_WEB",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:29.002Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:31.188Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:35.236Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:36.697Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:41.328Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:46.560Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:49.150Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:50.898Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:07:53.367Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:08:03.851Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:09:03.948Z",
+      "feature": "website",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-14T10:09:11.192Z",
       "feature": "website",
       "phase": "do",
       "action": "updated"

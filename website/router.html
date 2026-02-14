@@ -51,9 +51,51 @@
     <!-- Header -->
     <header class="router-header">
       <p class="section-label">Free Tool</p>
-      <h1 class="section-title">AI Task Splitter</h1>
-      <p class="router-sub">Break down complex requests into simple tasks for Claude AI.<br>No signup. No cost. Just paste and go.</p>
+      <h1 class="section-title" id="page-title">AI Task Splitter</h1>
+      <p class="router-sub" id="page-sub">Break down complex requests into simple tasks for Claude AI.<br>No signup. No cost. Just paste and go.</p>
     </header>
+
+    <!-- Version Toggle -->
+    <div class="version-toggle" id="version-toggle">
+      <button class="version-btn active" data-mode="basic" id="btn-mode-basic">
+        <span class="version-btn-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+        </span>
+        Basic Splitter
+      </button>
+      <button class="version-btn" data-mode="v5" id="btn-mode-v5">
+        <span class="version-btn-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a4 4 0 014 4c0 1.95-2 3-2 8h-4c0-5-2-6.05-2-8a4 4 0 014-4z"/>
+            <line x1="10" y1="18" x2="14" y2="18"/><line x1="10" y1="21" x2="14" y2="21"/>
+          </svg>
+        </span>
+        NLP/ML Engine v5
+      </button>
+    </div>
+
+    <!-- v5 NLP/ML Options (visible when v5 mode selected) -->
+    <div class="v5-options-bar" id="v5-options-bar" style="display:none;">
+      <div class="v5-options-inner">
+        <label class="v5-opt">
+          <input type="checkbox" id="opt-v5-compress" checked> Compression
+        </label>
+        <label class="v5-opt">
+          Level:
+          <select id="sel-v5-level">
+            <option value="1">1 (Mild)</option>
+            <option value="2" selected>2 (Balanced)</option>
+            <option value="3">3 (Aggressive)</option>
+          </select>
+        </label>
+        <label class="v5-opt">
+          <input type="checkbox" id="opt-v5-stats" checked> Show Stats
+        </label>
+      </div>
+    </div>
 
     <!-- How it works -->
     <section class="how-it-works">
@@ -134,26 +176,8 @@
           </label>
         </div>
 
-        <h4 style="margin-top:12px;margin-bottom:6px;color:var(--text-secondary,#666);">v5.0 NLP/ML</h4>
-        <div class="options-grid">
-          <label class="check-label">
-            <input type="checkbox" id="opt-v5-enabled" checked> Enable NLP
-          </label>
-          <label class="check-label">
-            <input type="checkbox" id="opt-v5-compress" checked> Compression
-          </label>
-          <label class="check-label" style="display:flex;align-items:center;gap:4px;">
-            Level:
-            <select id="sel-v5-level" style="padding:2px 4px;">
-              <option value="1">1 (Mild)</option>
-              <option value="2" selected>2 (Balanced)</option>
-              <option value="3">3 (Aggressive)</option>
-            </select>
-          </label>
-          <label class="check-label">
-            <input type="checkbox" id="opt-v5-stats" checked> Show Stats
-          </label>
-        </div>
+        <!-- v5 NLP/ML options moved to version toggle bar above -->
+        <input type="hidden" id="opt-v5-enabled" value="false">
       </div>
     </details>
 
@@ -182,5 +206,6 @@
   </div>
 
   <script src="router.js"></script>
+  <script src="page-transition.js"></script>
 </body>
 </html>

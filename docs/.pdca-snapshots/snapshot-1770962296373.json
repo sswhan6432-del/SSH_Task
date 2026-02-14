@@ -22,7 +22,7 @@
           "started": "2026-02-11T12:13:47.421Z",
           "lastUpdated": "2026-02-13T05:52:00.675Z"
         },
-        "lastFile": "/Users/songseunghwan/Desktop/tools/web_server.py"
+        "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/web_server.py"
       },
       "website": {
         "phase": "do",
@@ -35,7 +35,7 @@
           "started": "2026-02-11T13:56:44.848Z",
           "lastUpdated": "2026-02-11T14:19:09.913Z"
         },
-        "lastFile": "/Users/songseunghwan/Desktop/tools/website/router.js"
+        "lastFile": "/Users/songseunghwan/Desktop/workflow/SSH_WEB/website/router.js"
       },
       "tools - Gap analysis (Design vs Implementation)": {
         "phase": "act",

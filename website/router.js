@@ -37,8 +37,83 @@
   // --- State ---
   let currentOutput = "";
   let currentTickets = [];
+  let currentMode = "basic";
 
-  // --- Config: <details> handles toggle natively, no JS needed ---
+  // --- Version toggle ---
+  const btnModeBasic = document.getElementById("btn-mode-basic");
+  const btnModeV5 = document.getElementById("btn-mode-v5");
+  const v5OptionsBar = document.getElementById("v5-options-bar");
+  const v5EnabledInput = document.getElementById("opt-v5-enabled");
+  const pageTitle = document.getElementById("page-title");
+  const pageSub = document.getElementById("page-sub");
+
+  function setMode(mode) {
+    currentMode = mode;
+    btnModeBasic.classList.toggle("active", mode === "basic");
+    btnModeV5.classList.toggle("active", mode === "v5");
+    v5OptionsBar.style.display = mode === "v5" ? "block" : "none";
+
+    if (mode === "v5") {
+      v5EnabledInput.value = "true";
+      pageTitle.textContent = "NLP/ML Engine v5";
+      pageSub.innerHTML = "BERT-based intent detection, ML priority ranking, and smart compression.<br>Powered by AI — select options below.";
+    } else {
+      v5EnabledInput.value = "false";
+      pageTitle.textContent = "AI Task Splitter";
+      pageSub.innerHTML = "Break down complex requests into simple tasks for Claude AI.<br>No signup. No cost. Just paste and go.";
+    }
+  }
+
+  btnModeBasic.addEventListener("click", () => setMode("basic"));
+  btnModeV5.addEventListener("click", () => setMode("v5"));
+
+  // Check URL params for ?mode=v5
+  const urlMode = new URLSearchParams(window.location.search).get("mode");
+  if (urlMode === "v5") {
+    setMode("v5");
+  }
+
+  // --- Config: smooth <details> toggle ---
+  const advDetails = document.querySelector(".advanced-settings");
+  const advSummary = advDetails && advDetails.querySelector("summary");
+  const advBody = advDetails && advDetails.querySelector(".config-body");
+
+  if (advSummary && advBody) {
+    advSummary.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      if (advDetails.open) {
+        // Closing: animate height to 0 then remove [open]
+        const h = advBody.scrollHeight;
+        advBody.style.height = h + "px";
+        advBody.classList.add("collapsing");
+        requestAnimationFrame(function () {
+          advBody.style.height = "0px";
+        });
+        advBody.addEventListener("transitionend", function handler() {
+          advDetails.open = false;
+          advBody.style.height = "";
+          advBody.classList.remove("collapsing");
+          advBody.removeEventListener("transitionend", handler);
+        });
+      } else {
+        // Opening: set [open], then animate from 0 to full height
+        advDetails.open = true;
+        var h = advBody.scrollHeight;
+        advBody.style.height = "0px";
+        advBody.style.overflow = "hidden";
+        requestAnimationFrame(function () {
+          advBody.style.height = h + "px";
+        });
+        advBody.addEventListener("transitionend", function handler() {
+          advBody.style.height = "";
+          advBody.style.overflow = "";
+          advBody.removeEventListener("transitionend", handler);
+          advDetails.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+    });
+  }
 
   // --- Toast ---
   let toastTimer = null;
@@ -53,6 +128,7 @@
   // --- API helpers ---
   async function apiGet(url) {
     const res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
     return res.json();
   }
 
@@ -62,6 +138,7 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    if (!res.ok) throw new Error("HTTP " + res.status);
     return res.json();
   }
 
@@ -128,7 +205,7 @@
       min_tickets: document.getElementById("inp-min-tickets").value.trim() || "1",
       merge: document.getElementById("inp-merge").value.trim(),
       // v5.0 NLP/ML params
-      v5_enabled: document.getElementById("opt-v5-enabled").checked,
+      v5_enabled: document.getElementById("opt-v5-enabled").value === "true",
       compress: document.getElementById("opt-v5-compress").checked,
       compression_level: parseInt(document.getElementById("sel-v5-level").value, 10),
       show_stats: document.getElementById("opt-v5-stats").checked,

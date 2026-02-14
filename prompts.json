@@ -1,0 +1,10 @@
+{
+  "prompts": [
+    {
+      "id": "1",
+      "name": "Test",
+      "category": "feature",
+      "content": "Hello"
+    }
+  ]
+}

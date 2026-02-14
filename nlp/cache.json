@@ -1,0 +1,48 @@
+{
+  "8deb1533abb87aa5feeca0cc9631cbff": {
+    "original_text": "사용자 인증 로직을 설계하고 구현한다.",
+    "intent": "analyze",
+    "confidence": 0.34040120244026184,
+    "keywords": [
+      "설계하고",
+      "구현한다"
+    ]
+  },
+  "0178a72e470eba381d04870b4b7a9414": {
+    "original_text": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "intent": "analyze",
+    "confidence": 0.33974212408065796,
+    "keywords": [
+      "데이터베이스",
+      "테이블을",
+      "생성한다"
+    ]
+  },
+  "e608099ab0aa9920070a7d92d249cef6": {
+    "original_text": "사용자 인증을 위한 API를 개발한다.",
+    "intent": "analyze",
+    "confidence": 0.33950692415237427,
+    "keywords": [
+      "api를",
+      "개발한다"
+    ]
+  },
+  "5137d3ac8605a67976f3a6139dc25f36": {
+    "original_text": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "intent": "analyze",
+    "confidence": 0.33945533633232117,
+    "keywords": [
+      "클라이언트",
+      "라이브러리를",
+      "개발한다"
+    ]
+  },
+  "e6841a6ee2b34d62badfd21e65e25baa": {
+    "original_text": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "intent": "analyze",
+    "confidence": 0.33987924456596375,
+    "keywords": [
+      "정의한다"
+    ]
+  }
+}

@@ -6,7 +6,7 @@ import urllib.error
 from typing import List, Dict, Tuple
 from tkinter import ttk, filedialog, messagebox, simpledialog
 
-APP_TITLE = "LLM Router GUI v2.0"
+APP_TITLE = "LLM Router GUI v3.0 (NLP/ML Enhanced)"
 
 def find_router_candidates() -> List[str]:
     """Find router scripts reliably.
@@ -24,8 +24,8 @@ def find_router_candidates() -> List[str]:
         os.path.join(script_dir, "routers", "*.py"),
         os.path.join(script_dir, "routers", "*router*.py"),
 
-        # tools/ subfolder under GUI folder
-        os.path.join(script_dir, "tools", "llm_router*.py"),
+        # SSH_WEB/ subfolder under GUI folder
+        os.path.join(script_dir, "SSH_WEB", "llm_router*.py"),
     ]
 
     found: List[str] = []
@@ -63,12 +63,12 @@ TRANSLATE_MAP = {
     "❌ 실행 실패:": "❌ Failed:",
     "⚠️ Router not found.": "⚠️ Router not found.",
     "- Click 'Browse…' and select your router script (.py).": "- Browse → select .py",
-    "- Recommended: put routers in tools/routers/": "- Use tools/routers/",
+    "- Recommended: put routers in SSH_WEB/routers/": "- Use SSH_WEB/routers/",
     "Refreshed router list.": "Refreshed.",
     "Found": "Found",
     "file(s).": "file(s).",
     "GUI dir": "GUI dir",
-    "Tip: For multi-project, put routers in tools/routers/": "Tip: tools/routers/ for multi-project",
+    "Tip: For multi-project, put routers in SSH_WEB/routers/": "Tip: SSH_WEB/routers/ for multi-project",
     "1️⃣ 아래 Output에서 '```' 로 감싸진 블록만 복사하세요.": "1️⃣ Copy ``` block only",
     "2️⃣ Claude 새 세션에 붙여넣고 실행하세요.": "2️⃣ Paste → new session → run",
     "3️⃣ 완료 후 새 세션에서 다음 Ticket 실행하세요.": "3️⃣ Next ticket → new session",
@@ -814,6 +814,12 @@ class RouterGUI(tk.Tk):
         self.force_split_var = tk.BooleanVar(value=True)
         self.min_tickets_var = tk.StringVar(value="0")
 
+        # v5.0 NLP/ML options
+        self.v5_enabled_var = tk.BooleanVar(value=True)
+        self.v5_compress_var = tk.BooleanVar(value=True)
+        self.v5_compression_level_var = tk.StringVar(value="2")
+        self.v5_show_stats_var = tk.BooleanVar(value=True)
+
         self.economy_var = tk.StringVar(value="strict")
         self.phase_var = tk.StringVar(value="implement")
 
@@ -922,19 +928,29 @@ class RouterGUI(tk.Tk):
         ttk.Label(opts, text="Min tickets (--min-tickets)").grid(row=1, column=4, sticky="w", padx=(16,0), pady=(10,0))
         ttk.Entry(opts, textvariable=self.min_tickets_var, width=6).grid(row=1, column=5, sticky="w", padx=(8,0), pady=(10,0))
 
-        ttk.Label(opts, text="One task (--one-task)").grid(row=2, column=0, sticky="w", pady=(10,0))
-        ttk.Entry(opts, textvariable=self.one_task_var, width=8).grid(row=2, column=1, sticky="w", padx=(16,0), pady=(10,0))
+        # v5.0 NLP/ML options row
+        v5_frame = ttk.LabelFrame(opts, text="v5.0 NLP/ML", padding=4)
+        v5_frame.grid(row=2, column=0, columnspan=7, sticky="w", pady=(10,0))
+        ttk.Checkbutton(v5_frame, text="Enable v5.0 NLP", variable=self.v5_enabled_var).grid(row=0, column=0, sticky="w")
+        ttk.Checkbutton(v5_frame, text="Compression", variable=self.v5_compress_var).grid(row=0, column=1, sticky="w", padx=(12,0))
+        ttk.Label(v5_frame, text="Level:").grid(row=0, column=2, sticky="w", padx=(12,0))
+        ttk.Combobox(v5_frame, textvariable=self.v5_compression_level_var, values=["1", "2", "3"], state="readonly", width=3)\
+            .grid(row=0, column=3, sticky="w", padx=(4,0))
+        ttk.Checkbutton(v5_frame, text="Show stats", variable=self.v5_show_stats_var).grid(row=0, column=4, sticky="w", padx=(12,0))
 
-        ttk.Label(opts, text="Max tickets (--max-tickets)").grid(row=2, column=2, sticky="w", padx=(16,0), pady=(10,0))
-        ttk.Entry(opts, textvariable=self.max_tickets_var, width=8).grid(row=2, column=3, sticky="w", padx=(8,0), pady=(10,0))
+        ttk.Label(opts, text="One task (--one-task)").grid(row=3, column=0, sticky="w", pady=(10,0))
+        ttk.Entry(opts, textvariable=self.one_task_var, width=8).grid(row=3, column=1, sticky="w", padx=(16,0), pady=(10,0))
 
-        ttk.Label(opts, text="Merge (--merge)").grid(row=3, column=0, sticky="w", pady=(10,0))
-        ttk.Entry(opts, textvariable=self.merge_var, width=8).grid(row=3, column=1, sticky="w", padx=(16,0), pady=(10,0))
-        ttk.Label(opts, text='예: "A+B"').grid(row=3, column=2, sticky="w", padx=(8,0), pady=(10,0))
+        ttk.Label(opts, text="Max tickets (--max-tickets)").grid(row=3, column=2, sticky="w", padx=(16,0), pady=(10,0))
+        ttk.Entry(opts, textvariable=self.max_tickets_var, width=8).grid(row=3, column=3, sticky="w", padx=(8,0), pady=(10,0))
 
-        ttk.Label(opts, text="Save tickets (--save-tickets)").grid(row=4, column=0, sticky="w", pady=(10,0))
-        ttk.Entry(opts, textvariable=self.save_tickets_var, width=50).grid(row=4, column=1, sticky="w", padx=(16,0), pady=(10,0))
-        ttk.Button(opts, text="Choose…", command=self.choose_save_path).grid(row=4, column=2, sticky="w", padx=(8,0), pady=(10,0))
+        ttk.Label(opts, text="Merge (--merge)").grid(row=4, column=0, sticky="w", pady=(10,0))
+        ttk.Entry(opts, textvariable=self.merge_var, width=8).grid(row=4, column=1, sticky="w", padx=(16,0), pady=(10,0))
+        ttk.Label(opts, text='예: "A+B"').grid(row=4, column=2, sticky="w", padx=(8,0), pady=(10,0))
+
+        ttk.Label(opts, text="Save tickets (--save-tickets)").grid(row=5, column=0, sticky="w", pady=(10,0))
+        ttk.Entry(opts, textvariable=self.save_tickets_var, width=50).grid(row=5, column=1, sticky="w", padx=(16,0), pady=(10,0))
+        ttk.Button(opts, text="Choose…", command=self.choose_save_path).grid(row=5, column=2, sticky="w", padx=(8,0), pady=(10,0))
 
         mid = ttk.Frame(self, padding=(12, 0, 12, 12))
         mid.pack(fill="both", expand=True)
@@ -964,7 +980,7 @@ class RouterGUI(tk.Tk):
                 self.output_text,
                 "⚠️ Router not found.\n"
                 "Browse → select .py\n"
-                "Use tools/routers/\n"
+                "Use SSH_WEB/routers/\n"
                 f"GUI dir: {script_dir}\n"
             )
 
@@ -1012,7 +1028,7 @@ class RouterGUI(tk.Tk):
         msg = f"Refreshed. Found {len(self.router_files)} file(s).\nGUI: {script_dir}\n"
         if self.router_files:
             msg += "First: " + self.router_files[0] + "\n"
-        msg += "\nTip: tools/routers/ for multi-project\n"
+        msg += "\nTip: SSH_WEB/routers/ for multi-project\n"
         self._set_text(self.output_text, msg)
 
     def choose_router_file(self):
@@ -1053,7 +1069,7 @@ class RouterGUI(tk.Tk):
         if not router or not os.path.isfile(router):
             messagebox.showerror(
                 "No router",
-                "Router not found. Browse → select .py (e.g., tools/routers/<project>_router.py)"
+                "Router not found. Browse → select .py (e.g., SSH_WEB/routers/<project>_router.py)"
             )
             return
 
@@ -1122,6 +1138,15 @@ class RouterGUI(tk.Tk):
             cmd.extend(["--save-tickets", save_tickets])
         elif self.tickets_md_var.get():
             cmd.append("--tickets-md")
+
+        # v5.0 NLP/ML flags
+        if self.v5_enabled_var.get():
+            cmd.append("--v5")
+            if self.v5_compress_var.get():
+                cmd.append("--compress")
+            cmd.extend(["--compression-level", self.v5_compression_level_var.get()])
+            if self.v5_show_stats_var.get():
+                cmd.append("--show-stats")
 
         cmd.append(request)
 

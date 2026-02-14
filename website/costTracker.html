@@ -142,6 +142,9 @@
       color: var(--black);
       margin-bottom: 8px;
     }
+    @media (max-width: 1068px) and (min-width: 735px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 734px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .bar-chart { height: 150px; }
@@ -244,5 +247,6 @@
 
   <div class="toast" id="toast"></div>
   <script src="costTracker.js"></script>
+  <script src="page-transition.js"></script>
 </body>
 </html>

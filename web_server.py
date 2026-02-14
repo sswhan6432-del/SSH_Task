@@ -214,9 +214,15 @@ class RouterHandler(SimpleHTTPRequestHandler):
     # ---------- helpers ----------
 
     def _read_json_body(self):
-        length = int(self.headers.get("Content-Length", 0))
+        try:
+            length = int(self.headers.get("Content-Length", 0))
+        except (ValueError, TypeError):
+            return {}
         raw = self.rfile.read(length) if length else b"{}"
-        return json.loads(raw)
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            return {}
 
     def _json_response(self, data, status=200):
         body = json.dumps(data, ensure_ascii=False).encode("utf-8")
@@ -265,8 +271,11 @@ class RouterHandler(SimpleHTTPRequestHandler):
         router = body.get("router", "").strip()
         request_text = body.get("request", "").strip()
 
-        if not router or not os.path.isfile(router):
-            return self._json_response({"error": "Router file not found", "output": "", "tickets": []}, 400)
+        # Whitelist validation: router must be in known candidates
+        candidates = find_router_candidates()
+        candidate_paths = [os.path.abspath(c) for c in candidates]
+        if not router or os.path.abspath(router) not in candidate_paths:
+            return self._json_response({"error": "Router not allowed", "output": "", "tickets": []}, 400)
         if not request_text:
             return self._json_response({"error": "Empty request", "output": "", "tickets": []}, 400)
 
@@ -319,6 +328,10 @@ class RouterHandler(SimpleHTTPRequestHandler):
             cl = str(body.get("compression_level", 2)).strip()
             if cl in ("1", "2", "3"):
                 cmd.extend(["--compression-level", cl])
+            if body.get("intent_detect", True):
+                cmd.append("--intent-detect")
+            if body.get("smart_priority", True):
+                cmd.append("--smart-priority")
             if body.get("show_stats", False):
                 cmd.append("--show-stats")
 
@@ -367,10 +380,53 @@ class RouterHandler(SimpleHTTPRequestHandler):
 
         # Add v5.0 stats if v5 was enabled
         if body.get("v5_enabled", False):
+            # Parse v5 output for stats (if available in output)
+            # Try to extract stats from router output if available
+            token_reduction_rate = 0.0
+            original_tokens = 0
+            compressed_tokens = 0
+            processing_time_ms = 0.0
+            intent_accuracy = 0.0
+            priority_confidence = 0.0
+
+            # Try to parse stats from output if in JSON format
+            try:
+                if combined.strip().startswith('{'):
+                    data = json.loads(combined)
+                    token_reduction_rate = data.get("token_reduction_rate", 0.0)
+                    processing_time_ms = data.get("total_processing_time_ms", 0.0)
+
+                    # Extract from tasks if available
+                    tasks = data.get("tasks", [])
+                    if tasks:
+                        total_orig = sum(t.get("compression_result", {}).get("original_tokens", 0) for t in tasks)
+                        total_comp = sum(t.get("compression_result", {}).get("compressed_tokens", 0) for t in tasks)
+                        original_tokens = total_orig
+                        compressed_tokens = total_comp
+
+                        # Calculate average confidence
+                        intent_scores = [t.get("intent_analysis", {}).get("confidence", 0) for t in tasks if t.get("intent_analysis")]
+                        if intent_scores:
+                            intent_accuracy = sum(intent_scores) / len(intent_scores)
+
+                        priority_scores = [t.get("priority_score", {}).get("ml_confidence", 0) for t in tasks if t.get("priority_score")]
+                        if priority_scores:
+                            priority_confidence = sum(priority_scores) / len(priority_scores)
+            except (json.JSONDecodeError, KeyError):
+                pass  # Stats not available in output
+
             resp["v5_stats"] = {
                 "enabled": True,
                 "compress": body.get("compress", True),
                 "compression_level": int(body.get("compression_level", 2)),
+                "intent_detect": body.get("intent_detect", True),
+                "smart_priority": body.get("smart_priority", True),
+                "token_reduction_rate": token_reduction_rate,
+                "original_tokens": original_tokens,
+                "compressed_tokens": compressed_tokens,
+                "processing_time_ms": processing_time_ms,
+                "intent_accuracy": intent_accuracy,
+                "priority_confidence": priority_confidence,
             }
 
         self._json_response(resp)
@@ -518,7 +574,11 @@ def main():
     if "--port" in sys.argv:
         idx = sys.argv.index("--port")
         if idx + 1 < len(sys.argv):
-            port = int(sys.argv[idx + 1])
+            try:
+                port = int(sys.argv[idx + 1])
+            except ValueError:
+                print(f"Invalid port: {sys.argv[idx + 1]}, using default {DEFAULT_PORT}")
+
 
     server = ThreadedHTTPServer(("127.0.0.1", port), RouterHandler)
     groq_key = os.environ.get("GROQ_API_KEY", "").strip()

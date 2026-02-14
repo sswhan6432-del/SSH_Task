@@ -47,6 +47,10 @@
     const lines = textarea.value.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
 
     if (!lines.length) { showToast("Enter at least one task"); return; }
+    if (lines.length > 50) {
+      showToast("Maximum 50 tasks allowed. Truncating.", 3000);
+      lines.length = 50;
+    }
     if (!selectedRouter) {
       await getRouter();
       if (!selectedRouter) { showToast("No router available"); return; }
@@ -68,6 +72,8 @@
       let result = { task: task, route: "error", tickets: 0, output: "", error: "" };
 
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
         const res = await fetch("/api/route", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -80,17 +86,21 @@
             economy: "strict",
             phase: "implement",
           }),
+          signal: controller.signal,
         });
-        const data = await res.json();
-
-        if (data.error) {
-          result.error = data.error;
+        clearTimeout(timeoutId);
+        if (!res.ok) {
+          result.error = "HTTP " + res.status;
         } else {
-          result.output = data.output || "";
-          result.tickets = (data.tickets || []).length;
-          // Extract route from output
-          const routeMatch = result.output.match(/Route:\s*(claude|cheap_llm|split)/i);
-          result.route = routeMatch ? routeMatch[1].toLowerCase() : "claude";
+          const data = await res.json();
+          if (data.error) {
+            result.error = data.error;
+          } else {
+            result.output = data.output || "";
+            result.tickets = (data.tickets || []).length;
+            const routeMatch = result.output.match(/Route:\s*(claude|cheap_llm|split)/i);
+            result.route = routeMatch ? routeMatch[1].toLowerCase() : "claude";
+          }
         }
       } catch (e) {
         result.error = e.message;

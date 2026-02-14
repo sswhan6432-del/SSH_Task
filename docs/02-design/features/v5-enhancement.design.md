@@ -97,54 +97,50 @@ v5.0 설계는 다음 기술 목표를 달성합니다:
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-### 2.2 Data Flow (v5.0)
+### 2.2 Data Flow (v5.0 - ACTUAL IMPLEMENTATION)
 
 ```
 1. Input Phase
    User Request (Korean/English)
    ↓
-   Router Orchestrator (v4 vs v5 선택)
+   EnhancedRouter (v5.0) - 실제로는 RouterOrchestrator 없음
    ↓
-   NLP Preprocessing (spaCy tokenization, normalization)
+   v4.0 route_text() 호출 (Task Splitting은 v4.0 로직 재사용)
    ↓
-   ┌─────────────────────────────────────────┐
-   │  Parallel Processing (비동기)           │
-   ├─────────────────────────────────────────┤
-   │  Thread 1: Intent Detection (BERT)      │
-   │  Thread 2: Priority Ranking (ML)        │
-   │  Thread 3: Text Chunking (NLP)          │
-   └─────────────────────────────────────────┘
-   ↓
-   Task List + Metadata
+   v4.0 TaskDecision[] 획득
 
-2. Optimization Phase
+2. Enhancement Phase (각 Task별 처리)
    ↓
-   Compression Engine (각 task별 압축)
+   For each v4 task:
+     ├─ IntentDetector.detect(task.summary) → IntentAnalysis
+     ├─ PriorityRanker.rank(all_tasks) → PriorityScore[]
+     └─ Compressor.compress(task.claude_prompt, level) → CompressionResult
    ↓
-   Token Counter (압축 전/후 비교)
-   ↓
-   Optimized Tasks (50% 토큰 절감)
+   EnhancedTaskDecision[] 생성 (v4 + v5 메타데이터)
 
 3. Output Phase
    ↓
-   Translation (Groq API v2, 배치 처리)
+   EnhancedRouterOutput 반환
    ↓
-   Claude Prompt Generation
+   CLI: format_output_for_v4_compat() → JSON stdout
    ↓
-   Clipboard / stdout
+   Web API: v5_stats 추가 응답
+
+Note: 병렬 처리는 Phase 3 optimization (미구현)
+Note: NLP preprocessing (spaCy)는 제거됨 (Python 3.14 호환성)
 ```
 
-### 2.3 Module Dependencies
+### 2.3 Module Dependencies (ACTUAL)
 
-| Module | Depends On | External Libs |
-|--------|-----------|---------------|
-| `nlp/intent_detector.py` | spaCy, transformers | spacy, transformers, torch |
-| `nlp/priority_ranker.py` | scikit-learn | sklearn, numpy |
-| `nlp/text_chunker.py` | spaCy | spacy |
-| `nlp/compressor.py` | transformers, tiktoken | transformers, tiktoken |
-| `llm_router_v5.py` | All NLP modules | All above + v4.0 |
-| `router_gui.py` (v5) | llm_router_v5.py | tkinter (unchanged) |
-| `web_server.py` (v5) | router_gui.py | http.server (unchanged) |
+| Module | Depends On | External Libs | Notes |
+|--------|-----------|---------------|-------|
+| `nlp/intent_detector.py` | transformers | transformers, numpy | Zero-shot DistilBERT |
+| `nlp/priority_ranker.py` | scikit-learn | sklearn, numpy | Keyword fallback |
+| `nlp/text_chunker.py` | tiktoken | tiktoken | **spaCy 제거됨** (regex 기반) |
+| `nlp/compressor.py` | tiktoken | tiktoken | **spaCy 제거됨** (regex 기반) |
+| `llm_router_v5.py` | All NLP modules | All above + v4.0 | v4.0 composition |
+| `router_gui.py` (v5) | llm_router_v5.py | tkinter (unchanged) | Unchanged |
+| `web_server.py` (v5) | router_gui.py | http.server (unchanged) | v5_stats 추가 |
 
 ---
 
@@ -170,6 +166,7 @@ class IntentAnalysis:
 @dataclass
 class PriorityScore:
     task_id: str                      # "A", "B", "C", ...
+    task_text: str                    # **추가**: 원본 task 텍스트
     urgency: int                      # 1-10 (긴급도)
     importance: int                   # 1-10 (중요도)
     priority: int                     # urgency * importance / 10
@@ -192,11 +189,11 @@ class CompressionResult:
     lost_info: List[str]              # 제거된 정보 목록
 ```
 
-#### EnhancedTaskDecision (v5.0 확장)
+#### EnhancedTaskDecision (v5.0 확장) - **composition 패턴**
 
 ```python
 @dataclass
-class EnhancedTaskDecision(TaskDecision):  # v4.0 TaskDecision 상속
+class EnhancedTaskDecision:  # **상속 대신 composition**
     # v4.0 필드 유지
     id: str
     summary: str
@@ -209,49 +206,47 @@ class EnhancedTaskDecision(TaskDecision):  # v4.0 TaskDecision 상속
     change_log_stub: str
 
     # v5.0 추가 필드
-    intent_analysis: IntentAnalysis   # NEW
-    priority_score: PriorityScore     # NEW
-    compression_result: CompressionResult  # NEW
-    processing_time_ms: float         # 처리 시간 (성능 모니터링)
+    intent_analysis: Optional[IntentAnalysis] = None   # NEW
+    priority_score: Optional[PriorityScore] = None     # NEW
+    compression_result: Optional[CompressionResult] = None  # NEW
+    processing_time_ms: float = 0.0                    # 처리 시간
+    v5_enabled: bool = False                           # v5 처리 여부
+
+    def to_v4_format(self) -> v4.TaskDecision:
+        """v4.0 TaskDecision으로 변환 (하위 호환)"""
+        return v4.TaskDecision(...)
 ```
 
-### 3.2 Model Files (Serialization)
+### 3.2 Model Files (Serialization) - ACTUAL
 
 ```python
-# ml/priority_model.pkl
+# ml/priority_model.pkl (pickle format)
 {
-    "model": sklearn.RandomForestClassifier,
-    "feature_names": ["urgency_keywords", "importance_keywords", "length", "complexity"],
-    "version": "1.0",
-    "trained_on": "2026-02-13",
-    "accuracy": 0.92
+    "urgency_model": RandomForestClassifier,
+    "importance_model": RandomForestClassifier,
+    "vectorizer": TfidfVectorizer
 }
 
-# nlp/term_dictionary.json
+# ml/training_data.json
+[
+    {"text": "Fix critical bug", "urgency": 9, "importance": 8},
+    {"text": "Update docs", "urgency": 3, "importance": 4},
+    ...
+]
+
+# nlp/cache.json (IntentDetector 내장 캐시)
 {
-    "en_to_ko": {
-        "implement": "구현",
-        "refactor": "리팩토링",
-        ...
+    "md5_hash_1": {
+        "original_text": "...",
+        "intent": "implement",
+        "confidence": 0.92,
+        "keywords": ["fix", "bug", ...]
     },
-    "ko_to_en": {
-        "구현": "implement",
-        "리팩토링": "refactor",
-        ...
-    }
+    ...
 }
 
-# nlp/cache.json (런타임 캐시)
-{
-    "embeddings": {
-        "hash_of_text": np.array(...),  # BERT embeddings
-        ...
-    },
-    "intents": {
-        "hash_of_text": "implement",
-        ...
-    }
-}
+Note: term_dictionary.json 미사용 (제거됨)
+Note: embeddings는 메모리 캐시만 (디스크 저장 안 함)
 ```
 
 ---
@@ -349,45 +344,48 @@ for task in result.tasks:
 
 ### 5.1 NLP Module (`nlp/`)
 
-#### intent_detector.py
+#### intent_detector.py - **ACTUAL (Zero-shot DistilBERT)**
 
 ```python
 class IntentDetector:
-    """BERT 기반 사용자 의도 파악 엔진"""
+    """Zero-shot BERT 기반 의도 파악 엔진 (fine-tuned 모델 없음)"""
 
-    def __init__(self, model_path: str = "./models/bert_lightweight/"):
-        self.model = BertForSequenceClassification.from_pretrained(model_path)
-        self.tokenizer = BertTokenizer.from_pretrained(model_path)
-        self.cache = {}
+    def __init__(self, model_name: str = "distilbert-base-uncased", cache_dir: str = "models/"):
+        # Lazy loading - 첫 detect() 호출 시 로드
+        self._classifier = None  # pipeline("zero-shot-classification")
+        self._memory_cache = {}  # {md5_hash: IntentAnalysis}
+        self._cache_file = Path("nlp/cache.json")
+        self._cache_hits = 0
+        self._cache_misses = 0
+
+    def _load_model(self):
+        """Lazy load the BERT model"""
+        if self._classifier is None:
+            self._classifier = pipeline(
+                "zero-shot-classification",
+                model=self.model_name,
+                device=-1  # CPU only
+            )
 
     def detect(self, text: str) -> IntentAnalysis:
-        """
-        텍스트에서 의도 추출
-
-        Returns:
-            IntentAnalysis(
-                intent="analyze"|"implement"|"research",
-                confidence=0.0-1.0,
-                keywords=["keyword1", ...]
-            )
-        """
-        # 1. 캐시 확인
+        """텍스트에서 의도 추출 (zero-shot 또는 keyword fallback)"""
+        # 1. 캐시 확인 (Cache-First)
         cache_key = hashlib.md5(text.encode()).hexdigest()
-        if cache_key in self.cache:
-            return self.cache[cache_key]
+        if cache_key in self._memory_cache:
+            self._cache_hits += 1
+            return self._memory_cache[cache_key]
 
-        # 2. BERT inference
-        inputs = self.tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
-        outputs = self.model(**inputs)
-        logits = outputs.logits
-        predicted_class = torch.argmax(logits, dim=1).item()
-        confidence = torch.softmax(logits, dim=1).max().item()
+        self._cache_misses += 1
 
-        # 3. 의도 매핑
-        intent_map = {0: "analyze", 1: "implement", 2: "research"}
-        intent = intent_map[predicted_class]
+        # 2. BERT zero-shot classification (fallback to keywords on error)
+        try:
+            self._load_model()
+            intent, confidence = self._classify_with_bert(text)
+        except Exception as e:
+            print(f"⚠️ BERT failed: {e}, using keyword fallback")
+            intent, confidence = self._classify_with_keywords(text)
 
-        # 4. 키워드 추출 (TF-IDF)
+        # 3. 키워드 추출 (simple word filtering)
         keywords = self._extract_keywords(text)
 
         result = IntentAnalysis(
@@ -395,12 +393,34 @@ class IntentDetector:
             intent=intent,
             confidence=confidence,
             keywords=keywords,
-            embeddings=outputs.last_hidden_state.mean(dim=1).detach().numpy()
+            embeddings=None  # 메모리 절약 (캐싱용으로만 사용 계획)
         )
 
-        # 5. 캐싱
-        self.cache[cache_key] = result
+        # 4. 캐싱 (메모리 + 디스크)
+        self._memory_cache[cache_key] = result
+        self._save_disk_cache()
+
         return result
+
+    def _classify_with_bert(self, text: str) -> Tuple[str, float]:
+        """Zero-shot classification with DistilBERT"""
+        candidate_labels = ["analyze code", "implement feature", "research information"]
+        result = self._classifier(text, candidate_labels)
+
+        label_map = {
+            "analyze code": "analyze",
+            "implement feature": "implement",
+            "research information": "research"
+        }
+
+        top_label = result["labels"][0]
+        top_score = result["scores"][0]
+        return label_map[top_label], float(top_score)
+
+    def _classify_with_keywords(self, text: str) -> Tuple[str, float]:
+        """Keyword-based fallback (INTENT_KEYWORDS dict)"""
+        # 키워드 매칭으로 분류 (구현 코드 참조)
+        ...
 ```
 
 #### priority_ranker.py
