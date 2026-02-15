@@ -2,9 +2,1833 @@
   "prompts": [
     {
       "id": "1",
-      "name": "Test",
+      "name": "Email/Password Login",
       "category": "feature",
-      "content": "Hello"
+      "content": "Implement a secure email/password login system in [framework]:\n- Email format validation\n- Password strength requirements (min 8 chars, uppercase, number, symbol)\n- Bcrypt password hashing\n- JWT token generation on success\n- Login attempt rate limiting (max 5 per minute)\n- Remember me functionality with refresh tokens\n- Error messages that don't reveal if email exists"
+    },
+    {
+      "id": "2",
+      "name": "Google OAuth Integration",
+      "category": "feature",
+      "content": "Add Google OAuth 2.0 login to the [framework] application:\n- Configure Google Cloud Console credentials\n- Implement OAuth consent screen flow\n- Handle callback with authorization code exchange\n- Create or link user account on first login\n- Store refresh token securely\n- Add a 'Sign in with Google' button following Google's branding guidelines"
+    },
+    {
+      "id": "3",
+      "name": "JWT Authentication Middleware",
+      "category": "feature",
+      "content": "Create JWT authentication middleware for [framework]:\n- Verify access tokens on protected routes\n- Handle token expiration with proper 401 responses\n- Implement refresh token rotation\n- Add token blacklisting for logout\n- Support both cookie and Authorization header tokens\n- Include user role in token payload"
+    },
+    {
+      "id": "4",
+      "name": "User Registration with Email Verification",
+      "category": "feature",
+      "content": "Build a user registration flow in [framework]:\n- Registration form with name, email, password, confirm password\n- Send verification email with time-limited token (24h expiry)\n- Verification endpoint that activates the account\n- Resend verification email option\n- Prevent login until email is verified\n- Rate limit registration to prevent spam"
+    },
+    {
+      "id": "5",
+      "name": "SSO with SAML",
+      "category": "feature",
+      "content": "Implement Single Sign-On (SSO) using SAML 2.0 in [framework]:\n- Configure Identity Provider (IdP) metadata\n- Implement Service Provider (SP) endpoints\n- Handle SAML assertion validation\n- Map IdP attributes to local user fields\n- Support both IdP-initiated and SP-initiated flows\n- Add session management after SSO login"
+    },
+    {
+      "id": "6",
+      "name": "CRUD API for Resources",
+      "category": "feature",
+      "content": "Create a complete CRUD API for [entity] in [framework] with [database]:\n- GET /api/[entity] - List with pagination, sorting, filtering\n- GET /api/[entity]/:id - Get single with related data\n- POST /api/[entity] - Create with input validation\n- PUT /api/[entity]/:id - Full update with ownership check\n- PATCH /api/[entity]/:id - Partial update\n- DELETE /api/[entity]/:id - Soft delete with cascade handling\n- Return consistent JSON response format"
+    },
+    {
+      "id": "7",
+      "name": "Full-Text Search",
+      "category": "feature",
+      "content": "Implement full-text search for [entity] in [framework]:\n- Search across multiple fields (title, description, tags)\n- Support partial matching and fuzzy search\n- Highlight matched terms in results\n- Add search suggestions/autocomplete\n- Implement search result ranking by relevance\n- Cache frequent search queries\n- Add debounced search input on frontend"
+    },
+    {
+      "id": "8",
+      "name": "Advanced Filtering System",
+      "category": "feature",
+      "content": "Build an advanced filtering system for [entity] list in [framework]:\n- Filter by multiple fields simultaneously\n- Support operators: equals, contains, greater than, less than, between, in\n- Date range filters with calendar picker\n- Combine filters with AND/OR logic\n- Save and load filter presets\n- URL query parameter sync for shareable filtered views\n- Clear all filters button"
+    },
+    {
+      "id": "9",
+      "name": "File Upload with Preview",
+      "category": "feature",
+      "content": "Implement file upload functionality in [framework]:\n- Drag-and-drop upload zone\n- Multiple file selection\n- File type validation (images, documents, etc.)\n- File size limit enforcement (max [size]MB)\n- Upload progress bar\n- Image preview before upload\n- Store files in [storage] (S3/local/CloudStorage)\n- Generate unique filenames to prevent collisions"
+    },
+    {
+      "id": "10",
+      "name": "File Download with Streaming",
+      "category": "feature",
+      "content": "Add file download functionality in [framework]:\n- Secure download endpoints with authentication\n- Stream large files to prevent memory issues\n- Set proper Content-Type and Content-Disposition headers\n- Support range requests for resume capability\n- Track download counts\n- Generate time-limited signed URLs for private files\n- Zip multiple files for batch download"
+    },
+    {
+      "id": "11",
+      "name": "Push Notifications",
+      "category": "feature",
+      "content": "Implement push notifications in [framework]:\n- Firebase Cloud Messaging (FCM) integration\n- Service worker registration for web push\n- Permission request flow with fallback\n- Notification payload with title, body, icon, action URL\n- Topic-based subscription management\n- Notification preferences per user\n- Background notification handling"
+    },
+    {
+      "id": "12",
+      "name": "Email Notification System",
+      "category": "feature",
+      "content": "Build an email notification system in [framework]:\n- Email templates with [template engine]\n- Queue emails for async sending\n- Support HTML and plain text versions\n- Dynamic template variables (user name, links, etc.)\n- Email delivery tracking (sent, delivered, opened)\n- Unsubscribe link in every email\n- Rate limiting to prevent spam\n- Retry failed sends with exponential backoff"
+    },
+    {
+      "id": "13",
+      "name": "In-App Notification Center",
+      "category": "feature",
+      "content": "Create an in-app notification center in [framework]:\n- Real-time notifications via WebSocket\n- Notification bell icon with unread count badge\n- Dropdown panel showing recent notifications\n- Mark as read (individual and all)\n- Notification categories (info, warning, success)\n- Click notification to navigate to relevant page\n- Infinite scroll for older notifications\n- Delete/dismiss notifications"
+    },
+    {
+      "id": "14",
+      "name": "Stripe Payment Integration",
+      "category": "feature",
+      "content": "Integrate Stripe payments in [framework]:\n- Stripe Checkout session creation\n- Handle payment success/failure webhooks\n- Store payment records in database\n- Support one-time and recurring payments\n- Implement subscription plans (monthly/yearly)\n- Handle payment method updates\n- Refund processing\n- Invoice generation and PDF download"
+    },
+    {
+      "id": "15",
+      "name": "Shopping Cart",
+      "category": "feature",
+      "content": "Build a shopping cart system in [framework]:\n- Add/remove items with quantity adjustment\n- Persist cart in database for logged-in users\n- localStorage fallback for guests\n- Cart total calculation with tax\n- Apply discount/coupon codes\n- Stock availability check before checkout\n- Cart merge on login (guest cart + saved cart)\n- Mini cart preview in header"
+    },
+    {
+      "id": "16",
+      "name": "Real-Time Chat",
+      "category": "feature",
+      "content": "Implement real-time chat in [framework] using WebSocket:\n- One-on-one and group chat rooms\n- Message sending with typing indicators\n- Read receipts (delivered, seen)\n- Image and file sharing in chat\n- Message search within conversations\n- Online/offline user status\n- Chat history with pagination\n- Emoji picker support"
+    },
+    {
+      "id": "17",
+      "name": "WebSocket Live Updates",
+      "category": "feature",
+      "content": "Add real-time live updates using WebSocket in [framework]:\n- WebSocket server setup with authentication\n- Connection management (connect, disconnect, reconnect)\n- Room/channel subscription system\n- Broadcast updates to relevant users\n- Heartbeat/ping-pong for connection health\n- Fallback to SSE or polling if WebSocket unavailable\n- Handle connection drops gracefully"
+    },
+    {
+      "id": "18",
+      "name": "Analytics Dashboard",
+      "category": "feature",
+      "content": "Build an analytics dashboard in [framework]:\n- Summary cards: total users, revenue, active sessions, growth %\n- Line chart for trends over time (daily/weekly/monthly)\n- Bar chart for category comparisons\n- Pie/donut chart for distribution\n- Date range picker for filtering\n- Export chart data as CSV\n- Auto-refresh every 30 seconds\n- Responsive grid layout for charts"
+    },
+    {
+      "id": "19",
+      "name": "User Profile Page",
+      "category": "feature",
+      "content": "Create a user profile page in [framework]:\n- Display user info (avatar, name, email, bio, joined date)\n- Edit profile form with inline editing\n- Avatar upload with crop/resize\n- Change password with current password verification\n- Account deletion with confirmation\n- Activity history/timeline\n- Social links section\n- Profile visibility settings (public/private)"
+    },
+    {
+      "id": "20",
+      "name": "User Settings Page",
+      "category": "feature",
+      "content": "Build a comprehensive settings page in [framework]:\n- Account settings (name, email, password)\n- Notification preferences (email, push, in-app toggles)\n- Privacy settings (profile visibility, data sharing)\n- Appearance (theme, language, timezone)\n- Connected accounts (OAuth providers)\n- API keys management\n- Two-factor authentication setup\n- Data export (GDPR compliance)"
+    },
+    {
+      "id": "21",
+      "name": "Role-Based Access Control",
+      "category": "feature",
+      "content": "Implement RBAC in [framework]:\n- Define roles: admin, manager, editor, viewer\n- Permission matrix (create, read, update, delete per resource)\n- Role assignment in admin panel\n- Middleware to check permissions on routes\n- UI elements hidden based on user permissions\n- Superadmin role that bypasses all checks\n- Audit log for permission changes\n- Role hierarchy with inheritance"
+    },
+    {
+      "id": "22",
+      "name": "Multi-Language Support (i18n)",
+      "category": "feature",
+      "content": "Add internationalization to the [framework] application:\n- Setup i18n library ([i18next/vue-i18n/react-intl])\n- Extract all hardcoded strings to translation files\n- Language switcher component\n- Persist language preference\n- Support RTL languages (Arabic, Hebrew)\n- Date, number, currency formatting per locale\n- Lazy load translation files\n- Pluralization rules per language"
+    },
+    {
+      "id": "23",
+      "name": "Dark Mode Toggle",
+      "category": "feature",
+      "content": "Implement dark mode in [framework]:\n- CSS custom properties for light/dark themes\n- Toggle switch in header/settings\n- Respect system preference via prefers-color-scheme\n- Persist preference in localStorage\n- Smooth transition animation between themes\n- Update all components: cards, inputs, modals, charts\n- Ensure sufficient contrast ratios (WCAG AA)\n- Dark mode for code blocks and syntax highlighting"
+    },
+    {
+      "id": "24",
+      "name": "Form Validation Library",
+      "category": "feature",
+      "content": "Create a reusable form validation system in [framework]:\n- Required, email, URL, phone validators\n- Min/max length, min/max value validators\n- Pattern matching with custom regex\n- Custom validator functions\n- Real-time validation on input change\n- Show errors on blur or submit\n- Support nested object and array validation\n- Accessibility: aria-invalid, aria-describedby for errors"
+    },
+    {
+      "id": "25",
+      "name": "Infinite Scroll List",
+      "category": "feature",
+      "content": "Implement infinite scroll for [entity] list in [framework]:\n- Intersection Observer for scroll detection\n- Load next page when near bottom (200px threshold)\n- Loading spinner at bottom during fetch\n- Handle empty results and end of data\n- Scroll position preservation on back navigation\n- Pull-to-refresh on mobile\n- Virtual scrolling for large datasets\n- Skeleton loading for incoming items"
+    },
+    {
+      "id": "26",
+      "name": "Cursor-Based Pagination",
+      "category": "feature",
+      "content": "Implement cursor-based pagination for [entity] API in [framework]:\n- Use last item's ID/timestamp as cursor\n- Support forward and backward navigation\n- Consistent results with concurrent writes\n- Return hasNextPage and hasPreviousPage flags\n- Frontend pagination controls (Next/Previous)\n- Configurable page size with max limit\n- URL parameter sync for cursor position"
+    },
+    {
+      "id": "27",
+      "name": "CSV Export",
+      "category": "feature",
+      "content": "Add CSV export functionality for [entity] data in [framework]:\n- Select columns to export\n- Apply current filters to export\n- Handle large datasets with streaming\n- Proper CSV escaping (commas, quotes, newlines)\n- UTF-8 BOM for Excel compatibility\n- Date formatting in export\n- Download progress indicator\n- Email link for large exports (async generation)"
+    },
+    {
+      "id": "28",
+      "name": "PDF Report Generation",
+      "category": "feature",
+      "content": "Generate PDF reports in [framework]:\n- Use [puppeteer/pdfkit/wkhtmltopdf] for generation\n- Company header with logo\n- Table of contents for multi-page reports\n- Data tables with alternating row colors\n- Charts rendered as images in PDF\n- Page numbers and footer\n- Watermark support\n- Async generation with download notification"
+    },
+    {
+      "id": "29",
+      "name": "Data Import from Excel/CSV",
+      "category": "feature",
+      "content": "Build a data import feature for [entity] in [framework]:\n- File upload for CSV and Excel files\n- Preview first 10 rows before import\n- Column mapping UI (file columns to database fields)\n- Data validation with error report\n- Skip or abort on validation errors option\n- Progress bar for large imports\n- Duplicate detection and handling strategy\n- Import history log with undo capability"
+    },
+    {
+      "id": "30",
+      "name": "Redis Caching Layer",
+      "category": "feature",
+      "content": "Implement Redis caching in [framework]:\n- Cache frequently accessed data (user profiles, config)\n- Set TTL based on data volatility\n- Cache invalidation on data updates\n- Cache-aside pattern implementation\n- Cache warming on application startup\n- Monitor cache hit/miss rates\n- Implement cache stampede prevention\n- Support cache tags for group invalidation"
+    },
+    {
+      "id": "31",
+      "name": "API Rate Limiting",
+      "category": "feature",
+      "content": "Add rate limiting to the [framework] API:\n- Token bucket or sliding window algorithm\n- Different limits per endpoint tier\n- Higher limits for authenticated users\n- Rate limit headers (X-RateLimit-Limit, Remaining, Reset)\n- 429 Too Many Requests response with retry-after\n- Redis-backed for distributed environments\n- IP-based and user-based limiting\n- Whitelist for internal services"
+    },
+    {
+      "id": "32",
+      "name": "Structured Logging",
+      "category": "feature",
+      "content": "Implement structured logging in [framework]:\n- JSON format log entries\n- Log levels: debug, info, warn, error, fatal\n- Request ID correlation across services\n- Include timestamp, service name, environment\n- Sensitive data redaction (passwords, tokens)\n- Log rotation and retention policy\n- Integration with [ELK/CloudWatch/Datadog]\n- Performance metrics logging"
+    },
+    {
+      "id": "33",
+      "name": "Health Check and Monitoring",
+      "category": "feature",
+      "content": "Add health check endpoints in [framework]:\n- GET /health - Basic liveness check\n- GET /health/ready - Readiness with dependency checks\n- Check database connectivity\n- Check Redis connectivity\n- Check external API availability\n- Return response time per dependency\n- Prometheus metrics endpoint\n- Custom health indicators for business logic"
+    },
+    {
+      "id": "34",
+      "name": "CI/CD Pipeline with GitHub Actions",
+      "category": "feature",
+      "content": "Create a CI/CD pipeline using GitHub Actions for [framework]:\n- Trigger on push to main and pull requests\n- Install dependencies with cache\n- Run linter and type checking\n- Run unit and integration tests\n- Build the application\n- Run security vulnerability scan\n- Deploy to staging on PR merge\n- Deploy to production on release tag\n- Slack notification on failure"
+    },
+    {
+      "id": "35",
+      "name": "Docker Containerization",
+      "category": "feature",
+      "content": "Containerize the [framework] application with Docker:\n- Multi-stage Dockerfile for minimal image size\n- Non-root user for security\n- .dockerignore for node_modules, .git, etc.\n- Health check instruction in Dockerfile\n- Environment variable configuration\n- Docker Compose for local development (app + db + redis)\n- Volume mounts for development hot-reload\n- Production-optimized build stage"
+    },
+    {
+      "id": "36",
+      "name": "Two-Factor Authentication",
+      "category": "feature",
+      "content": "Implement 2FA in [framework]:\n- TOTP (Time-based One-Time Password) support\n- QR code generation for authenticator apps\n- Backup recovery codes (one-time use)\n- 2FA setup flow with verification step\n- Remember device option (30 days)\n- SMS fallback option\n- Enforce 2FA for admin accounts\n- Disable 2FA with password confirmation"
+    },
+    {
+      "id": "37",
+      "name": "Password Reset Flow",
+      "category": "feature",
+      "content": "Build password reset functionality in [framework]:\n- Forgot password form (email input)\n- Generate secure reset token with 1-hour expiry\n- Send reset email with unique link\n- Reset page with new password and confirm fields\n- Invalidate token after use\n- Invalidate all existing sessions on reset\n- Rate limit reset requests per email\n- Notification email after successful reset"
+    },
+    {
+      "id": "38",
+      "name": "Social Sharing",
+      "category": "feature",
+      "content": "Add social sharing to [entity] pages in [framework]:\n- Share buttons for Twitter, Facebook, LinkedIn, Reddit\n- Copy link to clipboard button\n- Open Graph meta tags for rich previews\n- Twitter Card meta tags\n- Custom share text and image per page\n- Share count tracking\n- Native Web Share API on mobile\n- Share via email option"
+    },
+    {
+      "id": "39",
+      "name": "Bookmark/Favorites System",
+      "category": "feature",
+      "content": "Implement a bookmark/favorites feature in [framework]:\n- Toggle bookmark button on [entity] cards/pages\n- Bookmarks list page with search and filter\n- Organize bookmarks into collections/folders\n- Bookmark count display on [entity]\n- Sort bookmarks by date added or custom order\n- Sync bookmarks across devices\n- Export bookmarks as JSON\n- Bulk bookmark management (delete, move)"
+    },
+    {
+      "id": "40",
+      "name": "Comment System",
+      "category": "feature",
+      "content": "Build a comment system for [entity] in [framework]:\n- Add, edit, delete comments\n- Nested replies (threaded comments)\n- Markdown support with preview\n- Mention users with @username\n- Like/upvote comments\n- Sort by newest, oldest, most liked\n- Pagination for comments\n- Real-time new comment updates\n- Report/flag inappropriate comments"
+    },
+    {
+      "id": "41",
+      "name": "Activity Feed/Timeline",
+      "category": "feature",
+      "content": "Create an activity feed in [framework]:\n- Display user actions chronologically\n- Activity types: created, updated, commented, liked, shared\n- Group related activities (e.g., '3 people liked your post')\n- Infinite scroll loading\n- Filter by activity type\n- Real-time new activity notifications\n- Relative timestamps (2 minutes ago, yesterday)\n- Activity detail links"
+    },
+    {
+      "id": "42",
+      "name": "Tags/Labels System",
+      "category": "feature",
+      "content": "Implement a tagging system for [entity] in [framework]:\n- Add multiple tags to [entity]\n- Tag autocomplete from existing tags\n- Create new tags inline\n- Tag-based filtering and search\n- Tag management page (rename, merge, delete)\n- Tag usage count display\n- Color-coded tags\n- Popular/trending tags sidebar"
+    },
+    {
+      "id": "43",
+      "name": "Scheduled Tasks/Cron Jobs",
+      "category": "feature",
+      "content": "Set up scheduled tasks in [framework]:\n- Task scheduler configuration (cron syntax)\n- Daily report generation at midnight\n- Weekly data cleanup (soft-deleted records > 30 days)\n- Hourly cache refresh for frequently accessed data\n- Monthly usage statistics email\n- Task execution logging\n- Error alerting for failed tasks\n- Admin UI to view/trigger scheduled tasks"
+    },
+    {
+      "id": "44",
+      "name": "Audit Log System",
+      "category": "feature",
+      "content": "Implement an audit log in [framework]:\n- Log all create, update, delete operations\n- Record who, what, when, and changed fields\n- Store before/after values for updates\n- Searchable audit log with date range\n- Filter by user, action type, entity\n- Audit log retention policy\n- Immutable log entries (no delete/edit)\n- Export audit log as CSV"
+    },
+    {
+      "id": "45",
+      "name": "Multi-Tenant Architecture",
+      "category": "feature",
+      "content": "Add multi-tenancy support to [framework]:\n- Tenant identification via subdomain or header\n- Database isolation strategy (shared DB with tenant_id)\n- Tenant-specific configuration and branding\n- Tenant admin and user role separation\n- Data migration between tenants\n- Tenant provisioning and onboarding flow\n- Cross-tenant data prevention middleware\n- Per-tenant billing and usage tracking"
+    },
+    {
+      "id": "46",
+      "name": "Webhook System",
+      "category": "feature",
+      "content": "Build a webhook delivery system in [framework]:\n- Webhook endpoint registration with URL and events\n- Webhook secret for signature verification\n- Payload signing with HMAC-SHA256\n- Async delivery with retry (3 attempts, exponential backoff)\n- Delivery log with request/response details\n- Webhook testing/ping endpoint\n- Disable webhook after consecutive failures\n- Event filtering per webhook"
+    },
+    {
+      "id": "47",
+      "name": "Search Autocomplete",
+      "category": "feature",
+      "content": "Implement search autocomplete in [framework]:\n- Debounced input (300ms delay)\n- Show suggestions dropdown below search input\n- Highlight matched text in suggestions\n- Keyboard navigation (arrow keys, enter, escape)\n- Show recent searches for logged-in users\n- Category-grouped suggestions\n- Maximum 8 suggestions shown\n- Click outside to dismiss"
+    },
+    {
+      "id": "48",
+      "name": "Image Gallery with Lightbox",
+      "category": "feature",
+      "content": "Build an image gallery in [framework]:\n- Grid layout with responsive columns\n- Lazy loading images with blur placeholder\n- Click to open lightbox/modal\n- Navigate between images with arrows\n- Keyboard navigation (left/right/escape)\n- Swipe gesture on mobile\n- Zoom in/out capability\n- Download original button\n- Image info overlay (title, date, size)"
+    },
+    {
+      "id": "49",
+      "name": "User Onboarding Tour",
+      "category": "feature",
+      "content": "Create an onboarding tour for new users in [framework]:\n- Step-by-step tooltips highlighting key features\n- Overlay dimming around highlighted elements\n- Next/Previous/Skip navigation\n- Progress indicator (step 2 of 5)\n- Persist completion state per user\n- Show only on first visit\n- Different tours for different user roles\n- Trigger tour from help menu anytime"
+    },
+    {
+      "id": "50",
+      "name": "Data Versioning/History",
+      "category": "feature",
+      "content": "Implement version history for [entity] in [framework]:\n- Save snapshot on every update\n- Version list with timestamps and author\n- Diff view between any two versions\n- Restore to previous version\n- Version comparison side by side\n- Limit stored versions (keep last 50)\n- Auto-cleanup old versions via cron job\n- Version notes/comments"
+    },
+    {
+      "id": "51",
+      "name": "Drag-and-Drop Kanban Board",
+      "category": "feature",
+      "content": "Build a Kanban board in [framework]:\n- Columns: To Do, In Progress, Review, Done\n- Drag cards between columns\n- Reorder cards within columns\n- Card details: title, description, assignee, due date, labels\n- Add/edit/delete columns\n- Add new cards with quick-add form\n- Persist order in database\n- Filter cards by assignee or label\n- Column card count limits (WIP limits)"
+    },
+    {
+      "id": "52",
+      "name": "Email Template Builder",
+      "category": "feature",
+      "content": "Create an email template builder in [framework]:\n- Drag-and-drop block editor\n- Blocks: header, text, image, button, divider, columns\n- Live preview panel\n- Responsive email output\n- Variable placeholders ({{user.name}}, {{link}})\n- Save and load templates\n- Send test email\n- Export as HTML"
+    },
+    {
+      "id": "53",
+      "name": "A/B Testing Framework",
+      "category": "feature",
+      "content": "Implement A/B testing in [framework]:\n- Create experiments with control and variants\n- User assignment to variants (consistent hashing)\n- Feature flag integration\n- Track conversion events per variant\n- Statistical significance calculation\n- Dashboard showing experiment results\n- Auto-disable losing variants\n- Experiment scheduling (start/end dates)"
+    },
+    {
+      "id": "54",
+      "name": "API Key Management",
+      "category": "feature",
+      "content": "Build an API key management system in [framework]:\n- Generate API keys with name and description\n- Show key only once on creation\n- List active keys with last used timestamp\n- Revoke/delete keys\n- Rate limiting per API key\n- Scoped permissions per key (read-only, full access)\n- API key authentication middleware\n- Usage analytics per key"
+    },
+    {
+      "id": "55",
+      "name": "Bulk Operations",
+      "category": "feature",
+      "content": "Implement bulk operations for [entity] in [framework]:\n- Select all / select individual items with checkboxes\n- Bulk delete with confirmation modal\n- Bulk status update (active/inactive)\n- Bulk export selected items\n- Bulk assign to category/tag\n- Progress indicator for large operations\n- Undo last bulk action (within 30 seconds)\n- Operation result summary (success/failed counts)"
+    },
+    {
+      "id": "56",
+      "name": "Fix Runtime TypeError",
+      "category": "bugfix",
+      "content": "I'm getting this runtime error in my [language] code:\n\nError: [error message]\n\nHere's the relevant code:\n[code snippet]\n\nPlease:\n1. Explain what's causing this error\n2. Show the fixed code\n3. Suggest how to prevent this type of error in the future"
+    },
+    {
+      "id": "57",
+      "name": "Debug Null Reference Error",
+      "category": "bugfix",
+      "content": "My [language] application crashes with a null/undefined reference error:\n\nError: Cannot read property '[property]' of [null/undefined]\n\nCode context:\n[code snippet]\n\nIdentify all possible paths that could lead to this null reference and provide a robust fix with proper null checks."
+    },
+    {
+      "id": "58",
+      "name": "Fix Memory Leak in Component",
+      "category": "bugfix",
+      "content": "My [framework] application has a memory leak. The memory usage grows continuously when navigating between pages.\n\nSuspected component:\n[code snippet]\n\nPlease:\n1. Identify the source of the memory leak\n2. Check for uncleaned event listeners, timers, subscriptions\n3. Verify cleanup in useEffect/componentWillUnmount\n4. Provide the fixed code with proper cleanup"
+    },
+    {
+      "id": "59",
+      "name": "Resolve Race Condition",
+      "category": "bugfix",
+      "content": "I have a race condition in my [language] code where concurrent requests cause data inconsistency:\n\n[code snippet]\n\nThe issue: [describe the inconsistent behavior]\n\nPlease fix the race condition using proper synchronization (mutex, semaphore, or atomic operations)."
+    },
+    {
+      "id": "60",
+      "name": "Fix Off-By-One Error",
+      "category": "bugfix",
+      "content": "My loop/array operation produces incorrect results - I suspect an off-by-one error:\n\nCode:\n[code snippet]\n\nExpected output: [expected]\nActual output: [actual]\n\nPlease fix the boundary conditions and explain the correction."
+    },
+    {
+      "id": "61",
+      "name": "Fix API Response Handling",
+      "category": "bugfix",
+      "content": "My frontend crashes when processing the API response. Sometimes the response structure differs from expected:\n\nAPI call code:\n[code snippet]\n\nExpected response: [expected JSON structure]\nActual response that causes error: [actual JSON structure]\n\nFix the response handling to be robust against varying response structures."
+    },
+    {
+      "id": "62",
+      "name": "Fix N+1 Query Problem",
+      "category": "bugfix",
+      "content": "My [framework] application has slow database queries. I suspect an N+1 query problem when loading [entity] with related [related entity]:\n\nCurrent code:\n[code snippet]\n\nPlease:\n1. Confirm the N+1 issue\n2. Rewrite using eager loading/joins\n3. Show the optimized query count"
+    },
+    {
+      "id": "63",
+      "name": "Fix Database Deadlock",
+      "category": "bugfix",
+      "content": "Our application occasionally encounters database deadlocks:\n\nError: Deadlock found when trying to get lock\n\nTransaction code:\n[code snippet]\n\nPlease:\n1. Identify the deadlock cause\n2. Reorder operations to prevent deadlock\n3. Add proper retry logic with exponential backoff"
+    },
+    {
+      "id": "64",
+      "name": "Fix Slow SQL Query",
+      "category": "bugfix",
+      "content": "This SQL query takes [X] seconds to execute on a table with [Y] million rows:\n\n[SQL query]\n\nTable schema:\n[schema]\n\nPlease:\n1. Analyze the query execution plan\n2. Suggest necessary indexes\n3. Rewrite the query for better performance\n4. Estimate the improvement"
+    },
+    {
+      "id": "65",
+      "name": "Fix CSS Layout Breaking",
+      "category": "bugfix",
+      "content": "My CSS layout breaks on [screen size/browser]:\n\nExpected layout: [description]\nActual result: [description of broken layout]\n\nHTML:\n[code snippet]\n\nCSS:\n[code snippet]\n\nFix the layout issue and ensure it works across common viewport sizes."
+    },
+    {
+      "id": "66",
+      "name": "Fix Flexbox Overflow Issue",
+      "category": "bugfix",
+      "content": "Content overflows its flex container instead of wrapping or scrolling:\n\nCSS:\n[code snippet]\n\nHTML:\n[code snippet]\n\nThe [element] extends beyond the container width. Fix the flex properties to properly contain the content."
+    },
+    {
+      "id": "67",
+      "name": "Fix Cross-Browser CSS Bug",
+      "category": "bugfix",
+      "content": "My CSS works in Chrome but not in [Safari/Firefox/Edge]:\n\n[code snippet]\n\nBehavior in Chrome: [description]\nBehavior in [other browser]: [description]\n\nProvide a cross-browser compatible solution with appropriate vendor prefixes or alternatives."
+    },
+    {
+      "id": "68",
+      "name": "Fix Authentication Token Expiry",
+      "category": "bugfix",
+      "content": "Users are getting logged out unexpectedly. The JWT token refresh logic seems broken:\n\n[code snippet]\n\nIssues observed:\n- [describe symptoms]\n\nFix the token refresh flow to silently refresh before expiry and handle edge cases (multiple simultaneous requests, offline scenarios)."
+    },
+    {
+      "id": "69",
+      "name": "Fix Session Persistence Bug",
+      "category": "bugfix",
+      "content": "User sessions are not persisting across page reloads in my [framework] app:\n\nSession setup code:\n[code snippet]\n\nPlease check:\n1. Cookie settings (httpOnly, secure, sameSite, path, domain)\n2. Session store configuration\n3. CORS settings for credentials\n4. Provide working session persistence code"
+    },
+    {
+      "id": "70",
+      "name": "Fix React State Not Updating",
+      "category": "bugfix",
+      "content": "My React component state doesn't update as expected:\n\n[code snippet]\n\nExpected behavior: [expected]\nActual behavior: [actual]\n\nCheck for:\n1. Stale closure issues\n2. Direct state mutation\n3. Batched update issues\n4. Missing dependencies in useEffect\nProvide the corrected code."
+    },
+    {
+      "id": "71",
+      "name": "Fix React Infinite Re-render",
+      "category": "bugfix",
+      "content": "My React component enters an infinite re-render loop:\n\n[code snippet]\n\nError: Maximum update depth exceeded\n\nIdentify the cause (likely useEffect dependency issue or state update in render) and fix it."
+    },
+    {
+      "id": "72",
+      "name": "Fix Vue Reactivity Issue",
+      "category": "bugfix",
+      "content": "Data changes are not triggering re-renders in my Vue component:\n\n[code snippet]\n\nThe [property] updates in the data but the template doesn't reflect the change.\n\nCheck for Vue reactivity caveats (direct array index setting, adding new object properties) and provide the fix."
+    },
+    {
+      "id": "73",
+      "name": "Fix Async/Await Error Handling",
+      "category": "bugfix",
+      "content": "My async function silently swallows errors and the catch block never executes:\n\n[code snippet]\n\nFix the error handling to properly catch and propagate errors from async operations, including nested promises."
+    },
+    {
+      "id": "74",
+      "name": "Fix Unhandled Promise Rejection",
+      "category": "bugfix",
+      "content": "I'm getting UnhandledPromiseRejection warnings in my [language] application:\n\n[code snippet]\n\nThe promise rejection occurs when [describe scenario].\n\nAdd proper error handling and prevent unhandled rejections. Include a global handler as safety net."
+    },
+    {
+      "id": "75",
+      "name": "Fix Promise.all Partial Failure",
+      "category": "bugfix",
+      "content": "When one promise in my Promise.all fails, I lose all results:\n\n[code snippet]\n\nI need all promises to complete and collect both successes and failures. Refactor using Promise.allSettled or equivalent pattern."
+    },
+    {
+      "id": "76",
+      "name": "Fix TypeScript Type Error",
+      "category": "bugfix",
+      "content": "TypeScript compilation error:\n\n[error message]\n\nCode:\n[code snippet]\n\nFix the type error without using 'any'. Provide proper type definitions or type guards."
+    },
+    {
+      "id": "77",
+      "name": "Fix Environment-Specific Bug",
+      "category": "bugfix",
+      "content": "My application works in development but fails in production:\n\nDev behavior: [works correctly]\nProd behavior: [error or incorrect behavior]\n\nCode:\n[code snippet]\n\nCheck for:\n1. Environment variable differences\n2. Build optimization issues (tree shaking, minification)\n3. CORS or protocol differences (HTTP vs HTTPS)\n4. Database connection settings"
+    },
+    {
+      "id": "78",
+      "name": "Fix Network Timeout Issue",
+      "category": "bugfix",
+      "content": "API calls timeout intermittently in my [framework] application:\n\n[code snippet]\n\nFix by implementing:\n1. Configurable timeout values\n2. Retry logic with exponential backoff (max 3 retries)\n3. Circuit breaker for repeatedly failing endpoints\n4. User-friendly timeout error messages"
+    },
+    {
+      "id": "79",
+      "name": "Fix Date Timezone Bug",
+      "category": "bugfix",
+      "content": "Dates display incorrectly for users in different timezones:\n\nCode:\n[code snippet]\n\nServer timezone: [timezone]\nUser reports wrong dates when their timezone is: [timezone]\n\nFix by:\n1. Storing all dates as UTC in the database\n2. Converting to user's local timezone on display\n3. Using proper timezone-aware date library"
+    },
+    {
+      "id": "80",
+      "name": "Fix Character Encoding Issue",
+      "category": "bugfix",
+      "content": "Special characters (emojis, accented letters, CJK characters) appear as garbled text:\n\n[describe where the issue appears]\n\nCode:\n[code snippet]\n\nFix encoding across:\n1. Database connection charset (utf8mb4)\n2. HTTP Content-Type headers\n3. HTML meta charset\n4. File reading/writing encoding"
+    },
+    {
+      "id": "81",
+      "name": "Fix CORS Error",
+      "category": "bugfix",
+      "content": "Getting CORS error when frontend ([origin]) calls backend API ([origin]):\n\nError: Access to fetch at '[URL]' from origin '[origin]' has been blocked by CORS policy\n\nBackend CORS config:\n[code snippet]\n\nFix the CORS configuration to allow the specific origin, methods, headers, and credentials properly."
+    },
+    {
+      "id": "82",
+      "name": "Fix WebSocket Reconnection",
+      "category": "bugfix",
+      "content": "WebSocket connection drops and doesn't reconnect properly:\n\n[code snippet]\n\nIssues:\n- Connection lost on network change\n- No automatic reconnection\n- Messages lost during reconnection\n\nImplement robust reconnection with exponential backoff, message queue for offline messages, and connection state management."
+    },
+    {
+      "id": "83",
+      "name": "Fix Build/Compilation Error",
+      "category": "bugfix",
+      "content": "My project fails to build with this error:\n\n[error message]\n\nBuild config:\n[code snippet]\n\npackage.json dependencies:\n[relevant dependencies]\n\nDiagnose and fix the build error. Check for version conflicts, missing dependencies, and configuration issues."
+    },
+    {
+      "id": "84",
+      "name": "Fix Webpack/Vite Bundle Error",
+      "category": "bugfix",
+      "content": "Build bundling fails with:\n\n[error message]\n\nConfig:\n[code snippet]\n\nFix the bundler configuration. Check for:\n1. Missing loaders/plugins\n2. Incorrect path aliases\n3. Circular dependencies\n4. Incompatible module formats (ESM vs CJS)"
+    },
+    {
+      "id": "85",
+      "name": "Fix Docker Container Crash",
+      "category": "bugfix",
+      "content": "My Docker container starts but crashes immediately:\n\nDockerfile:\n[code snippet]\n\nDocker logs output:\n[error logs]\n\nFix the container configuration. Check for:\n1. Missing environment variables\n2. File permission issues\n3. Port binding conflicts\n4. Missing dependencies in the image"
+    },
+    {
+      "id": "86",
+      "name": "Fix Database Migration Failure",
+      "category": "bugfix",
+      "content": "Database migration fails with:\n\n[error message]\n\nMigration file:\n[code snippet]\n\nCurrent database state: [description]\n\nFix the migration and provide a safe rollback strategy. Handle the case where migration partially applied."
+    },
+    {
+      "id": "87",
+      "name": "Fix Circular Dependency",
+      "category": "bugfix",
+      "content": "My [language] modules have a circular dependency causing import errors:\n\nModule A imports from Module B, and Module B imports from Module A.\n\nModule A:\n[code snippet]\n\nModule B:\n[code snippet]\n\nRefactor to break the circular dependency while maintaining functionality."
+    },
+    {
+      "id": "88",
+      "name": "Fix Event Listener Leak",
+      "category": "bugfix",
+      "content": "Event listeners are accumulating and causing performance degradation:\n\n[code snippet]\n\nThe component adds event listeners on mount/render but they're not being removed.\n\nFix by:\n1. Adding proper cleanup/removeEventListener\n2. Using AbortController for fetch listeners\n3. Ensuring single listener registration"
+    },
+    {
+      "id": "89",
+      "name": "Fix Form Submission Double-Click",
+      "category": "bugfix",
+      "content": "Users can submit the form multiple times by clicking the submit button rapidly:\n\n[code snippet]\n\nFix by:\n1. Disabling button after first click\n2. Adding loading state\n3. Server-side idempotency check\n4. Re-enable on error for retry"
+    },
+    {
+      "id": "90",
+      "name": "Fix Image Loading Performance",
+      "category": "bugfix",
+      "content": "Page loads slowly due to large unoptimized images:\n\nCurrent implementation:\n[code snippet]\n\nFix by implementing:\n1. Lazy loading with loading='lazy' or Intersection Observer\n2. Responsive images with srcset\n3. WebP format with fallback\n4. Blur placeholder while loading\n5. Proper image dimensions to prevent layout shift"
+    },
+    {
+      "id": "91",
+      "name": "Fix Infinite Loop in useEffect",
+      "category": "bugfix",
+      "content": "My React useEffect triggers infinitely, causing the browser to freeze:\n\n[code snippet]\n\nIdentify the dependency that changes on every render (likely an object/array/function reference) and stabilize it using useMemo, useCallback, or restructuring the effect."
+    },
+    {
+      "id": "92",
+      "name": "Fix Stale Closure in Timer",
+      "category": "bugfix",
+      "content": "My setInterval/setTimeout callback uses stale state values:\n\n[code snippet]\n\nThe timer always sees the initial state value instead of the current one.\n\nFix using:\n1. useRef to hold current value\n2. Functional state update pattern\n3. Proper cleanup on unmount"
+    },
+    {
+      "id": "93",
+      "name": "Fix Z-Index Stacking Issue",
+      "category": "bugfix",
+      "content": "My modal/dropdown appears behind other elements despite high z-index:\n\nCSS:\n[code snippet]\n\nHTML structure:\n[code snippet]\n\nDiagnose the stacking context issue and fix it. Check for:\n1. Parent elements creating new stacking contexts\n2. Transform/opacity on ancestors\n3. Fixed/sticky positioning conflicts"
+    },
+    {
+      "id": "94",
+      "name": "Fix Scroll Position Reset",
+      "category": "bugfix",
+      "content": "When navigating back to a list page, the scroll position resets to the top instead of restoring:\n\n[code snippet]\n\nFix by:\n1. Saving scroll position before navigation\n2. Restoring on back navigation\n3. Using browser's scroll restoration or manual management"
+    },
+    {
+      "id": "95",
+      "name": "Fix Mobile Touch Event Bug",
+      "category": "bugfix",
+      "content": "Touch events not working correctly on mobile devices:\n\n[code snippet]\n\nIssues: [describe - e.g., click delay, touch not registering, scroll interference]\n\nFix mobile touch handling considering:\n1. 300ms click delay\n2. Touch vs click event ordering\n3. Passive event listeners for scroll performance\n4. Touch target size (min 44px)"
+    },
+    {
+      "id": "96",
+      "name": "Fix SSR Hydration Mismatch",
+      "category": "bugfix",
+      "content": "Getting hydration mismatch errors in my [Next.js/Nuxt] application:\n\nWarning: Text content did not match. Server: '[server text]' Client: '[client text]'\n\nComponent:\n[code snippet]\n\nFix the mismatch by identifying client-only code (window, localStorage, Date) and using proper hydration-safe patterns."
+    },
+    {
+      "id": "97",
+      "name": "Fix Email Sending Failure",
+      "category": "bugfix",
+      "content": "Emails are not being delivered from my [framework] application:\n\nEmail sending code:\n[code snippet]\n\nError: [error message or silent failure]\n\nDebug checklist:\n1. SMTP credentials and host configuration\n2. TLS/SSL settings\n3. SPF/DKIM/DMARC records\n4. Email content spam triggers\n5. Sending rate limits"
+    },
+    {
+      "id": "98",
+      "name": "Fix File Upload Size Limit",
+      "category": "bugfix",
+      "content": "File uploads fail for files larger than [size]MB:\n\nError: [error message]\n\nUpload code:\n[code snippet]\n\nFix by adjusting:\n1. Client-side file size validation\n2. Server body parser limit (e.g., express body-parser limit)\n3. Reverse proxy limits (nginx client_max_body_size)\n4. Multipart form data configuration"
+    },
+    {
+      "id": "99",
+      "name": "Fix Redirect Loop",
+      "category": "bugfix",
+      "content": "My application enters an infinite redirect loop:\n\n[describe the redirect behavior]\n\nRouting/middleware code:\n[code snippet]\n\nIdentify the condition causing the loop and fix the redirect logic. Ensure authenticated users aren't redirected to login and vice versa."
+    },
+    {
+      "id": "100",
+      "name": "Fix 404 on Page Refresh (SPA)",
+      "category": "bugfix",
+      "content": "My single-page application returns 404 when refreshing any page other than the root:\n\nServer config:\n[code snippet]\n\nRouter config:\n[code snippet]\n\nFix the server configuration to serve index.html for all routes, letting the client-side router handle routing."
+    },
+    {
+      "id": "101",
+      "name": "Extract Helper Functions",
+      "category": "refactor",
+      "content": "This function is too long ([X] lines). Extract logical sections into well-named helper functions:\n\n[code snippet]\n\nEach extracted function should:\n- Have a single responsibility\n- Have a descriptive name\n- Accept explicit parameters (no reliance on closure)\n- Return a clear value\n- Be independently testable"
+    },
+    {
+      "id": "102",
+      "name": "Apply Single Responsibility Principle",
+      "category": "refactor",
+      "content": "This class/module violates the Single Responsibility Principle by handling multiple concerns:\n\n[code snippet]\n\nRefactor by:\n1. Identifying distinct responsibilities\n2. Extracting each into its own class/module\n3. Using composition to connect them\n4. Maintaining the same public interface"
+    },
+    {
+      "id": "103",
+      "name": "Apply Open/Closed Principle",
+      "category": "refactor",
+      "content": "This code requires modification every time a new [type/variant] is added:\n\n[code snippet]\n\nRefactor to be open for extension but closed for modification using:\n- Strategy pattern or plugin architecture\n- Interface/abstract class for variants\n- Registry pattern for dynamic registration"
+    },
+    {
+      "id": "104",
+      "name": "Remove Code Duplication (DRY)",
+      "category": "refactor",
+      "content": "These [X] code blocks are nearly identical with minor variations:\n\nBlock 1:\n[code snippet]\n\nBlock 2:\n[code snippet]\n\nRefactor into a single reusable function/component that handles all variations through parameters."
+    },
+    {
+      "id": "105",
+      "name": "Convert Callbacks to Async/Await",
+      "category": "refactor",
+      "content": "Convert this callback-based code to modern async/await syntax:\n\n[code snippet]\n\nEnsure:\n- Proper error handling with try/catch\n- Sequential and parallel execution where appropriate\n- No callback hell or pyramid of doom\n- All edge cases preserved"
+    },
+    {
+      "id": "106",
+      "name": "Modernize ES5 to ES6+",
+      "category": "refactor",
+      "content": "Modernize this ES5 JavaScript code to ES6+:\n\n[code snippet]\n\nApply:\n- Arrow functions for callbacks\n- const/let instead of var\n- Template literals instead of string concatenation\n- Destructuring for objects and arrays\n- Spread operator instead of Object.assign/Array.concat\n- Optional chaining and nullish coalescing\n- for...of instead of for loops where appropriate"
+    },
+    {
+      "id": "107",
+      "name": "Convert Class Components to Hooks",
+      "category": "refactor",
+      "content": "Convert this React class component to a functional component with hooks:\n\n[code snippet]\n\nMap:\n- this.state -> useState\n- componentDidMount/componentDidUpdate -> useEffect\n- this.setState -> state setter functions\n- Instance methods -> regular functions or useCallback\n- componentWillUnmount cleanup -> useEffect return\n- Context consumers -> useContext"
+    },
+    {
+      "id": "108",
+      "name": "Improve Variable and Function Names",
+      "category": "refactor",
+      "content": "Rename variables and functions in this code to be more descriptive and follow conventions:\n\n[code snippet]\n\nGuidelines:\n- Use camelCase for variables/functions, PascalCase for classes\n- Boolean variables: is/has/should prefix\n- Functions: verb + noun (getUserById, calculateTotal)\n- Avoid abbreviations unless universally known\n- Collections should be plural"
+    },
+    {
+      "id": "109",
+      "name": "Reduce Cyclomatic Complexity",
+      "category": "refactor",
+      "content": "This function has high cyclomatic complexity with deeply nested conditionals:\n\n[code snippet]\n\nRefactor using:\n- Early returns / guard clauses\n- Extract conditional logic into named functions\n- Replace nested if/else with switch or lookup table\n- Use polymorphism where appropriate\n- Target complexity score below 10"
+    },
+    {
+      "id": "110",
+      "name": "Apply Strategy Pattern",
+      "category": "refactor",
+      "content": "This code uses a large switch/if-else chain to handle different behaviors:\n\n[code snippet]\n\nRefactor using the Strategy Pattern:\n1. Define a strategy interface\n2. Implement concrete strategies\n3. Create a strategy registry/factory\n4. Replace conditional logic with strategy lookup"
+    },
+    {
+      "id": "111",
+      "name": "Apply Factory Pattern",
+      "category": "refactor",
+      "content": "Object creation logic is scattered and duplicated across the codebase:\n\n[code snippet]\n\nRefactor using the Factory Pattern:\n1. Create a factory class/function\n2. Centralize object creation logic\n3. Support different object types via parameter\n4. Encapsulate complex initialization"
+    },
+    {
+      "id": "112",
+      "name": "Apply Observer Pattern",
+      "category": "refactor",
+      "content": "Multiple components need to react to changes in shared state, but they're tightly coupled:\n\n[code snippet]\n\nRefactor using the Observer Pattern:\n1. Create an event emitter/bus\n2. Publishers emit events without knowing subscribers\n3. Subscribers register for specific events\n4. Implement unsubscribe for cleanup"
+    },
+    {
+      "id": "113",
+      "name": "Decompose God Function",
+      "category": "refactor",
+      "content": "This function does too many things and is [X] lines long:\n\n[code snippet]\n\nDecompose into smaller functions following these steps:\n1. Identify distinct logical blocks\n2. Name each block as a function\n3. Determine inputs and outputs for each\n4. Extract and connect via return values\n5. Keep the original function as an orchestrator"
+    },
+    {
+      "id": "114",
+      "name": "Improve Error Handling",
+      "category": "refactor",
+      "content": "This code has inconsistent or missing error handling:\n\n[code snippet]\n\nRefactor to:\n- Use custom error classes for different error types\n- Add try/catch at appropriate boundaries\n- Provide meaningful error messages\n- Log errors with context\n- Return appropriate HTTP status codes\n- Never expose internal errors to users"
+    },
+    {
+      "id": "115",
+      "name": "Add TypeScript Types",
+      "category": "refactor",
+      "content": "Convert this JavaScript code to TypeScript with proper type definitions:\n\n[code snippet]\n\nRequirements:\n- Define interfaces for all data structures\n- Type function parameters and return values\n- Use generics where appropriate\n- Avoid 'any' type\n- Add type guards for runtime checks\n- Use union types for variants"
+    },
+    {
+      "id": "116",
+      "name": "Convert REST to GraphQL",
+      "category": "refactor",
+      "content": "Convert these REST API endpoints to a GraphQL schema and resolvers:\n\nREST endpoints:\n[list of endpoints with request/response]\n\nCreate:\n1. GraphQL type definitions\n2. Query resolvers for read operations\n3. Mutation resolvers for write operations\n4. Input types for mutations\n5. Connection types for pagination"
+    },
+    {
+      "id": "117",
+      "name": "Normalize Database Schema",
+      "category": "refactor",
+      "content": "This database schema has redundant data and anomalies:\n\n[current schema]\n\nNormalize to 3NF:\n1. Identify repeating groups and move to separate tables\n2. Remove partial dependencies\n3. Remove transitive dependencies\n4. Define proper foreign key relationships\n5. Show the migration plan from current to normalized schema"
+    },
+    {
+      "id": "118",
+      "name": "Optimize SQL Queries",
+      "category": "refactor",
+      "content": "These SQL queries are slow on large datasets:\n\n[SQL queries]\n\nTable sizes: [table sizes]\n\nOptimize by:\n1. Adding appropriate indexes\n2. Rewriting subqueries as JOINs\n3. Avoiding SELECT *\n4. Using EXPLAIN to verify improvements\n5. Considering query caching"
+    },
+    {
+      "id": "119",
+      "name": "Improve Test Coverage",
+      "category": "refactor",
+      "content": "This module has low test coverage. Add comprehensive tests:\n\n[code snippet]\n\nWrite tests covering:\n- Happy path for each public method\n- Edge cases (empty input, null, boundary values)\n- Error scenarios\n- Async behavior\n- Mock external dependencies\n- Use descriptive test names: 'should [expected behavior] when [condition]'"
+    },
+    {
+      "id": "120",
+      "name": "Code Splitting and Lazy Loading",
+      "category": "refactor",
+      "content": "The application bundle is too large ([X]MB). Implement code splitting:\n\n[current import structure]\n\nRefactor to:\n1. Route-based code splitting with React.lazy/dynamic import\n2. Lazy load heavy components (charts, editors, maps)\n3. Split vendor libraries into separate chunks\n4. Preload critical chunks\n5. Show loading fallback during chunk loading"
+    },
+    {
+      "id": "121",
+      "name": "Implement Dependency Injection",
+      "category": "refactor",
+      "content": "This code creates its own dependencies, making it hard to test:\n\n[code snippet]\n\nRefactor using Dependency Injection:\n1. Accept dependencies as constructor/function parameters\n2. Create interfaces for dependencies\n3. Set up a DI container/provider\n4. Inject mocks easily in tests"
+    },
+    {
+      "id": "122",
+      "name": "Externalize Configuration",
+      "category": "refactor",
+      "content": "Configuration values are hardcoded throughout the code:\n\n[code snippet]\n\nRefactor to:\n1. Move all config to environment variables\n2. Create a centralized config module\n3. Validate required config on startup\n4. Provide sensible defaults\n5. Type-safe config access\n6. Separate config per environment (dev/staging/prod)"
+    },
+    {
+      "id": "123",
+      "name": "Replace Magic Numbers",
+      "category": "refactor",
+      "content": "This code contains magic numbers and strings that are hard to understand:\n\n[code snippet]\n\nRefactor by:\n1. Extracting magic values to named constants\n2. Grouping related constants in enums or objects\n3. Adding comments explaining the meaning\n4. Using the constants throughout the codebase"
+    },
+    {
+      "id": "124",
+      "name": "Simplify Conditional Logic",
+      "category": "refactor",
+      "content": "This conditional logic is complex and hard to follow:\n\n[code snippet]\n\nSimplify using:\n- Guard clauses for early returns\n- Lookup tables/maps instead of switch\n- Boolean variable extraction for readable conditions\n- De Morgan's laws to simplify negations\n- Ternary for simple value assignments"
+    },
+    {
+      "id": "125",
+      "name": "Convert Imperative to Declarative",
+      "category": "refactor",
+      "content": "This imperative loop-based code can be made more readable:\n\n[code snippet]\n\nRefactor using declarative array methods:\n- map() for transformations\n- filter() for selections\n- reduce() for aggregations\n- find() for single item lookup\n- some()/every() for boolean checks\n- Chain methods for complex operations"
+    },
+    {
+      "id": "126",
+      "name": "Extract Custom Hook",
+      "category": "refactor",
+      "content": "Multiple React components share similar stateful logic:\n\nComponent A:\n[code snippet]\n\nComponent B:\n[code snippet]\n\nExtract the shared logic into a custom hook that:\n- Encapsulates the common state and effects\n- Returns necessary values and functions\n- Is reusable and testable independently"
+    },
+    {
+      "id": "127",
+      "name": "Flatten Nested Promises",
+      "category": "refactor",
+      "content": "This code has deeply nested .then() chains:\n\n[code snippet]\n\nRefactor to:\n1. Use async/await for sequential operations\n2. Use Promise.all for parallel operations\n3. Extract complex steps into named async functions\n4. Add proper error handling at each level"
+    },
+    {
+      "id": "128",
+      "name": "Replace Inheritance with Composition",
+      "category": "refactor",
+      "content": "This deep inheritance hierarchy is fragile and hard to extend:\n\n[code snippet]\n\nRefactor to composition:\n1. Identify behaviors/capabilities in the hierarchy\n2. Extract each into independent modules/mixins\n3. Compose objects from these behaviors\n4. Use interfaces for type checking\n5. Prefer 'has-a' over 'is-a' relationships"
+    },
+    {
+      "id": "129",
+      "name": "Optimize React Renders",
+      "category": "refactor",
+      "content": "This React component re-renders unnecessarily causing performance issues:\n\n[code snippet]\n\nOptimize by:\n1. React.memo for pure components\n2. useMemo for expensive computations\n3. useCallback for function props\n4. Split into smaller components\n5. Move state closer to where it's used\n6. Use React DevTools Profiler to verify"
+    },
+    {
+      "id": "130",
+      "name": "Convert Monolith to Modules",
+      "category": "refactor",
+      "content": "This monolithic file has grown to [X] lines and handles too many features:\n\n[describe the file structure]\n\nRefactor into a modular architecture:\n1. Identify logical modules\n2. Create separate files for each module\n3. Define clear interfaces between modules\n4. Use an index file for public exports\n5. Ensure no circular dependencies"
+    },
+    {
+      "id": "131",
+      "name": "Improve API Response Format",
+      "category": "refactor",
+      "content": "API responses are inconsistent across endpoints:\n\nEndpoint A returns: [example]\nEndpoint B returns: [example]\n\nStandardize to a consistent format:\n- Success: { success: true, data: {...}, meta: { page, total } }\n- Error: { success: false, error: { code, message, details } }\n- Apply to all existing endpoints\n- Create response helper functions"
+    },
+    {
+      "id": "132",
+      "name": "Add Input Validation Layer",
+      "category": "refactor",
+      "content": "Input validation is scattered throughout controllers and services:\n\n[code snippet]\n\nRefactor to a dedicated validation layer:\n1. Use a validation library ([Joi/Zod/Yup])\n2. Define schemas for each endpoint\n3. Validate in middleware before controller\n4. Return consistent validation error format\n5. Reuse schemas between frontend and backend"
+    },
+    {
+      "id": "133",
+      "name": "Optimize Bundle Size",
+      "category": "refactor",
+      "content": "The production bundle is too large. Analyze and reduce:\n\nCurrent bundle size: [size]\n\nActions:\n1. Run bundle analyzer to identify large packages\n2. Replace heavy libraries with lighter alternatives\n3. Tree-shake unused exports\n4. Dynamic import for rarely-used features\n5. Remove unused CSS\n6. Optimize images and assets\n7. Enable gzip/brotli compression"
+    },
+    {
+      "id": "134",
+      "name": "Refactor to Repository Pattern",
+      "category": "refactor",
+      "content": "Database queries are scattered throughout service/controller layers:\n\n[code snippet]\n\nRefactor using Repository Pattern:\n1. Create a repository interface per entity\n2. Implement repository with actual DB queries\n3. Inject repositories into services\n4. Services call repository methods, not raw queries\n5. Easy to swap database implementations\n6. Simple to mock in tests"
+    },
+    {
+      "id": "135",
+      "name": "Convert Synchronous to Streaming",
+      "category": "refactor",
+      "content": "This endpoint loads entire dataset into memory before responding:\n\n[code snippet]\n\nRefactor to stream data:\n1. Use database cursor/streaming query\n2. Stream response with chunked transfer encoding\n3. Process records one at a time\n4. Reduce memory usage from O(n) to O(1)\n5. Improve time-to-first-byte"
+    },
+    {
+      "id": "136",
+      "name": "Responsive Grid Layout",
+      "category": "ui",
+      "content": "Create a responsive grid layout for [page] using CSS Grid in [framework]:\n- Desktop: 3 columns with 24px gap\n- Tablet (768px): 2 columns with 16px gap\n- Mobile (480px): 1 column with 12px gap\n- Cards with consistent height using auto-fill\n- Max container width 1200px, centered\n- Smooth transition between breakpoints"
+    },
+    {
+      "id": "137",
+      "name": "Flexbox Navigation Bar",
+      "category": "ui",
+      "content": "Build a responsive navigation bar using Flexbox in [framework]:\n- Logo on the left, nav links centered, CTA button on the right\n- Hamburger menu on mobile (below 768px)\n- Sticky header on scroll with shadow\n- Active link indicator\n- Smooth slide-in mobile menu\n- Keyboard accessible (tab navigation, escape to close)"
+    },
+    {
+      "id": "138",
+      "name": "CSS Fade-In on Scroll Animation",
+      "category": "ui",
+      "content": "Implement scroll-triggered fade-in animations in [framework]:\n- Elements fade in and slide up when entering viewport\n- Use Intersection Observer (not scroll events)\n- Staggered animation for list items (50ms delay between each)\n- Only animate once (don't re-animate on scroll up)\n- Respect prefers-reduced-motion\n- Use CSS transforms for GPU acceleration"
+    },
+    {
+      "id": "139",
+      "name": "Page Transition Animation",
+      "category": "ui",
+      "content": "Add smooth page transitions in [framework]:\n- Fade out current page, fade in new page\n- Slide direction based on navigation direction\n- Loading indicator during transition\n- Maintain scroll position where appropriate\n- Duration: 300-400ms with ease-out curve\n- Fallback for users who prefer reduced motion"
+    },
+    {
+      "id": "140",
+      "name": "Framer Motion Card Animations",
+      "category": "ui",
+      "content": "Animate a card list using Framer Motion in React:\n- Cards animate in with staggered entrance\n- Hover: scale up slightly with shadow\n- Click: press down effect\n- Remove: animate out with height collapse\n- Reorder: smooth layout animation\n- Use AnimatePresence for mount/unmount\n- Drag to reorder with spring physics"
+    },
+    {
+      "id": "141",
+      "name": "ARIA Accessible Form",
+      "category": "ui",
+      "content": "Make this form fully accessible following WCAG 2.1 AA:\n\n[code snippet]\n\nAdd:\n- Proper label associations (for/id)\n- aria-required for required fields\n- aria-invalid and aria-describedby for errors\n- Error summary at form top\n- Focus management (focus first error on submit)\n- Live region for dynamic error messages\n- Keyboard-only operation support"
+    },
+    {
+      "id": "142",
+      "name": "Screen Reader Optimized Page",
+      "category": "ui",
+      "content": "Audit and fix this page for screen reader compatibility:\n\n[code snippet]\n\nEnsure:\n- Semantic HTML (header, main, nav, section, article)\n- Heading hierarchy (h1 > h2 > h3, no skips)\n- Alt text for all images\n- aria-label for icon-only buttons\n- Skip to main content link\n- Live regions for dynamic updates\n- Focus order matches visual order"
+    },
+    {
+      "id": "143",
+      "name": "Keyboard Navigation Support",
+      "category": "ui",
+      "content": "Add keyboard navigation to this [component] in [framework]:\n\n[code snippet]\n\nImplement:\n- Tab to focus items\n- Arrow keys to navigate between items\n- Enter/Space to select/activate\n- Escape to close/dismiss\n- Home/End to jump to first/last\n- Focus trap in modals\n- Visible focus indicators (2px solid outline)"
+    },
+    {
+      "id": "144",
+      "name": "Design System Color Tokens",
+      "category": "ui",
+      "content": "Create a design system color token set for [brand]:\n- Primary: [color] with 50-900 shade scale\n- Secondary: [color] with shades\n- Neutral/Gray scale (50-900)\n- Semantic colors: success, warning, error, info\n- Surface colors: background, card, elevated\n- Text colors: primary, secondary, disabled\n- Border colors\n- Export as CSS custom properties and JS constants\n- Include dark mode variants"
+    },
+    {
+      "id": "145",
+      "name": "Typography Scale System",
+      "category": "ui",
+      "content": "Design a typography scale for [framework]:\n- Font family: [font name] for headings, system font for body\n- Scale: xs(12), sm(14), base(16), lg(18), xl(20), 2xl(24), 3xl(30), 4xl(36)\n- Line heights: tight(1.2), normal(1.5), relaxed(1.75)\n- Font weights: normal(400), medium(500), semibold(600), bold(700)\n- Letter spacing adjustments for headings\n- Responsive: scale down on mobile\n- CSS custom properties for all values"
+    },
+    {
+      "id": "146",
+      "name": "Mobile-First Responsive Page",
+      "category": "ui",
+      "content": "Convert this desktop-first page to mobile-first in [framework]:\n\n[code snippet]\n\nApproach:\n1. Start with mobile styles as default\n2. Add min-width media queries for tablet (768px) and desktop (1024px)\n3. Stack elements vertically on mobile\n4. Touch-friendly tap targets (min 44px)\n5. Readable font sizes (min 16px input to prevent zoom)\n6. Collapsible sections on mobile"
+    },
+    {
+      "id": "147",
+      "name": "Skeleton Loading Screen",
+      "category": "ui",
+      "content": "Create skeleton loading placeholders for [page/component] in [framework]:\n- Match the layout of actual content\n- Animated shimmer effect (left to right gradient)\n- Gray placeholder blocks for text, circles for avatars\n- Maintain exact dimensions to prevent layout shift\n- Show for minimum 300ms to prevent flash\n- Smooth transition to real content"
+    },
+    {
+      "id": "148",
+      "name": "Error State Component",
+      "category": "ui",
+      "content": "Design reusable error state components in [framework]:\n- Full page error (500, network error)\n- Inline error (form field, card load failure)\n- Toast error (brief notifications)\n- Each includes: icon, title, description, retry button\n- Different severity levels: error (red), warning (yellow), info (blue)\n- Accessible error announcements\n- Retry action with loading state"
+    },
+    {
+      "id": "149",
+      "name": "Empty State Component",
+      "category": "ui",
+      "content": "Create empty state components for [framework]:\n- No data: illustration + 'No [items] yet' + CTA button\n- No search results: 'No results for [query]' + suggestions\n- No permission: lock icon + 'You don't have access' + request button\n- Error loading: retry option\n- Custom illustration or icon per context\n- Centered layout with max-width 400px\n- Helpful, encouraging copy"
+    },
+    {
+      "id": "150",
+      "name": "Toast Notification System",
+      "category": "ui",
+      "content": "Build a toast notification system in [framework]:\n- Position: top-right with stack\n- Types: success (green), error (red), warning (yellow), info (blue)\n- Auto-dismiss after 5 seconds\n- Manual dismiss with X button\n- Progress bar showing remaining time\n- Pause timer on hover\n- Maximum 3 visible at once\n- Slide-in animation from right\n- Accessible: role='alert' for errors, role='status' for info"
+    },
+    {
+      "id": "151",
+      "name": "Modal Dialog Component",
+      "category": "ui",
+      "content": "Create a reusable modal dialog in [framework]:\n- Overlay with backdrop blur\n- Centered modal with max-width variants (sm/md/lg)\n- Header with title and close button\n- Scrollable body content\n- Footer with action buttons\n- Focus trap (tab cycles within modal)\n- Close on Escape key and backdrop click\n- Animate: fade in overlay, scale up modal\n- Prevent body scroll when open\n- Return focus to trigger element on close"
+    },
+    {
+      "id": "152",
+      "name": "Sidebar Navigation",
+      "category": "ui",
+      "content": "Build a collapsible sidebar navigation in [framework]:\n- Fixed sidebar on desktop (240px width)\n- Collapsible to icon-only mode (64px)\n- Overlay sidebar on mobile\n- Navigation items with icons and labels\n- Nested items with expand/collapse\n- Active item highlight\n- Tooltip on collapsed items\n- Smooth width transition\n- Persistent collapse state in localStorage"
+    },
+    {
+      "id": "153",
+      "name": "Breadcrumb Navigation",
+      "category": "ui",
+      "content": "Create a breadcrumb component in [framework]:\n- Auto-generate from route hierarchy\n- Truncate long paths with ellipsis\n- Home icon as first item\n- Current page (last item) is not a link\n- Separator: / or > character\n- Responsive: show only last 2 levels on mobile\n- Schema.org structured data for SEO\n- aria-label='Breadcrumb' with nav element"
+    },
+    {
+      "id": "154",
+      "name": "Tab Component",
+      "category": "ui",
+      "content": "Build an accessible tab component in [framework]:\n- Horizontal tab list with active indicator\n- Click or keyboard to switch tabs (arrow keys)\n- Tab content with smooth fade transition\n- Lazy load tab content option\n- URL hash sync for deep linking\n- role='tablist', role='tab', role='tabpanel'\n- aria-selected and aria-controls attributes\n- Scrollable tab list on overflow (mobile)"
+    },
+    {
+      "id": "155",
+      "name": "Form with Validation UI",
+      "category": "ui",
+      "content": "Design a form with real-time validation UI in [framework]:\n- Floating labels that animate up on focus\n- Green check icon on valid fields\n- Red border and error message on invalid\n- Password strength meter (weak/fair/strong)\n- Error messages below each field\n- Error summary banner on submit\n- Disabled submit until all valid\n- Loading state on submit button"
+    },
+    {
+      "id": "156",
+      "name": "Data Table with Sort/Filter",
+      "category": "ui",
+      "content": "Build an interactive data table in [framework]:\n- Column headers with sort indicators (asc/desc)\n- Click to sort, shift+click for multi-sort\n- Column filter dropdowns\n- Text search across all columns\n- Sticky header on vertical scroll\n- Horizontal scroll on mobile\n- Row selection with checkbox\n- Pagination with page size selector\n- Responsive: card view on mobile"
+    },
+    {
+      "id": "157",
+      "name": "Chart Dashboard Widget",
+      "category": "ui",
+      "content": "Create a chart component using [Chart.js/D3/Recharts] in [framework]:\n- Line chart with multiple datasets\n- Hover tooltip with values\n- Legend with toggle to show/hide datasets\n- Responsive sizing\n- Animate on initial render\n- Custom color palette matching design system\n- Y-axis formatting (currency, percentage)\n- Export chart as PNG button"
+    },
+    {
+      "id": "158",
+      "name": "Image Lazy Loading",
+      "category": "ui",
+      "content": "Implement optimized image loading in [framework]:\n- Native lazy loading (loading='lazy')\n- Blur-up placeholder (low-res to high-res)\n- Responsive images with srcset and sizes\n- WebP with fallback to JPEG\n- Aspect ratio preservation (prevent CLS)\n- Error state with fallback image\n- Intersection Observer for custom lazy behavior\n- Progressive loading for hero images"
+    },
+    {
+      "id": "159",
+      "name": "Dark Mode CSS Implementation",
+      "category": "ui",
+      "content": "Implement dark mode using CSS custom properties:\n\nLight theme:\n- Background: #ffffff, Card: #f5f5f7\n- Text primary: #1a1a1a, Text secondary: #86868b\n- Border: rgba(0,0,0,0.08)\n\nDark theme:\n- Background: #000000, Card: #1c1c1e\n- Text primary: #f5f5f7, Text secondary: #98989d\n- Border: rgba(255,255,255,0.1)\n\nImplement:\n- CSS custom properties with data-theme attribute\n- prefers-color-scheme media query\n- Smooth 200ms transition between themes\n- Images and shadows adjusted for dark mode"
+    },
+    {
+      "id": "160",
+      "name": "Micro-Interaction Button",
+      "category": "ui",
+      "content": "Create a button with micro-interactions in [framework]:\n- Hover: subtle scale(1.02) and shadow increase\n- Active/Press: scale(0.96) with quick 100ms transition\n- Focus: visible ring outline\n- Loading: spinner replaces text, width maintained\n- Success: green check icon with pulse\n- Disabled: reduced opacity, no hover effects\n- Ripple effect on click (Material-style)\n- All transitions using ease-out cubic-bezier"
+    },
+    {
+      "id": "161",
+      "name": "Drag and Drop File Zone",
+      "category": "ui",
+      "content": "Build a drag-and-drop file upload zone in [framework]:\n- Dashed border drop area\n- Border color change on drag over\n- File type icons for different formats\n- Multiple file support with list view\n- Remove individual files from queue\n- File size and type validation\n- Upload progress per file\n- Drag: overlay message 'Drop files here'\n- Click to browse fallback"
+    },
+    {
+      "id": "162",
+      "name": "Drag and Drop Sortable List",
+      "category": "ui",
+      "content": "Create a drag-and-drop sortable list in [framework]:\n- Drag handle on each item\n- Visual placeholder showing drop position\n- Smooth animation during reorder\n- Touch support for mobile\n- Keyboard accessible (space to grab, arrows to move)\n- Auto-scroll when dragging near edges\n- Save new order to backend\n- Undo last reorder"
+    },
+    {
+      "id": "163",
+      "name": "Infinite Scroll Feed",
+      "category": "ui",
+      "content": "Implement infinite scroll for a content feed in [framework]:\n- Intersection Observer trigger at bottom\n- Loading spinner while fetching\n- 'No more items' message at end\n- Pull-to-refresh on mobile (touch gesture)\n- Scroll position restoration on back navigation\n- New content indicator badge\n- Scroll-to-top floating button (appears after scrolling down)\n- Virtualized rendering for 1000+ items"
+    },
+    {
+      "id": "164",
+      "name": "Virtual List for Large Data",
+      "category": "ui",
+      "content": "Implement a virtual/windowed list for rendering 10,000+ items in [framework]:\n- Only render visible items + buffer\n- Fixed or variable row heights\n- Smooth scrolling without jank\n- Correct scrollbar behavior\n- Support for dynamic item heights\n- Use [react-window/react-virtualized/tanstack-virtual]\n- Maintain selection state while scrolling"
+    },
+    {
+      "id": "165",
+      "name": "Responsive Card Grid",
+      "category": "ui",
+      "content": "Design a responsive card grid layout in [framework]:\n- CSS Grid with auto-fill and minmax\n- Card: image top, title, description, footer with tags\n- Image aspect ratio preserved (16:9)\n- Hover: slight lift with shadow\n- Equal height cards in each row\n- Skeleton loading variant\n- 3 columns desktop, 2 tablet, 1 mobile\n- Smooth layout transitions"
+    },
+    {
+      "id": "166",
+      "name": "Stepper/Wizard Component",
+      "category": "ui",
+      "content": "Build a multi-step wizard/stepper in [framework]:\n- Step indicators showing progress\n- Completed steps: green check\n- Current step: active highlight\n- Future steps: gray/disabled\n- Next/Back/Submit buttons\n- Form validation before advancing\n- Step content with smooth slide transition\n- Save progress between steps\n- Responsive: vertical stepper on mobile"
+    },
+    {
+      "id": "167",
+      "name": "Dropdown Select Component",
+      "category": "ui",
+      "content": "Create a custom dropdown select in [framework]:\n- Click to open options list\n- Search/filter within options\n- Keyboard navigation (arrows, enter, escape)\n- Multi-select variant with tags\n- Clear selection button\n- Loading state for async options\n- Group options with headers\n- Custom option rendering (icon + text)\n- Position: flip above if near bottom"
+    },
+    {
+      "id": "168",
+      "name": "Tooltip Component",
+      "category": "ui",
+      "content": "Build a reusable tooltip component in [framework]:\n- Trigger on hover and focus\n- Positions: top, bottom, left, right (auto-flip)\n- Arrow pointing to trigger\n- Delay before show (200ms) and hide (100ms)\n- Rich content support (HTML)\n- Maximum width with word wrap\n- Dark background with light text\n- Accessible: role='tooltip' with aria-describedby\n- Dismiss on Escape key"
+    },
+    {
+      "id": "169",
+      "name": "Accordion/Collapsible Component",
+      "category": "ui",
+      "content": "Create an accessible accordion in [framework]:\n- Click header to expand/collapse\n- Animated height transition (not display:none)\n- Only one section open at a time (optional)\n- Open/close icon rotation\n- Keyboard: Enter/Space to toggle, arrow keys between headers\n- ARIA: aria-expanded, aria-controls\n- Focus management after toggle\n- Nested accordion support"
+    },
+    {
+      "id": "170",
+      "name": "Search Bar with Suggestions",
+      "category": "ui",
+      "content": "Build a search bar with autocomplete in [framework]:\n- Input with search icon\n- Dropdown suggestions on type (debounced 300ms)\n- Highlight matching text in suggestions\n- Keyboard: arrow keys to navigate, enter to select\n- Recent searches section\n- Category grouping in results\n- Loading spinner during fetch\n- Clear input X button\n- Click outside to dismiss"
+    },
+    {
+      "id": "171",
+      "name": "Avatar Component with Fallback",
+      "category": "ui",
+      "content": "Create an avatar component in [framework]:\n- Image avatar with lazy loading\n- Fallback: user initials on colored background\n- Color generated from user name hash\n- Size variants: xs(24px), sm(32px), md(40px), lg(64px), xl(96px)\n- Status indicator dot (online, offline, busy)\n- Avatar group with overlap (+3 more)\n- Rounded and square variants\n- Loading skeleton state"
+    },
+    {
+      "id": "172",
+      "name": "Notification Badge",
+      "category": "ui",
+      "content": "Build a notification badge component in [framework]:\n- Red dot for boolean indicator\n- Number badge for count\n- Max count display (99+)\n- Animate: pulse on new notification\n- Position: top-right of parent element\n- Size: auto-width based on content\n- Remove animation when clearing\n- Accessible: aria-label describing count"
+    },
+    {
+      "id": "173",
+      "name": "Progress Bar Component",
+      "category": "ui",
+      "content": "Create a progress bar component in [framework]:\n- Linear and circular variants\n- Percentage label (inside or outside)\n- Color variants: default, success, warning, danger\n- Indeterminate mode (animated stripe)\n- Size variants: sm, md, lg\n- Animated fill on value change\n- Multi-segment variant (stacked)\n- Accessible: role='progressbar' with aria-valuenow"
+    },
+    {
+      "id": "174",
+      "name": "Date Picker Component",
+      "category": "ui",
+      "content": "Build a date picker in [framework]:\n- Calendar grid with month/year navigation\n- Single date and date range selection\n- Min/max date constraints\n- Highlight today\n- Disable specific dates\n- Keyboard navigation (arrows, enter)\n- Mobile: native date input fallback\n- Format customization (MM/DD/YYYY, etc.)\n- Clear and today shortcut buttons"
+    },
+    {
+      "id": "175",
+      "name": "Responsive Hero Section",
+      "category": "ui",
+      "content": "Design a hero section for a landing page in [framework]:\n- Full-width background (image, gradient, or video)\n- Large headline with subtext\n- CTA buttons (primary and secondary)\n- Scroll-down indicator\n- Responsive typography (fluid scaling)\n- Overlay for text readability\n- Animate elements on load (fade up, stagger)\n- Mobile: stacked layout, shorter text\n- Minimum viewport height"
+    },
+    {
+      "id": "176",
+      "name": "RESTful Resource Endpoints",
+      "category": "api",
+      "content": "Design and implement RESTful API endpoints for [resource] in [framework] with [database]:\n\nEndpoints:\n- GET /api/v1/[resource] - List with query params: page, limit, sort, filter\n- GET /api/v1/[resource]/:id - Get by ID with field selection\n- POST /api/v1/[resource] - Create with validation\n- PUT /api/v1/[resource]/:id - Full update\n- PATCH /api/v1/[resource]/:id - Partial update\n- DELETE /api/v1/[resource]/:id - Soft delete\n\nInclude: input validation, error handling, pagination metadata, consistent response format."
+    },
+    {
+      "id": "177",
+      "name": "GraphQL Schema Design",
+      "category": "api",
+      "content": "Design a GraphQL schema for [domain] with [entities]:\n\nCreate:\n1. Type definitions for each entity\n2. Query type: list (with pagination), getById, search\n3. Mutation type: create, update, delete\n4. Input types for mutations\n5. Custom scalar types (DateTime, JSON)\n6. Interface for common fields\n7. Connection types for cursor pagination\n8. Subscription for real-time updates"
+    },
+    {
+      "id": "178",
+      "name": "GraphQL Resolvers",
+      "category": "api",
+      "content": "Implement GraphQL resolvers for this schema in [framework]:\n\n[schema]\n\nInclude:\n- Query resolvers with DataLoader for N+1 prevention\n- Mutation resolvers with input validation\n- Field resolvers for computed fields\n- Error handling with custom error codes\n- Authentication check in context\n- Permission guards per field"
+    },
+    {
+      "id": "179",
+      "name": "JWT Authentication API",
+      "category": "api",
+      "content": "Implement JWT authentication endpoints in [framework]:\n\n- POST /api/auth/register - Create account\n- POST /api/auth/login - Returns access + refresh tokens\n- POST /api/auth/refresh - Exchange refresh for new access token\n- POST /api/auth/logout - Invalidate refresh token\n- GET /api/auth/me - Get current user\n\nSecurity:\n- Access token: 15min expiry, in Authorization header\n- Refresh token: 7 day expiry, httpOnly cookie\n- Password hashing with bcrypt (12 rounds)\n- Token blacklist on logout"
+    },
+    {
+      "id": "180",
+      "name": "OAuth2 Authorization Server",
+      "category": "api",
+      "content": "Implement OAuth2 authorization endpoints in [framework]:\n\n- GET /oauth/authorize - Authorization endpoint\n- POST /oauth/token - Token endpoint\n- POST /oauth/revoke - Token revocation\n- GET /oauth/userinfo - User info endpoint\n\nSupport grant types:\n- Authorization code with PKCE\n- Refresh token\n- Client credentials\n\nInclude proper error responses per OAuth2 spec (RFC 6749)."
+    },
+    {
+      "id": "181",
+      "name": "API Key Authentication",
+      "category": "api",
+      "content": "Implement API key authentication in [framework]:\n\n- Generate API keys: POST /api/keys\n- List keys: GET /api/keys\n- Revoke key: DELETE /api/keys/:id\n\nMiddleware:\n- Check X-API-Key header\n- Lookup key in database with caching\n- Rate limit per key\n- Track usage per key\n- Scope-based permissions per key\n- Hash stored keys (never store plain text)"
+    },
+    {
+      "id": "182",
+      "name": "Rate Limiting Middleware",
+      "category": "api",
+      "content": "Implement rate limiting middleware in [framework]:\n\nAlgorithm: Sliding window with Redis\n\nLimits:\n- Anonymous: 30 requests/minute\n- Authenticated: 100 requests/minute\n- Admin: 500 requests/minute\n\nResponse headers:\n- X-RateLimit-Limit\n- X-RateLimit-Remaining\n- X-RateLimit-Reset\n\n429 response with Retry-After header on limit exceeded.\nDistributed support for multiple server instances."
+    },
+    {
+      "id": "183",
+      "name": "Request Validation Middleware",
+      "category": "api",
+      "content": "Create request validation middleware using [Joi/Zod/express-validator] in [framework]:\n\nValidation for:\n- Body: JSON schema validation\n- Query params: type coercion and bounds\n- URL params: format validation (UUID, slug)\n- Headers: required headers check\n\nFeatures:\n- Descriptive error messages per field\n- Sanitize input (trim, escape HTML)\n- Strip unknown fields\n- Consistent 400 error response format"
+    },
+    {
+      "id": "184",
+      "name": "API Error Handling",
+      "category": "api",
+      "content": "Implement centralized API error handling in [framework]:\n\nCustom error classes:\n- ValidationError (400)\n- AuthenticationError (401)\n- ForbiddenError (403)\n- NotFoundError (404)\n- ConflictError (409)\n- RateLimitError (429)\n- InternalError (500)\n\nError response format:\n{ error: { code, message, details, requestId } }\n\nGlobal error handler middleware that logs and formats all errors consistently."
+    },
+    {
+      "id": "185",
+      "name": "API Versioning",
+      "category": "api",
+      "content": "Implement API versioning in [framework]:\n\nStrategy: URL path versioning (/api/v1, /api/v2)\n\nSetup:\n1. Version-specific route registration\n2. Shared middleware across versions\n3. Version-specific controllers\n4. Deprecation headers for old versions\n5. Version sunset schedule\n6. Documentation per version\n7. Request routing based on version"
+    },
+    {
+      "id": "186",
+      "name": "Cursor-Based Pagination API",
+      "category": "api",
+      "content": "Implement cursor-based pagination for [entity] API in [framework]:\n\nEndpoint: GET /api/[entity]?cursor=abc&limit=20&direction=next\n\nResponse:\n{\n  data: [...],\n  pagination: {\n    hasNextPage: true,\n    hasPreviousPage: false,\n    startCursor: 'abc',\n    endCursor: 'xyz',\n    totalCount: 1500\n  }\n}\n\nUse indexed column for cursor (created_at + id for uniqueness).\nSupport forward and backward pagination."
+    },
+    {
+      "id": "187",
+      "name": "File Upload API",
+      "category": "api",
+      "content": "Implement file upload endpoints in [framework]:\n\n- POST /api/upload - Single file upload (multipart)\n- POST /api/upload/multiple - Multiple files\n- POST /api/upload/presigned - Get presigned URL for direct-to-S3\n- GET /api/files/:id - Get file metadata\n- DELETE /api/files/:id - Delete file\n\nFeatures:\n- File type whitelist validation\n- Max file size enforcement\n- Virus scanning integration point\n- Thumbnail generation for images\n- Unique filename generation\n- Store in [S3/local/CloudStorage]"
+    },
+    {
+      "id": "188",
+      "name": "WebSocket Server",
+      "category": "api",
+      "content": "Implement a WebSocket server in [framework]:\n\nSetup:\n1. WebSocket upgrade handling\n2. Authentication on connection (JWT in query/header)\n3. Room/channel management (join, leave)\n4. Message broadcasting to room members\n5. Heartbeat ping/pong (30s interval)\n6. Graceful disconnection handling\n7. Reconnection support\n8. Message acknowledgment system\n9. Rate limiting per connection"
+    },
+    {
+      "id": "189",
+      "name": "Authentication Middleware",
+      "category": "api",
+      "content": "Create authentication middleware for [framework]:\n\nFeatures:\n1. Extract token from Authorization header or cookie\n2. Verify JWT signature and expiration\n3. Attach user object to request\n4. Handle expired tokens (401 with specific code)\n5. Handle invalid tokens (401)\n6. Optional auth (some routes need user if available)\n7. Role-based route protection\n8. Refresh token rotation on near-expiry"
+    },
+    {
+      "id": "190",
+      "name": "Database Connection Pool",
+      "category": "api",
+      "content": "Configure database connection pooling in [framework] with [database]:\n\nSettings:\n- Pool size: min 5, max 20\n- Connection timeout: 10 seconds\n- Idle timeout: 30 seconds\n- Max lifetime: 1 hour\n\nImplement:\n1. Pool initialization on app start\n2. Health check query on checkout\n3. Connection retry on failure\n4. Graceful shutdown (drain pool)\n5. Pool metrics logging\n6. Separate read/write pools for replicas"
+    },
+    {
+      "id": "191",
+      "name": "ORM Model Definitions",
+      "category": "api",
+      "content": "Define [ORM] models for the following entities in [framework]:\n\n[entity descriptions with fields]\n\nFor each model:\n1. Column definitions with types and constraints\n2. Relationships (hasMany, belongsTo, manyToMany)\n3. Timestamps (createdAt, updatedAt)\n4. Soft delete support\n5. Indexes for query optimization\n6. Validation rules\n7. Scopes for common queries\n8. Serialization (toJSON with field exclusion)"
+    },
+    {
+      "id": "192",
+      "name": "Database Migration",
+      "category": "api",
+      "content": "Create database migrations for [schema changes] in [framework]:\n\nChanges:\n[describe schema changes]\n\nMigration must:\n1. Be reversible (up and down)\n2. Handle existing data\n3. Be safe for zero-downtime deployment\n4. Add indexes after data migration\n5. Use transactions where supported\n6. Include data transformation if needed\n7. Test with production-like data volume"
+    },
+    {
+      "id": "193",
+      "name": "Redis Cache Implementation",
+      "category": "api",
+      "content": "Implement Redis caching layer for [framework] API:\n\nCache strategies:\n1. Cache-aside for GET endpoints\n2. Write-through for POST/PUT\n3. TTL: 5min for lists, 15min for single items\n4. Cache key format: 'entity:id' and 'entity:list:hash(params)'\n5. Cache invalidation on mutations\n6. Cache warming for popular items\n7. Redis connection pooling\n8. Fallback to database on cache miss/failure"
+    },
+    {
+      "id": "194",
+      "name": "Message Queue Integration",
+      "category": "api",
+      "content": "Integrate [RabbitMQ/SQS/Redis] message queue in [framework]:\n\nSetup:\n1. Producer: publish events from API handlers\n2. Consumer: process messages with worker\n3. Dead letter queue for failed messages\n4. Retry logic (3 attempts, exponential backoff)\n5. Message acknowledgment\n6. Queue monitoring and metrics\n7. Graceful shutdown (finish current message)\n\nEvents: [list event types like user.created, order.placed]"
+    },
+    {
+      "id": "195",
+      "name": "Webhook Delivery System",
+      "category": "api",
+      "content": "Build a webhook delivery system in [framework]:\n\n- POST /api/webhooks - Register endpoint\n- GET /api/webhooks - List registrations\n- DELETE /api/webhooks/:id - Remove\n- POST /api/webhooks/:id/test - Send test event\n\nDelivery:\n1. HMAC-SHA256 signature in header\n2. Async delivery via job queue\n3. Retry: 3 attempts at 1min, 5min, 30min\n4. Log all delivery attempts with response\n5. Disable after 10 consecutive failures\n6. Webhook secret rotation support"
+    },
+    {
+      "id": "196",
+      "name": "OpenAPI/Swagger Documentation",
+      "category": "api",
+      "content": "Generate OpenAPI 3.0 documentation for [framework] API:\n\n1. Define all endpoints with:\n   - HTTP method, path, description\n   - Request body schemas\n   - Query/path parameter definitions\n   - Response schemas for all status codes\n   - Authentication requirements\n2. Reusable component schemas\n3. Example requests and responses\n4. Server URLs for each environment\n5. Serve Swagger UI at /api/docs"
+    },
+    {
+      "id": "197",
+      "name": "CORS Configuration",
+      "category": "api",
+      "content": "Configure CORS for [framework] API:\n\nSettings:\n- Allowed origins: [list of frontend URLs]\n- Allowed methods: GET, POST, PUT, PATCH, DELETE, OPTIONS\n- Allowed headers: Content-Type, Authorization, X-Request-ID\n- Exposed headers: X-RateLimit-Remaining, X-Request-ID\n- Credentials: true (for cookies)\n- Max age: 86400 (24h preflight cache)\n- Handle OPTIONS preflight requests\n- Reject requests from unauthorized origins"
+    },
+    {
+      "id": "198",
+      "name": "Health Check Endpoint",
+      "category": "api",
+      "content": "Implement health check endpoints in [framework]:\n\n- GET /health/live - Liveness (app is running)\n- GET /health/ready - Readiness (dependencies OK)\n\nReadiness checks:\n1. Database connection with timeout (5s)\n2. Redis connection\n3. External API availability\n4. Disk space > 10%\n5. Memory usage < 90%\n\nResponse: { status: 'healthy'|'degraded'|'unhealthy', checks: {...}, uptime, version }"
+    },
+    {
+      "id": "199",
+      "name": "Background Job Processor",
+      "category": "api",
+      "content": "Implement background job processing in [framework]:\n\nSetup with [Bull/Agenda/Celery]:\n1. Job queue with named queues (email, report, cleanup)\n2. Job scheduling (immediate, delayed, recurring)\n3. Job priority levels\n4. Concurrency control per queue\n5. Job progress tracking\n6. Failed job retry with backoff\n7. Job completion/failure events\n8. Admin dashboard for job monitoring\n9. Graceful shutdown (complete running jobs)"
+    },
+    {
+      "id": "200",
+      "name": "Email Sending Service",
+      "category": "api",
+      "content": "Create an email service in [framework]:\n\n- POST /api/email/send - Send single email\n- POST /api/email/bulk - Send batch emails\n- GET /api/email/templates - List templates\n\nFeatures:\n1. Template engine ([Handlebars/EJS]) for HTML emails\n2. SMTP configuration ([SendGrid/SES/Mailgun])\n3. Queue emails for async sending\n4. Track delivery status\n5. Rate limiting (max 100/hour)\n6. Unsubscribe handling\n7. Attachment support\n8. Plain text fallback generation"
+    },
+    {
+      "id": "201",
+      "name": "Search API with Elasticsearch",
+      "category": "api",
+      "content": "Implement search API using Elasticsearch in [framework]:\n\n- GET /api/search?q=term&type=entity&page=1\n\nFeatures:\n1. Index management (create, update, delete)\n2. Document indexing on CRUD operations\n3. Full-text search with relevance scoring\n4. Autocomplete/suggest endpoint\n5. Faceted search (filter by category, date, etc.)\n6. Highlight matched terms\n7. Fuzzy matching for typos\n8. Aggregation for analytics\n9. Index aliasing for zero-downtime reindex"
+    },
+    {
+      "id": "202",
+      "name": "Batch Processing API",
+      "category": "api",
+      "content": "Implement batch processing endpoints in [framework]:\n\n- POST /api/batch - Submit batch operation\n- GET /api/batch/:id - Get batch status\n- DELETE /api/batch/:id - Cancel batch\n\nFeatures:\n1. Accept array of operations (max 100)\n2. Process async with progress tracking\n3. Per-item success/failure reporting\n4. Partial failure handling (continue on error)\n5. Rate limiting for batch submissions\n6. Result download when complete\n7. Batch expiration (cleanup after 24h)"
+    },
+    {
+      "id": "203",
+      "name": "Server-Sent Events API",
+      "category": "api",
+      "content": "Implement Server-Sent Events (SSE) in [framework]:\n\n- GET /api/events/stream - SSE endpoint\n\nFeatures:\n1. Event stream with proper headers (text/event-stream)\n2. Named events (update, notification, heartbeat)\n3. Client authentication via query token\n4. Heartbeat every 15 seconds\n5. Reconnection with Last-Event-ID\n6. Event history replay on reconnect\n7. Connection limit per user\n8. Graceful connection cleanup"
+    },
+    {
+      "id": "204",
+      "name": "API Gateway Pattern",
+      "category": "api",
+      "content": "Implement an API gateway in [framework]:\n\nFeatures:\n1. Route requests to microservices\n2. Authentication at gateway level\n3. Rate limiting per client\n4. Request/response transformation\n5. Load balancing between service instances\n6. Circuit breaker for failing services\n7. Request logging and tracing\n8. API key management\n9. Response caching\n10. Aggregate responses from multiple services"
+    },
+    {
+      "id": "205",
+      "name": "Pagination with Total Count",
+      "category": "api",
+      "content": "Implement offset-based pagination with total count in [framework]:\n\nGET /api/[entity]?page=1&limit=20&sort=createdAt&order=desc\n\nResponse:\n{\n  data: [...],\n  meta: {\n    page: 1,\n    limit: 20,\n    totalItems: 523,\n    totalPages: 27,\n    hasNextPage: true,\n    hasPreviousPage: false\n  }\n}\n\nOptimize: use COUNT estimate for large tables, exact count for filtered queries."
+    },
+    {
+      "id": "206",
+      "name": "Soft Delete Implementation",
+      "category": "api",
+      "content": "Implement soft delete pattern for [entity] in [framework] with [ORM]:\n\n1. Add deletedAt column (nullable timestamp)\n2. Override delete to set deletedAt\n3. Default scope excludes soft-deleted records\n4. withDeleted scope to include all\n5. Restore endpoint: POST /api/[entity]/:id/restore\n6. Permanent delete after 30 days (scheduled job)\n7. Cascade soft delete to related records\n8. Unique constraints with soft delete consideration"
+    },
+    {
+      "id": "207",
+      "name": "Multi-Tenant API",
+      "category": "api",
+      "content": "Implement multi-tenant API in [framework]:\n\nTenant resolution:\n1. From subdomain (tenant.app.com)\n2. From header (X-Tenant-ID)\n3. From JWT claim\n\nData isolation:\n- Shared database with tenant_id column\n- Middleware sets tenant context\n- All queries automatically filtered by tenant\n- Cross-tenant access prevention\n- Tenant-specific configuration\n- Admin endpoints for tenant management"
+    },
+    {
+      "id": "208",
+      "name": "Audit Trail API",
+      "category": "api",
+      "content": "Implement audit trail endpoints in [framework]:\n\n- GET /api/audit-logs - List with filters\n- GET /api/audit-logs/:entityType/:entityId - Entity history\n\nLogging middleware:\n1. Capture before/after state on mutations\n2. Record: userId, action, entityType, entityId, changes, ip, timestamp\n3. Store in separate audit table\n4. Immutable (no update/delete on audit records)\n5. Query by user, entity, action, date range\n6. Export as CSV"
+    },
+    {
+      "id": "209",
+      "name": "Idempotent API Design",
+      "category": "api",
+      "content": "Make these API endpoints idempotent in [framework]:\n\n[list of endpoints]\n\nImplementation:\n1. Accept Idempotency-Key header for POST requests\n2. Store request hash with response for 24 hours\n3. Return cached response for duplicate requests\n4. Use Redis for idempotency key storage\n5. Handle concurrent duplicate requests\n6. Return 409 if key reused with different payload"
+    },
+    {
+      "id": "210",
+      "name": "API Response Compression",
+      "category": "api",
+      "content": "Implement response compression in [framework]:\n\n1. Enable gzip and Brotli compression\n2. Compress responses > 1KB\n3. Content-Type whitelist (JSON, HTML, CSS, JS)\n4. Accept-Encoding header negotiation\n5. Vary header for caching correctness\n6. Skip compression for already compressed (images)\n7. Benchmark: measure response size reduction\n8. Configure compression level (balance speed vs size)"
+    },
+    {
+      "id": "211",
+      "name": "Generate README",
+      "category": "other",
+      "content": "Generate a comprehensive README.md for [project name]:\n\n## Structure:\n1. Project title and badges (build, coverage, license)\n2. One-paragraph description\n3. Features list (bullet points)\n4. Screenshots/demo GIF\n5. Getting started (prerequisites, installation, configuration)\n6. Usage examples with code\n7. API reference summary\n8. Contributing guidelines\n9. License\n10. Contact/support info\n\nTech stack: [technologies]\nProject purpose: [description]"
+    },
+    {
+      "id": "212",
+      "name": "Add JSDoc Comments",
+      "category": "other",
+      "content": "Add comprehensive JSDoc comments to this code:\n\n[code snippet]\n\nFor each function/method:\n- @description - What it does\n- @param {type} name - Parameter description\n- @returns {type} - Return value description\n- @throws {ErrorType} - When errors occur\n- @example - Usage example\n- @since - Version added\n- @deprecated - If applicable with migration path"
+    },
+    {
+      "id": "213",
+      "name": "Generate Architecture Diagram",
+      "category": "other",
+      "content": "Create a Mermaid.js architecture diagram for [system]:\n\nComponents:\n[list components]\n\nShow:\n1. System boundaries\n2. Services and their responsibilities\n3. Data flow between components\n4. External integrations\n5. Databases and caches\n6. Message queues\n7. Load balancers\n8. Use appropriate Mermaid diagram type (flowchart, C4, sequence)"
+    },
+    {
+      "id": "214",
+      "name": "Generate Entity Relationship Diagram",
+      "category": "other",
+      "content": "Create a Mermaid.js ER diagram for these entities:\n\n[entity descriptions]\n\nInclude:\n- All entities with their attributes\n- Primary keys and foreign keys\n- Relationship types (1:1, 1:N, M:N)\n- Cardinality notation\n- Junction tables for M:N\n- Data types for each attribute"
+    },
+    {
+      "id": "215",
+      "name": "Unit Test Generation",
+      "category": "other",
+      "content": "Write comprehensive unit tests for this code using [testing framework]:\n\n[code snippet]\n\nCover:\n1. Happy path for each function\n2. Edge cases (empty, null, undefined, boundary values)\n3. Error scenarios (invalid input, failures)\n4. Async behavior (resolved and rejected promises)\n5. Mock external dependencies\n6. Test naming: 'should [behavior] when [condition]'\n7. Arrange-Act-Assert pattern\n8. Aim for >90% coverage"
+    },
+    {
+      "id": "216",
+      "name": "Integration Test Suite",
+      "category": "other",
+      "content": "Write integration tests for [API/feature] using [testing framework]:\n\n[API endpoints or feature description]\n\nTests should:\n1. Test full request/response cycle\n2. Use real database (test database)\n3. Seed test data before each test\n4. Clean up after each test\n5. Test authentication flows\n6. Test error responses\n7. Test pagination and filtering\n8. Verify side effects (emails sent, events emitted)"
+    },
+    {
+      "id": "217",
+      "name": "E2E Test with Playwright",
+      "category": "other",
+      "content": "Write end-to-end tests for [feature] using Playwright:\n\nUser flow:\n[describe the user flow]\n\nTests should:\n1. Navigate through the full user journey\n2. Fill forms and click buttons\n3. Assert page content and URLs\n4. Handle loading states (wait for API responses)\n5. Test mobile and desktop viewports\n6. Screenshot on failure\n7. Test keyboard-only navigation\n8. Handle authentication (login before tests)"
+    },
+    {
+      "id": "218",
+      "name": "E2E Test with Cypress",
+      "category": "other",
+      "content": "Write Cypress E2E tests for [feature]:\n\nUser flow:\n[describe the user flow]\n\nInclude:\n1. cy.visit, cy.get, cy.click, cy.type assertions\n2. Intercept API calls with cy.intercept\n3. Custom commands for repeated actions\n4. Data-testid selectors (not CSS classes)\n5. Before/after hooks for setup/cleanup\n6. Test both happy and error paths\n7. Visual regression if applicable"
+    },
+    {
+      "id": "219",
+      "name": "Git Commit Message Convention",
+      "category": "other",
+      "content": "Create a git commit message convention guide for [project]:\n\nFormat:\n<type>(<scope>): <subject>\n\n<body>\n\n<footer>\n\nTypes: feat, fix, docs, style, refactor, test, chore, perf, ci, build\nScope: component or module name\nSubject: imperative mood, no period, max 72 chars\nBody: what and why, not how\nFooter: BREAKING CHANGE, issue references\n\nProvide 10 example commit messages for common scenarios."
+    },
+    {
+      "id": "220",
+      "name": "PR Description Template",
+      "category": "other",
+      "content": "Create a pull request description for these changes:\n\n[describe changes or paste git diff summary]\n\nTemplate:\n## Summary\n- Brief description of changes\n\n## Changes\n- List of specific changes\n\n## Testing\n- How to test these changes\n- Test cases covered\n\n## Screenshots\n- Before/after if UI changes\n\n## Checklist\n- [ ] Tests added/updated\n- [ ] Documentation updated\n- [ ] No breaking changes"
+    },
+    {
+      "id": "221",
+      "name": "Code Review Checklist",
+      "category": "other",
+      "content": "Create a code review checklist for [language/framework] projects:\n\n**Correctness:**\n- [ ] Logic is correct and handles edge cases\n- [ ] No off-by-one errors\n- [ ] Error handling is appropriate\n\n**Security:**\n- [ ] No SQL injection, XSS, CSRF vulnerabilities\n- [ ] Input validation on all user data\n- [ ] Secrets not hardcoded\n\n**Performance:**\n- [ ] No N+1 queries\n- [ ] Appropriate indexing\n- [ ] No memory leaks\n\n**Maintainability:**\n- [ ] Clear naming\n- [ ] Functions are focused\n- [ ] No dead code\n\nExpand each section with 5-8 specific items."
+    },
+    {
+      "id": "222",
+      "name": "Technical Specification",
+      "category": "other",
+      "content": "Write a technical specification for [feature]:\n\n## Overview\nProblem statement and proposed solution\n\n## Requirements\nFunctional and non-functional requirements\n\n## Architecture\nSystem design with components and data flow\n\n## Data Model\nDatabase schema changes\n\n## API Design\nEndpoints with request/response examples\n\n## Security\nAuthentication, authorization, data protection\n\n## Testing Strategy\nUnit, integration, E2E test plan\n\n## Rollout Plan\nMigration, feature flags, rollback plan\n\n## Timeline\nMilestones and estimates"
+    },
+    {
+      "id": "223",
+      "name": "Database Schema Documentation",
+      "category": "other",
+      "content": "Generate documentation for this database schema:\n\n[schema or migration files]\n\nFor each table:\n1. Table purpose and description\n2. Column details (name, type, constraints, description)\n3. Indexes and their purpose\n4. Relationships to other tables\n5. Sample data (2-3 rows)\n6. Common queries\n7. ER diagram in Mermaid syntax"
+    },
+    {
+      "id": "224",
+      "name": "Deployment Guide",
+      "category": "other",
+      "content": "Write a deployment guide for [project] to [platform]:\n\n## Prerequisites\nRequired tools and access\n\n## Environment Setup\nEnvironment variables and configuration\n\n## Build\nBuild commands and optimization\n\n## Deploy\nStep-by-step deployment process\n\n## Verify\nPost-deployment verification checks\n\n## Rollback\nHow to rollback if issues found\n\n## Monitoring\nLogs and metrics to watch\n\n## Troubleshooting\nCommon issues and solutions"
+    },
+    {
+      "id": "225",
+      "name": "Troubleshooting Guide",
+      "category": "other",
+      "content": "Create a troubleshooting guide for [project/system]:\n\nFormat per issue:\n### Problem: [symptom]\n**Cause:** Why this happens\n**Solution:** Step-by-step fix\n**Prevention:** How to avoid in future\n\nCover:\n1. Application won't start\n2. Database connection failures\n3. Authentication issues\n4. Performance degradation\n5. Memory issues\n6. Deployment failures\n7. Common error messages and their fixes"
+    },
+    {
+      "id": "226",
+      "name": "Performance Benchmark Script",
+      "category": "other",
+      "content": "Create a performance benchmark for [feature/API] in [language]:\n\nMeasure:\n1. Response time (p50, p95, p99)\n2. Throughput (requests/second)\n3. Memory usage\n4. CPU utilization\n5. Database query time\n\nSetup:\n- Warm-up period (100 requests)\n- Test duration (60 seconds)\n- Concurrent users: 1, 10, 50, 100\n- Report results in table format\n- Compare against baseline/previous run"
+    },
+    {
+      "id": "227",
+      "name": "Security Audit Checklist",
+      "category": "other",
+      "content": "Perform a security audit of [project] checking for:\n\n**Authentication:**\n- [ ] Password hashing (bcrypt, argon2)\n- [ ] Token expiration and rotation\n- [ ] Account lockout after failed attempts\n\n**Authorization:**\n- [ ] Role-based access control\n- [ ] Resource ownership verification\n\n**Input:**\n- [ ] SQL injection prevention\n- [ ] XSS prevention\n- [ ] CSRF protection\n\n**Data:**\n- [ ] Sensitive data encryption\n- [ ] Secure headers (HSTS, CSP, etc.)\n- [ ] No secrets in code/logs\n\nProvide severity rating and fix recommendations for each finding."
+    },
+    {
+      "id": "228",
+      "name": "Dependency Update Strategy",
+      "category": "other",
+      "content": "Create a dependency update strategy for [project]:\n\n1. Audit current dependencies:\n   - List all with current and latest versions\n   - Identify security vulnerabilities\n   - Flag deprecated packages\n\n2. Update plan:\n   - Priority: security patches > major updates > minor\n   - Test strategy per update type\n   - Rollback plan\n\n3. Automation:\n   - Dependabot/Renovate configuration\n   - Auto-merge for patch updates\n   - Weekly PR for minor updates\n   - Manual review for major updates"
+    },
+    {
+      "id": "229",
+      "name": "Tech Stack Evaluation",
+      "category": "other",
+      "content": "Evaluate technology options for [project requirement]:\n\nCompare [option A] vs [option B] vs [option C]:\n\nCriteria:\n1. Performance benchmarks\n2. Learning curve for team\n3. Community size and support\n4. Documentation quality\n5. Long-term maintenance/viability\n6. Ecosystem (plugins, integrations)\n7. Cost (licensing, hosting)\n8. Scalability\n\nProvide a recommendation with justification and migration considerations."
+    },
+    {
+      "id": "230",
+      "name": "Code Style Guide",
+      "category": "other",
+      "content": "Create a code style guide for [language] in [project]:\n\n**Naming:**\n- Variables, functions, classes, constants\n- File naming conventions\n\n**Formatting:**\n- Indentation (spaces vs tabs, size)\n- Line length limit\n- Bracket style\n\n**Patterns:**\n- Import ordering\n- Error handling approach\n- Async patterns\n- Component structure\n\n**Linting:**\n- ESLint/Prettier configuration\n- Pre-commit hooks setup\n\nInclude .eslintrc and .prettierrc configuration files."
+    },
+    {
+      "id": "231",
+      "name": "Sprint Planning Breakdown",
+      "category": "other",
+      "content": "Break down this feature into sprint-sized tasks:\n\nFeature: [feature description]\n\nFor each task provide:\n1. Title (imperative form)\n2. Description with acceptance criteria\n3. Story points estimate (1, 2, 3, 5, 8)\n4. Dependencies on other tasks\n5. Technical notes\n\nOrganize into:\n- Sprint 1: Foundation and core logic\n- Sprint 2: API and integration\n- Sprint 3: UI and polish\n- Sprint 4: Testing and deployment"
+    },
+    {
+      "id": "232",
+      "name": "Technical Interview Questions",
+      "category": "other",
+      "content": "Generate technical interview questions for a [level] [role] position:\n\nCategories:\n1. [Language/Framework] fundamentals (5 questions)\n2. System design (3 scenarios)\n3. Problem solving/algorithms (3 problems)\n4. Architecture and patterns (5 questions)\n5. Debugging scenario (2 problems)\n\nFor each question:\n- The question\n- What it tests\n- Good answer indicators\n- Red flags\n- Follow-up questions"
+    },
+    {
+      "id": "233",
+      "name": "Regex Pattern Generator",
+      "category": "other",
+      "content": "Create regex patterns for these requirements:\n\n[list of patterns needed, e.g.:\n- Email validation\n- Phone number (international)\n- URL with optional protocol\n- Password (min 8, uppercase, number, special)\n- Date (YYYY-MM-DD)\n- IP address (v4 and v6)\n]\n\nFor each pattern:\n1. The regex\n2. Explanation of each part\n3. Test cases (matching and non-matching)\n4. Edge cases to be aware of\n5. Language-specific implementation note"
+    },
+    {
+      "id": "234",
+      "name": "Shell Script Automation",
+      "category": "other",
+      "content": "Write a shell script to automate [task]:\n\nRequirements:\n[describe what the script should do]\n\nScript should:\n1. Parse command line arguments\n2. Validate inputs\n3. Error handling with meaningful messages\n4. Exit codes (0 success, 1 error)\n5. Logging with timestamps\n6. Dry-run mode option\n7. Idempotent (safe to run multiple times)\n8. Cross-platform compatibility (bash 4+)\n9. Include usage help (-h/--help)"
+    },
+    {
+      "id": "235",
+      "name": "Environment Setup Guide",
+      "category": "other",
+      "content": "Create a developer environment setup guide for [project]:\n\n## Prerequisites\n- Required software with versions\n- System requirements\n\n## Step-by-Step Setup\n1. Clone repository\n2. Install dependencies\n3. Configure environment variables\n4. Set up database\n5. Seed initial data\n6. Start development server\n7. Verify setup\n\n## IDE Configuration\n- Recommended extensions\n- Settings for formatting\n- Debug configuration\n\n## Common Setup Issues\n- Issue and solution pairs"
+    },
+    {
+      "id": "236",
+      "name": "Changelog Generation",
+      "category": "other",
+      "content": "Generate a changelog for version [version] from these changes:\n\n[list of changes, commits, or PR descriptions]\n\nFormat (Keep a Changelog style):\n## [version] - YYYY-MM-DD\n### Added\n- New features\n### Changed\n- Changes to existing functionality\n### Fixed\n- Bug fixes\n### Deprecated\n- Features to be removed\n### Removed\n- Removed features\n### Security\n- Vulnerability fixes\n\nWrite user-friendly descriptions, not commit messages."
+    },
+    {
+      "id": "237",
+      "name": "API Client SDK Generation",
+      "category": "other",
+      "content": "Generate a TypeScript API client SDK for these endpoints:\n\n[list of API endpoints with request/response types]\n\nThe SDK should:\n1. Type-safe request and response types\n2. Axios or fetch-based HTTP client\n3. Configurable base URL and headers\n4. Request/response interceptors\n5. Automatic token refresh\n6. Error type definitions\n7. Cancel request support\n8. Usage examples for each endpoint"
+    },
+    {
+      "id": "238",
+      "name": "Dockerfile Optimization",
+      "category": "other",
+      "content": "Optimize this Dockerfile for production:\n\n[current Dockerfile]\n\nOptimize for:\n1. Smaller image size (multi-stage build)\n2. Faster builds (layer caching)\n3. Security (non-root user, minimal base image)\n4. Proper .dockerignore\n5. Health check instruction\n6. Build arguments for configuration\n7. Pin base image versions\n8. Minimize layers\n9. Compare before/after image size"
+    },
+    {
+      "id": "239",
+      "name": "GitHub Actions CI Pipeline",
+      "category": "other",
+      "content": "Create a GitHub Actions CI pipeline for [project]:\n\nTriggers: push to main, pull requests\n\nJobs:\n1. Lint and type check\n2. Unit tests with coverage report\n3. Integration tests\n4. Build\n5. Security scan (npm audit / Snyk)\n6. Deploy to staging (on main push)\n7. Deploy to production (on release)\n\nFeatures:\n- Dependency caching\n- Parallel jobs where possible\n- Fail fast on lint errors\n- Upload coverage to Codecov\n- Slack notification on failure"
+    },
+    {
+      "id": "240",
+      "name": "Database Seed Script",
+      "category": "other",
+      "content": "Create a database seed script for [project] in [language]:\n\nSeed data for:\n[list entities]\n\nRequirements:\n1. Realistic fake data using [Faker.js/Factory]\n2. Maintain referential integrity\n3. Configurable count (default 100 per entity)\n4. Idempotent (clear and reseed)\n5. Special seed data for testing (admin user, test scenarios)\n6. Progress output\n7. Separate seeds for development and testing"
+    },
+    {
+      "id": "241",
+      "name": "Error Monitoring Setup",
+      "category": "other",
+      "content": "Set up error monitoring with [Sentry/Bugsnag/Datadog] for [project]:\n\n1. Install and configure SDK\n2. Capture unhandled exceptions\n3. Add custom error context (user, request)\n4. Source map upload for stack traces\n5. Environment tagging (dev/staging/prod)\n6. Alert rules (new error, spike in errors)\n7. Release tracking\n8. Performance monitoring (transactions)\n9. Ignore noisy/expected errors"
+    },
+    {
+      "id": "242",
+      "name": "Load Testing Script",
+      "category": "other",
+      "content": "Create a load test for [API] using [k6/Artillery/JMeter]:\n\nScenarios:\n1. Smoke test: 1 user, verify functionality\n2. Load test: 50 concurrent users for 5 minutes\n3. Stress test: Ramp 0 to 200 users over 10 minutes\n4. Spike test: Sudden 100 users\n\nEndpoints to test:\n[list endpoints]\n\nAssertions:\n- p95 response time < 500ms\n- Error rate < 1%\n- Throughput > 100 rps\n\nOutput: HTML report with charts"
+    },
+    {
+      "id": "243",
+      "name": "Cron Job Documentation",
+      "category": "other",
+      "content": "Document all scheduled tasks in [project]:\n\nFor each task:\n1. Name and purpose\n2. Cron schedule (with human-readable explanation)\n3. What it does step by step\n4. Dependencies (services, databases)\n5. Expected duration\n6. Failure impact and recovery\n7. Monitoring/alerts\n8. Manual trigger command\n\nFormat as a table + detailed section for each."
+    },
+    {
+      "id": "244",
+      "name": "API Migration Guide",
+      "category": "other",
+      "content": "Create a migration guide from API v[X] to v[Y]:\n\n## Breaking Changes\n- List each breaking change with before/after\n\n## New Features\n- New endpoints and capabilities\n\n## Deprecated\n- Endpoints to be removed in future\n\n## Migration Steps\n1. Step-by-step upgrade process\n2. Code change examples\n3. Testing recommendations\n\n## Timeline\n- v[X] sunset date\n- Support period\n\n## FAQ\nCommon migration questions"
+    },
+    {
+      "id": "245",
+      "name": "Monitoring Dashboard Setup",
+      "category": "other",
+      "content": "Design a monitoring dashboard for [project] using [Grafana/Datadog/CloudWatch]:\n\nPanels:\n1. Request rate (rpm) - line chart\n2. Error rate (%) - line with threshold\n3. Response time (p50, p95, p99) - line chart\n4. Active users - gauge\n5. CPU/Memory usage - area chart\n6. Database connections - gauge\n7. Queue depth - bar chart\n8. Top errors - table\n\nAlerts:\n- Error rate > 5%\n- p99 latency > 2s\n- CPU > 80%\n- Disk > 90%"
+    },
+    {
+      "id": "246",
+      "name": "Data Privacy Compliance",
+      "category": "other",
+      "content": "Implement GDPR/data privacy compliance for [project]:\n\n1. Data inventory: catalog all personal data\n2. Consent management UI\n3. Data export endpoint (user data download)\n4. Data deletion endpoint (right to be forgotten)\n5. Cookie consent banner\n6. Privacy policy template\n7. Data processing agreements\n8. Data retention policies\n9. Breach notification procedure\n10. DPO contact information"
+    },
+    {
+      "id": "247",
+      "name": "Incident Response Playbook",
+      "category": "other",
+      "content": "Create an incident response playbook for [project]:\n\n## Severity Levels\n- P1: Service down, all users affected\n- P2: Major feature broken\n- P3: Minor issue, workaround exists\n- P4: Cosmetic/low impact\n\n## Response per level:\n1. Detection and alerting\n2. Initial assessment (who, when, what)\n3. Communication template (internal/external)\n4. Investigation steps\n5. Resolution and recovery\n6. Post-mortem template\n7. Action items tracking"
+    },
+    {
+      "id": "248",
+      "name": "Feature Flag Implementation",
+      "category": "other",
+      "content": "Implement feature flags for [project] using [LaunchDarkly/Unleash/custom]:\n\n1. Flag definition (name, description, default)\n2. Flag evaluation API\n3. User targeting (percentage, user attributes)\n4. Flag management UI\n5. Gradual rollout support\n6. A/B testing integration\n7. Flag lifecycle (created, active, retired)\n8. Client-side SDK for frontend\n9. Server-side evaluation for backend\n10. Analytics on flag impact"
+    },
+    {
+      "id": "249",
+      "name": "Accessibility Audit Report",
+      "category": "other",
+      "content": "Perform an accessibility audit of [page/component]:\n\nTest against WCAG 2.1 AA:\n\n**Perceivable:**\n- Alt text for images\n- Color contrast ratios (min 4.5:1)\n- Text resizing up to 200%\n\n**Operable:**\n- Keyboard navigation\n- Focus indicators\n- No keyboard traps\n\n**Understandable:**\n- Form labels and errors\n- Consistent navigation\n- Error prevention\n\n**Robust:**\n- Valid HTML\n- ARIA usage\n- Screen reader testing\n\nFor each issue: severity, location, fix recommendation."
+    },
+    {
+      "id": "250",
+      "name": "Project Postmortem Template",
+      "category": "other",
+      "content": "Write a postmortem for this incident:\n\n[describe the incident]\n\n## Incident Summary\n- Date and duration\n- Impact (users affected, data lost)\n- Severity level\n\n## Timeline\n- Chronological events\n\n## Root Cause\n- Technical root cause\n- Contributing factors\n\n## Resolution\n- How it was fixed\n\n## Lessons Learned\n- What went well\n- What went wrong\n\n## Action Items\n- Preventive measures with owners and deadlines\n\n## Metrics\n- MTTR, detection time, resolution time"
+    },
+    {
+      "id": "251",
+      "name": "Microservices Communication Design",
+      "category": "other",
+      "content": "Design inter-service communication for these microservices:\n\n[list services with responsibilities]\n\nFor each interaction:\n1. Sync vs async communication\n2. Protocol (REST, gRPC, message queue)\n3. Data contract (schema)\n4. Error handling and fallback\n5. Retry and circuit breaker\n6. Service discovery method\n7. Distributed tracing setup\n\nProvide sequence diagrams for key flows."
+    },
+    {
+      "id": "252",
+      "name": "Code Migration Plan",
+      "category": "other",
+      "content": "Create a migration plan from [current tech] to [target tech]:\n\n## Assessment\n- Current codebase size and complexity\n- Dependencies to migrate\n- Risk areas\n\n## Strategy\n- Big bang vs incremental migration\n- Strangler fig pattern if incremental\n\n## Phases\n1. Setup new project structure\n2. Migrate shared utilities\n3. Migrate core business logic\n4. Migrate UI components\n5. Data migration\n6. Testing and validation\n7. Cutover plan\n\n## Rollback Plan\n- At each phase"
+    },
+    {
+      "id": "253",
+      "name": "GraphQL Subscription",
+      "category": "api",
+      "content": "Implement GraphQL subscriptions for real-time updates in [framework]:\n\n1. Set up WebSocket transport for subscriptions\n2. Define subscription types (onCreated, onUpdated, onDeleted)\n3. Publish events from mutation resolvers\n4. Filter subscriptions by user/topic\n5. Authentication on subscription connect\n6. Handle connection lifecycle\n7. Client-side subscription hooks"
+    },
+    {
+      "id": "254",
+      "name": "gRPC Service Definition",
+      "category": "api",
+      "content": "Define gRPC service for [domain] in [language]:\n\n1. Proto file with message and service definitions\n2. Unary and streaming RPCs\n3. Error handling with status codes\n4. Interceptors for auth and logging\n5. Health check service\n6. Reflection for debugging\n7. Client generation for [target language]"
+    },
+    {
+      "id": "255",
+      "name": "REST API Filtering DSL",
+      "category": "api",
+      "content": "Design a filtering query language for REST API:\n\nGET /api/items?filter=status:active,price>100,name~phone\n\nOperators:\n- : equals\n- > < >= <= numeric comparison\n- ~ contains (case-insensitive)\n- ! not equals\n- [a,b] in list\n- null/!null existence check\n\nImplement parser and SQL/ORM query builder."
+    },
+    {
+      "id": "256",
+      "name": "API Request Logging",
+      "category": "api",
+      "content": "Implement request/response logging middleware in [framework]:\n\n1. Log: method, URL, status, duration, request ID\n2. Redact sensitive headers (Authorization, Cookie)\n3. Redact sensitive body fields (password, token)\n4. Configurable log level per route\n5. Correlation ID propagation\n6. Structured JSON format\n7. Performance: async logging, skip body for large payloads"
+    },
+    {
+      "id": "257",
+      "name": "Presigned URL Upload",
+      "category": "api",
+      "content": "Implement presigned URL file upload in [framework] with S3:\n\n1. POST /api/upload/presign - Generate presigned PUT URL\n2. Client uploads directly to S3 using presigned URL\n3. POST /api/upload/confirm - Confirm upload and save metadata\n4. Set content-type and size restrictions in presigned URL\n5. Expiry: 15 minutes\n6. Validate file exists in S3 on confirmation"
+    },
+    {
+      "id": "258",
+      "name": "API Circuit Breaker",
+      "category": "api",
+      "content": "Implement circuit breaker pattern for external API calls in [framework]:\n\nStates:\n- Closed: normal operation\n- Open: fail fast (after 5 failures in 60s)\n- Half-open: test with single request after 30s\n\nFeatures:\n- Configurable thresholds per service\n- Fallback response when open\n- Metrics: failure rate, state changes\n- Alert on state transition to open"
+    },
+    {
+      "id": "259",
+      "name": "Multipart Form Handler",
+      "category": "api",
+      "content": "Handle multipart form data uploads in [framework]:\n\n1. Parse multipart request with file and text fields\n2. Stream files to disk/S3 (avoid memory loading)\n3. File type validation via magic bytes\n4. Progress tracking for large files\n5. Cleanup temp files on error\n6. Concurrent upload limit per user\n7. Virus scan integration hook"
+    },
+    {
+      "id": "260",
+      "name": "Database Transaction API",
+      "category": "api",
+      "content": "Implement proper database transactions in [framework] with [ORM]:\n\n1. Transaction wrapper for multi-step operations\n2. Automatic rollback on error\n3. Nested transaction support (savepoints)\n4. Transaction isolation level configuration\n5. Retry logic for serialization failures\n6. Timeout for long-running transactions\n7. Logging transaction duration and queries"
+    },
+    {
+      "id": "261",
+      "name": "Token Refresh Endpoint",
+      "category": "api",
+      "content": "Implement secure token refresh in [framework]:\n\nPOST /api/auth/refresh\n\n1. Accept refresh token from httpOnly cookie\n2. Verify refresh token validity and expiration\n3. Check token not in blacklist\n4. Issue new access token (15min) + new refresh token (7d)\n5. Rotate refresh token (invalidate old one)\n6. Detect token reuse (potential theft) and invalidate family\n7. Set new refresh token cookie"
+    },
+    {
+      "id": "262",
+      "name": "Bulk Import API",
+      "category": "api",
+      "content": "Create bulk data import endpoint in [framework]:\n\nPOST /api/[entity]/import\n\n1. Accept CSV or JSON array in body\n2. Validate all rows before processing\n3. Return validation errors with row numbers\n4. Process in batches (100 rows per batch)\n5. Transaction per batch (rollback batch on error)\n6. Progress reporting via SSE or polling\n7. Summary: total, success, failed, skipped"
+    },
+    {
+      "id": "263",
+      "name": "Content Negotiation",
+      "category": "api",
+      "content": "Implement content negotiation in [framework]:\n\n1. Support JSON and XML response formats\n2. Check Accept header for preferred format\n3. Default to JSON if no preference\n4. Support format query param (?format=xml)\n5. Proper Content-Type in response\n6. 406 Not Acceptable for unsupported formats\n7. CSV format for list endpoints"
+    },
+    {
+      "id": "264",
+      "name": "API Analytics Endpoint",
+      "category": "api",
+      "content": "Build API usage analytics endpoint in [framework]:\n\nGET /api/admin/analytics\n\nMetrics:\n1. Total requests per day/week/month\n2. Requests per endpoint\n3. Average response time per endpoint\n4. Error rate per endpoint\n5. Top API consumers (by API key/user)\n6. Geographic distribution\n7. Status code distribution\n\nStore in time-series format, return aggregated data."
+    },
+    {
+      "id": "265",
+      "name": "Webhook Signature Verification",
+      "category": "api",
+      "content": "Implement webhook signature verification middleware in [framework]:\n\n1. Extract signature from header (X-Signature-256)\n2. Compute HMAC-SHA256 of raw request body with secret\n3. Timing-safe comparison of signatures\n4. Reject with 401 if mismatch\n5. Log verification failures\n6. Support multiple webhook secrets (rotation)\n7. Provide SDK helpers for senders to generate signatures"
+    },
+    {
+      "id": "266",
+      "name": "Data Export API",
+      "category": "api",
+      "content": "Build data export API in [framework]:\n\nPOST /api/export - Start export job\nGET /api/export/:id - Check status\nGET /api/export/:id/download - Download file\n\nFeatures:\n1. Support CSV, JSON, Excel formats\n2. Apply current filters to export\n3. Stream large datasets (dont load all in memory)\n4. Async processing with job queue\n5. Email notification when ready\n6. Auto-delete after 24 hours\n7. Rate limit: 5 exports per hour"
+    },
+    {
+      "id": "267",
+      "name": "Two-Phase Commit API",
+      "category": "api",
+      "content": "Implement saga pattern for distributed transactions in [framework]:\n\n1. Orchestrator manages multi-service operation\n2. Each step has execute and compensate functions\n3. On failure: run compensations in reverse order\n4. Idempotent operations for retry safety\n5. Timeout per step\n6. State machine for saga tracking\n7. Dead letter queue for stuck sagas"
+    },
+    {
+      "id": "268",
+      "name": "Fix Cookie Not Setting",
+      "category": "bugfix",
+      "content": "Cookies are not being set in the browser despite server sending Set-Cookie header:\n\nServer code:\n[code snippet]\n\nCheck:\n1. SameSite attribute (Lax/None for cross-site)\n2. Secure flag (required for SameSite=None)\n3. Domain and Path settings\n4. CORS credentials configuration\n5. Browser third-party cookie restrictions\n6. Cookie size limits\n7. HttpOnly for API tokens"
+    },
+    {
+      "id": "269",
+      "name": "Fix CSS Grid Item Overflow",
+      "category": "bugfix",
+      "content": "Grid items overflow their grid cells on certain content:\n\nCSS:\n[code snippet]\n\nFix:\n1. Add min-width: 0 to grid items\n2. Use overflow: hidden or overflow-wrap\n3. Check fr units vs fixed sizes\n4. Handle long unbreakable strings\n5. Test with varying content lengths"
+    },
+    {
+      "id": "270",
+      "name": "Fix React Key Warning",
+      "category": "bugfix",
+      "content": "Getting \"Each child in a list should have a unique key prop\" warning:\n\n[code snippet]\n\nFix:\n1. Use stable unique identifier as key (not array index)\n2. Ensure keys are unique among siblings\n3. Keys should not change between renders\n4. Avoid using Math.random() as key\n5. Use item.id or generate stable hash"
+    },
+    {
+      "id": "271",
+      "name": "Fix API Data Race",
+      "category": "bugfix",
+      "content": "Multiple rapid API calls return stale data because responses arrive out of order:\n\n[code snippet]\n\nFix using:\n1. AbortController to cancel previous request\n2. Request ID to ignore stale responses\n3. Debounce rapid calls\n4. Optimistic UI with reconciliation\n5. Last-write-wins with timestamp comparison"
+    },
+    {
+      "id": "272",
+      "name": "Fix Hot Module Replacement",
+      "category": "bugfix",
+      "content": "HMR (Hot Module Replacement) not working - full page reload on every change:\n\nConfig:\n[code snippet]\n\nCheck:\n1. Vite/Webpack HMR configuration\n2. Module.hot.accept() in entry point\n3. WebSocket connection to dev server\n4. Firewall/proxy blocking WebSocket\n5. File watcher settings (polling for Docker)"
+    },
+    {
+      "id": "273",
+      "name": "Extract Service Layer",
+      "category": "refactor",
+      "content": "Business logic is mixed into controllers/route handlers:\n\n[code snippet]\n\nRefactor to service layer:\n1. Extract business logic into service classes/functions\n2. Controllers only handle HTTP (parse request, send response)\n3. Services are framework-agnostic\n4. Services accept plain objects, not request objects\n5. Easy to unit test without HTTP context"
+    },
+    {
+      "id": "274",
+      "name": "Replace Mutable State with Immutable",
+      "category": "refactor",
+      "content": "This code mutates objects/arrays directly causing bugs:\n\n[code snippet]\n\nRefactor to immutable patterns:\n1. Spread operator for object/array copies\n2. Array methods that return new arrays (map, filter, concat)\n3. Object.freeze for constants\n4. Immer for complex nested updates\n5. Benefits: predictable state, time-travel debugging"
+    },
+    {
+      "id": "275",
+      "name": "Consolidate Error Types",
+      "category": "refactor",
+      "content": "Error handling uses mixed patterns (strings, objects, Error subclasses):\n\n[code snippet]\n\nRefactor to consistent error hierarchy:\n1. Base AppError class\n2. Specific subclasses (ValidationError, NotFoundError, etc.)\n3. Error code enum\n4. Serialization method for API responses\n5. Stack trace preservation\n6. Context data attachment"
+    },
+    {
+      "id": "276",
+      "name": "Convert to Functional Components",
+      "category": "refactor",
+      "content": "Refactor these utility functions to a more functional programming style:\n\n[code snippet]\n\nApply:\n1. Pure functions (no side effects)\n2. Function composition with pipe/compose\n3. Currying for partial application\n4. Higher-order functions\n5. Immutable data transformations\n6. Point-free style where readable"
+    },
+    {
+      "id": "277",
+      "name": "Optimize Database Access",
+      "category": "refactor",
+      "content": "Database access code is inefficient:\n\n[code snippet]\n\nOptimize:\n1. Batch queries instead of loop queries\n2. Select only needed columns\n3. Add database indexes for WHERE/JOIN columns\n4. Use connection pooling\n5. Cache frequently read data\n6. Use database views for complex queries\n7. Move heavy computation to SQL level"
+    },
+    {
+      "id": "278",
+      "name": "Refactor to Clean Architecture",
+      "category": "refactor",
+      "content": "This codebase has no clear architectural boundaries:\n\n[describe current structure]\n\nRefactor following Clean Architecture:\n1. Entities: core business objects\n2. Use Cases: application-specific business rules\n3. Interface Adapters: controllers, presenters, gateways\n4. Frameworks: web, DB, external services\n\nDependency rule: inner layers never depend on outer layers."
+    },
+    {
+      "id": "279",
+      "name": "Extract Configuration Module",
+      "category": "refactor",
+      "content": "Configuration is scattered across multiple files with duplicated values:\n\n[code snippet]\n\nRefactor:\n1. Single config module exporting all settings\n2. Environment-based configuration (dev/staging/prod)\n3. Type-safe access with defaults\n4. Validation on startup\n5. No process.env access outside config module\n6. Secrets clearly separated from non-secrets"
+    },
+    {
+      "id": "280",
+      "name": "Replace Polling with Events",
+      "category": "refactor",
+      "content": "This code polls for changes at regular intervals:\n\n[code snippet]\n\nRefactor to event-driven:\n1. Replace setInterval with event listeners/subscriptions\n2. Use WebSocket or SSE for real-time updates\n3. EventEmitter for internal module communication\n4. Reduces unnecessary API calls\n5. Faster reaction to changes\n6. Fallback to polling if events unavailable"
+    },
+    {
+      "id": "281",
+      "name": "Simplify React Context",
+      "category": "refactor",
+      "content": "Multiple React contexts are deeply nested and hard to manage:\n\n[code snippet]\n\nRefactor:\n1. Consolidate related contexts\n2. Split large contexts into focused ones\n3. Create custom hooks for context access\n4. Memoize context values to prevent rerenders\n5. Consider state management library for complex state\n6. Move derived state to selectors/computed values"
+    },
+    {
+      "id": "282",
+      "name": "Refactor Switch to Map Lookup",
+      "category": "refactor",
+      "content": "This large switch/if-else chain maps values:\n\n[code snippet]\n\nRefactor to object/Map lookup:\n1. Create a mapping object/Map\n2. Direct lookup instead of sequential comparison\n3. Handle default/missing cases\n4. O(1) lookup vs O(n) sequential check\n5. Easier to add/remove mappings\n6. Can be loaded from configuration"
+    },
+    {
+      "id": "283",
+      "name": "Decouple Modules",
+      "category": "refactor",
+      "content": "These modules are tightly coupled with direct imports:\n\n[code snippet]\n\nDecouple using:\n1. Define interfaces/contracts between modules\n2. Use dependency injection\n3. Event-based communication for cross-cutting concerns\n4. Mediator pattern for complex interactions\n5. Each module independently testable\n6. Clear module boundaries and public APIs"
+    },
+    {
+      "id": "284",
+      "name": "Convert Class to Functions",
+      "category": "refactor",
+      "content": "This class is used as a namespace for utility functions with no state:\n\n[code snippet]\n\nRefactor:\n1. Convert static methods to standalone functions\n2. Export as named exports from module\n3. Remove unnecessary class wrapper\n4. Group related functions in same file\n5. Tree-shakeable imports\n6. Simpler testing without class instantiation"
+    },
+    {
+      "id": "285",
+      "name": "Optimize Frontend Rendering",
+      "category": "refactor",
+      "content": "This page/component renders slowly. Profile and optimize:\n\n[code snippet]\n\n1. Use React.memo / shouldComponentUpdate for pure components\n2. Virtualize long lists (react-window)\n3. Debounce expensive computations\n4. Move calculations to web workers\n5. Code-split heavy dependencies\n6. Precompute derived data\n7. Use requestAnimationFrame for visual updates"
+    },
+    {
+      "id": "286",
+      "name": "Standardize Async Patterns",
+      "category": "refactor",
+      "content": "The codebase mixes callbacks, promises, and async/await:\n\n[code snippet]\n\nStandardize to async/await:\n1. Convert all callbacks to promises (util.promisify)\n2. Convert .then chains to async/await\n3. Consistent try/catch error handling\n4. Parallel execution with Promise.all\n5. Sequential with for...of and await\n6. Utility wrapper for callback-only libraries"
+    },
+    {
+      "id": "287",
+      "name": "Extract Shared Types",
+      "category": "refactor",
+      "content": "TypeScript types are defined locally in multiple files with overlap:\n\n[code snippet]\n\nRefactor:\n1. Create shared types directory\n2. Extract common interfaces (User, ApiResponse, etc.)\n3. Use type composition (extends, intersection)\n4. Generic types for reusable patterns\n5. Export from barrel file (types/index.ts)\n6. Single source of truth for entity types"
+    },
+    {
+      "id": "288",
+      "name": "Combobox Component",
+      "category": "ui",
+      "content": "Build an accessible combobox (searchable select) in [framework]:\n- Input field with dropdown list\n- Type to filter options\n- Keyboard: arrows navigate, enter selects, escape closes\n- ARIA: role=combobox, aria-expanded, aria-activedescendant\n- Highlight matching text\n- Clear button\n- Loading state for async data\n- No results message\n- Group options by category"
+    },
+    {
+      "id": "289",
+      "name": "Tag Input Component",
+      "category": "ui",
+      "content": "Create a tag input component in [framework]:\n- Type and press Enter/comma to add tag\n- Click X to remove tag\n- Backspace removes last tag\n- Autocomplete suggestions dropdown\n- Duplicate prevention\n- Max tags limit\n- Drag to reorder tags\n- Paste comma-separated values\n- Customizable tag colors"
+    },
+    {
+      "id": "290",
+      "name": "Image Cropper Component",
+      "category": "ui",
+      "content": "Build an image crop component in [framework]:\n- Upload image and display in cropper\n- Adjustable crop area with handles\n- Aspect ratio lock option (1:1, 16:9, etc.)\n- Zoom in/out slider\n- Rotate buttons\n- Preview of cropped result\n- Output as blob/base64\n- Mobile touch support\n- Min/max crop size constraints"
+    },
+    {
+      "id": "291",
+      "name": "Animated Counter",
+      "category": "ui",
+      "content": "Create an animated number counter component in [framework]:\n- Counts from 0 to target value\n- Easing animation (starts fast, slows down)\n- Trigger on scroll into viewport\n- Format: number (1,234), currency (,234), percentage (85%)\n- Configurable duration (1-3 seconds)\n- Prefix and suffix support\n- Decimal places option\n- Accessible: final value in aria-label"
+    },
+    {
+      "id": "292",
+      "name": "Color Picker Component",
+      "category": "ui",
+      "content": "Build a color picker in [framework]:\n- Saturation/brightness panel\n- Hue slider\n- Opacity/alpha slider\n- Hex, RGB, HSL input fields\n- Preset color swatches\n- Recent colors history\n- Eyedropper tool (if supported)\n- Copy color value button\n- Responsive popup positioning"
+    },
+    {
+      "id": "293",
+      "name": "Split Pane Layout",
+      "category": "ui",
+      "content": "Create a resizable split pane in [framework]:\n- Horizontal and vertical split options\n- Draggable divider to resize\n- Min/max size constraints per pane\n- Double-click divider to reset\n- Persist split position in localStorage\n- Collapse pane button\n- Keyboard: arrow keys to resize when focused\n- Responsive: stack on mobile"
+    },
+    {
+      "id": "294",
+      "name": "Command Palette",
+      "category": "ui",
+      "content": "Build a command palette (Cmd+K) in [framework]:\n- Keyboard shortcut to open (Cmd+K / Ctrl+K)\n- Search all available actions\n- Fuzzy matching with highlighting\n- Keyboard navigation\n- Recent commands section\n- Categorized results (Navigation, Actions, Settings)\n- Execute action on enter\n- Close on escape or action execution\n- Accessible: role=dialog, aria-modal"
+    },
+    {
+      "id": "295",
+      "name": "Timeline Component",
+      "category": "ui",
+      "content": "Create a vertical timeline component in [framework]:\n- Alternating left/right layout on desktop\n- Single column on mobile\n- Connected by vertical line\n- Dot/icon markers at each event\n- Date labels\n- Animate items on scroll into view\n- Expandable detail cards\n- Color coding by event type\n- Loading state with skeleton items"
+    },
+    {
+      "id": "296",
+      "name": "Masonry Grid Layout",
+      "category": "ui",
+      "content": "Implement a masonry/Pinterest-style grid in [framework]:\n- Variable height items\n- Items fill columns optimally\n- Responsive columns (4 desktop, 3 tablet, 2 mobile)\n- Smooth layout animation on resize\n- Lazy load images in items\n- Infinite scroll support\n- CSS-only or JS-assisted layout\n- No gaps between items"
+    },
+    {
+      "id": "297",
+      "name": "Sticky Table Header",
+      "category": "ui",
+      "content": "Build a data table with sticky header and first column in [framework]:\n- Header stays fixed on vertical scroll\n- First column stays fixed on horizontal scroll\n- Shadow on scroll to indicate more content\n- Works with variable column widths\n- Sortable columns\n- Proper z-index layering at intersection\n- Mobile: horizontal scroll with gesture\n- Accessible: scope attributes on headers"
+    },
+    {
+      "id": "298",
+      "name": "Git Hooks Setup",
+      "category": "other",
+      "content": "Set up Git hooks for [project] using Husky and lint-staged:\n\n1. pre-commit: run lint-staged\n   - *.{js,ts}: eslint --fix\n   - *.{css,scss}: stylelint --fix\n   - *.{json,md}: prettier --write\n2. commit-msg: validate conventional commit format\n3. pre-push: run tests\n\nSetup:\n- Install and configure husky\n- Configure lint-staged\n- Add commitlint with conventional config\n- Document for team onboarding"
+    },
+    {
+      "id": "299",
+      "name": "Webpack to Vite Migration",
+      "category": "other",
+      "content": "Migrate [project] from Webpack to Vite:\n\n1. Install Vite and plugins\n2. Create vite.config.ts from webpack.config.js\n3. Update import paths (remove webpack-specific)\n4. Convert loaders to Vite plugins\n5. Update environment variable usage (VITE_ prefix)\n6. Update dev/build scripts in package.json\n7. Test all features\n8. Remove webpack dependencies\n\nCommon pitfalls and solutions for each step."
+    },
+    {
+      "id": "300",
+      "name": "Monorepo Setup",
+      "category": "other",
+      "content": "Set up a monorepo for [project] using [pnpm workspaces/Turborepo/Nx]:\n\n1. Repository structure:\n   - packages/shared (types, utils)\n   - apps/web (frontend)\n   - apps/api (backend)\n2. Shared tsconfig and eslint config\n3. Inter-package dependencies\n4. Build pipeline (build shared first)\n5. Shared scripts\n6. CI/CD with affected-only builds\n7. Versioning strategy"
+    },
+    {
+      "id": "301",
+      "name": "VS Code Extension Recommendations",
+      "category": "other",
+      "content": "Create .vscode/extensions.json and settings.json for [project]:\n\nExtensions:\n1. ESLint + Prettier integration\n2. Language-specific extensions\n3. Git tools (GitLens, Git Graph)\n4. Testing tools\n5. Debug configurations\n\nSettings:\n1. Format on save\n2. Default formatter per language\n3. Editor rulers at line limits\n4. File associations\n5. Search exclusions (node_modules, dist)"
+    },
+    {
+      "id": "302",
+      "name": "NPM Package Publishing",
+      "category": "other",
+      "content": "Prepare and publish [package] to npm:\n\n1. Package.json: name, version, description, main, types, files\n2. Build step (TypeScript compilation)\n3. Type declarations generation\n4. README with installation and usage\n5. CHANGELOG\n6. .npmignore or files whitelist\n7. Prepublish script (lint, test, build)\n8. Semantic versioning strategy\n9. npm publish command\n10. GitHub release integration"
+    },
+    {
+      "id": "303",
+      "name": "Docker Compose Dev Environment",
+      "category": "other",
+      "content": "Create docker-compose.yml for local development:\n\nServices:\n1. App: [framework] with hot reload (volume mount)\n2. Database: [PostgreSQL/MySQL/MongoDB] with init script\n3. Redis: for caching and sessions\n4. Mailhog: for email testing\n\nFeatures:\n- Named volumes for data persistence\n- Health checks for dependencies\n- .env file for configuration\n- Makefile with common commands\n- Network isolation"
+    },
+    {
+      "id": "304",
+      "name": "API Endpoint Documentation",
+      "category": "other",
+      "content": "Document this API endpoint:\n\n[endpoint details]\n\nFormat:\n### [METHOD] [PATH]\n\n**Description:** What it does\n\n**Authentication:** Required/Optional\n\n**Parameters:**\n| Name | In | Type | Required | Description |\n\n**Request Body:**\njson example\n\n**Response:**\n- 200: Success response example\n- 400: Validation error example\n- 401: Unauthorized\n- 404: Not found\n\n**Example:**\ncurl command"
+    },
+    {
+      "id": "305",
+      "name": "Database Backup Strategy",
+      "category": "other",
+      "content": "Design a database backup strategy for [database] in production:\n\n1. Full backup: daily at 2 AM UTC\n2. Incremental backup: every 6 hours\n3. WAL/binlog archiving for point-in-time recovery\n4. Retention: 30 days for daily, 7 days for incremental\n5. Storage: S3 with lifecycle policy\n6. Encryption at rest\n7. Restore testing: monthly automated test\n8. RTO: 1 hour, RPO: 6 hours\n9. Monitoring: alert on backup failure\n10. Runbook for restore procedure"
     }
   ]
 }

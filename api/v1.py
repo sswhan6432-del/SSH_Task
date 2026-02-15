@@ -1,0 +1,419 @@
+"""v1 API Blueprint — 1:1 migration from web_server.py endpoints.
+
+All existing endpoints preserved with identical behavior.
+No authentication required (backward compatible).
+"""
+
+import json
+import os
+import re
+import ssl
+import sys
+import subprocess
+import threading
+
+from flask import Blueprint, request, jsonify
+
+# Fix SSL certificate verification for Python 3.14+ on macOS
+try:
+    import certifi
+    ssl_ctx = ssl.create_default_context(cafile=certifi.where())
+    import urllib.request
+    urllib.request.install_opener(
+        urllib.request.build_opener(
+            urllib.request.HTTPSHandler(context=ssl_ctx)
+        )
+    )
+except ImportError:
+    pass
+
+# Import helpers from router_gui
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from router_gui import (
+    find_router_candidates,
+    git_status_summary,
+    detect_ticket_ids,
+    extract_claude_ready_block_from_output,
+    recover_ticket_chunk_from_output,
+    recover_change_log_stub_from_output,
+    slice_single_ticket_from_block,
+    extract_tickets_from_claude_block,
+    rewrite_tickets_to_english_via_groq,
+    apply_english_tickets_to_claude_block,
+    translate_output_via_groq,
+    translate_non_code_to_english,
+    _groq_chat,
+    _contains_korean,
+    IMPL_RULES_SUFFIX,
+)
+
+from config import (
+    BASE_DIR, HISTORY_FILE, PROMPTS_FILE, FEEDBACK_FILE,
+    ROUTE_COST_PER_1K, ROUTE_TOKENS_PER_TASK,
+    DEFAULT_COST_PER_1K, DEFAULT_TOKENS_PER_TASK,
+)
+
+v1_bp = Blueprint("v1", __name__)
+
+_file_lock = threading.Lock()
+
+
+def _read_json_file(path, default=None):
+    if default is None:
+        default = {}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return default
+
+
+def _write_json_file(path, data):
+    with _file_lock:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def _translate_remaining_korean(text, api_key):
+    if not _contains_korean(text):
+        return text
+    lines = text.splitlines()
+    kr_indices = []
+    kr_lines = []
+    for i, line in enumerate(lines):
+        if _contains_korean(line):
+            kr_indices.append(i)
+            kr_lines.append(line)
+    if not kr_lines:
+        return text
+    numbered = "\n".join(f"[{i}] {line}" for i, line in zip(kr_indices, kr_lines))
+    system = (
+        "Translate each Korean line to English. "
+        "Each line starts with a bracket number like [0], [1], [2]. "
+        "Keep that exact bracket number prefix unchanged. "
+        "Keep file paths, code, markers, ## headers, and bullet format intact. "
+        "Only translate Korean words to English."
+    )
+    try:
+        result = _groq_chat(
+            [{"role": "system", "content": system}, {"role": "user", "content": numbered}],
+            api_key=api_key, max_tokens=1000, temperature=0.0,
+        )
+    except Exception:
+        return text
+    for match in re.finditer(r"\[(\d+)\]\s*(.+)", result):
+        idx = int(match.group(1))
+        translated = match.group(2).strip()
+        if 0 <= idx < len(lines) and translated:
+            lines[idx] = translated
+    return "\n".join(lines)
+
+
+# ---------- GET endpoints ----------
+
+@v1_bp.route("/api/routers", methods=["GET"])
+def api_routers():
+    candidates = find_router_candidates()
+    items = []
+    for p in candidates:
+        items.append({
+            "path": p,
+            "name": os.path.basename(p),
+            "rel": os.path.relpath(p, BASE_DIR),
+        })
+    return jsonify({"routers": items})
+
+
+@v1_bp.route("/api/preflight", methods=["GET"])
+def api_preflight():
+    status = git_status_summary(os.getcwd())
+    groq_key = os.environ.get("GROQ_API_KEY", "").strip()
+    return jsonify({"status": status, "groq_key": bool(groq_key)})
+
+
+@v1_bp.route("/api/history", methods=["GET"])
+def api_history_get():
+    data = _read_json_file(HISTORY_FILE, [])
+    if isinstance(data, list):
+        entries = data
+    elif isinstance(data, dict):
+        entries = data.get("entries", data.get("history", []))
+    else:
+        entries = []
+    return jsonify({"entries": entries})
+
+
+@v1_bp.route("/api/history", methods=["DELETE"])
+def api_history_delete_all():
+    _write_json_file(HISTORY_FILE, [])
+    return jsonify({"success": True, "deleted": "all"})
+
+
+@v1_bp.route("/api/history/<int:idx>", methods=["DELETE"])
+def api_history_delete_one(idx):
+    data = _read_json_file(HISTORY_FILE, [])
+    entries = data if isinstance(data, list) else data.get("entries", data.get("history", []))
+
+    if idx < 0 or idx >= len(entries):
+        return jsonify({"error": "Index out of range"}), 404
+
+    entries.pop(idx)
+    _write_json_file(HISTORY_FILE, entries)
+    return jsonify({"success": True, "deleted_index": idx})
+
+
+@v1_bp.route("/api/cost-stats", methods=["GET"])
+def api_cost_stats():
+    data = _read_json_file(HISTORY_FILE, [])
+    entries = data if isinstance(data, list) else data.get("entries", [])
+
+    total_tokens = 0
+    total_cost = 0.0
+    route_counts = {"claude": 0, "cheap_llm": 0, "split": 0}
+
+    for entry in entries:
+        tasks = entry.get("tasks", [{"route": entry.get("route", "claude")}])
+        for t in tasks:
+            r = t.get("route", "claude")
+            tk = ROUTE_TOKENS_PER_TASK.get(r, DEFAULT_TOKENS_PER_TASK)
+            total_tokens += tk
+            total_cost += (tk / 1000) * ROUTE_COST_PER_1K.get(r, DEFAULT_COST_PER_1K)
+            if r in route_counts:
+                route_counts[r] += 1
+
+    return jsonify({
+        "total_sessions": len(entries),
+        "total_tokens": total_tokens,
+        "total_cost": round(total_cost, 4),
+        "route_counts": route_counts,
+    })
+
+
+@v1_bp.route("/api/prompts", methods=["GET"])
+def api_prompts_get():
+    data = _read_json_file(PROMPTS_FILE, {"prompts": []})
+    return jsonify(data)
+
+
+@v1_bp.route("/api/feedback", methods=["GET"])
+def api_feedback_get():
+    data = _read_json_file(FEEDBACK_FILE, {"feedback": {}})
+    return jsonify(data)
+
+
+# ---------- POST endpoints ----------
+
+@v1_bp.route("/api/route", methods=["POST"])
+def api_route():
+    body = request.get_json(silent=True) or {}
+
+    router = body.get("router", "").strip()
+    request_text = body.get("request", "").strip()
+
+    candidates = find_router_candidates()
+    candidate_paths = [os.path.abspath(c) for c in candidates]
+    if not router or os.path.abspath(router) not in candidate_paths:
+        return jsonify({"error": "Router not allowed", "output": "", "tickets": []}), 400
+    if not request_text:
+        return jsonify({"error": "Empty request", "output": "", "tickets": []}), 400
+
+    cmd = [sys.executable, router]
+
+    if body.get("friendly", False):
+        cmd.append("--friendly")
+    if body.get("desktop_edit", False):
+        cmd.append("--desktop-edit")
+    if body.get("force_split", False):
+        cmd.append("--force-split")
+    if body.get("opus_only", False):
+        cmd.append("--opus-only")
+
+    tickets_md = body.get("tickets_md", False)
+    save_tickets = (body.get("save_tickets") or "").strip()
+    if save_tickets:
+        cmd.extend(["--save-tickets", save_tickets])
+    elif tickets_md:
+        cmd.append("--tickets-md")
+
+    economy = (body.get("economy") or "strict").strip()
+    cmd.extend(["--economy", economy])
+
+    phase = (body.get("phase") or "implement").strip()
+    cmd.extend(["--phase", phase])
+
+    one_task = (body.get("one_task") or "").strip()
+    if one_task:
+        cmd.extend(["--one-task", one_task])
+
+    max_tickets = (body.get("max_tickets") or "0").strip()
+    if max_tickets and max_tickets != "0":
+        cmd.extend(["--max-tickets", max_tickets])
+
+    min_tickets = (body.get("min_tickets") or "1").strip()
+    if min_tickets and min_tickets != "0":
+        cmd.extend(["--min-tickets", min_tickets])
+
+    merge = (body.get("merge") or "").strip()
+    if merge:
+        cmd.extend(["--merge", merge])
+
+    if body.get("v5_enabled", False):
+        cmd.append("--v5")
+        if body.get("compress", True):
+            cmd.append("--compress")
+        cl = str(body.get("compression_level", 2)).strip()
+        if cl in ("1", "2", "3"):
+            cmd.extend(["--compression-level", cl])
+        if body.get("intent_detect", True):
+            cmd.append("--intent-detect")
+        if body.get("smart_priority", True):
+            cmd.append("--smart-priority")
+        if body.get("show_stats", False):
+            cmd.append("--show-stats")
+
+    cmd.append(request_text)
+
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, cwd=os.getcwd(), timeout=120)
+    except subprocess.TimeoutExpired:
+        return jsonify({"error": "Router timed out (120s)", "output": "", "tickets": []})
+    except Exception as e:
+        return jsonify({"error": str(e), "output": "", "tickets": []})
+
+    out = (result.stdout or "").strip()
+    err = (result.stderr or "").strip()
+    combined = out
+    if err:
+        combined += "\n\n--- STDERR ---\n" + err
+
+    translate_status = ""
+    if body.get("translate_en", False):
+        combined = translate_non_code_to_english(combined)
+        api_key = os.environ.get("GROQ_API_KEY", "").strip()
+        if api_key:
+            try:
+                combined = translate_output_via_groq(combined, api_key)
+                translate_status = "ok"
+            except Exception as e:
+                translate_status = f"groq_error: {e}"
+        else:
+            translate_status = "no_api_key"
+
+    tickets = detect_ticket_ids(combined)
+
+    resp = {
+        "output": combined,
+        "tickets": tickets,
+        "error": "",
+        "translate_status": translate_status,
+    }
+
+    if body.get("v5_enabled", False):
+        token_reduction_rate = 0.0
+        original_tokens = 0
+        compressed_tokens = 0
+        processing_time_ms = 0.0
+        intent_accuracy = 0.0
+        priority_confidence = 0.0
+
+        try:
+            if combined.strip().startswith("{"):
+                data = json.loads(combined)
+                token_reduction_rate = data.get("token_reduction_rate", 0.0)
+                processing_time_ms = data.get("total_processing_time_ms", 0.0)
+                tasks = data.get("tasks", [])
+                if tasks:
+                    original_tokens = sum(t.get("compression_result", {}).get("original_tokens", 0) for t in tasks)
+                    compressed_tokens = sum(t.get("compression_result", {}).get("compressed_tokens", 0) for t in tasks)
+                    intent_scores = [t.get("intent_analysis", {}).get("confidence", 0) for t in tasks if t.get("intent_analysis")]
+                    if intent_scores:
+                        intent_accuracy = sum(intent_scores) / len(intent_scores)
+                    priority_scores = [t.get("priority_score", {}).get("ml_confidence", 0) for t in tasks if t.get("priority_score")]
+                    if priority_scores:
+                        priority_confidence = sum(priority_scores) / len(priority_scores)
+        except (json.JSONDecodeError, KeyError):
+            pass
+
+        resp["v5_stats"] = {
+            "enabled": True,
+            "compress": body.get("compress", True),
+            "compression_level": int(body.get("compression_level", 2)),
+            "intent_detect": body.get("intent_detect", True),
+            "smart_priority": body.get("smart_priority", True),
+            "token_reduction_rate": token_reduction_rate,
+            "original_tokens": original_tokens,
+            "compressed_tokens": compressed_tokens,
+            "processing_time_ms": processing_time_ms,
+            "intent_accuracy": intent_accuracy,
+            "priority_confidence": priority_confidence,
+        }
+
+    return jsonify(resp)
+
+
+@v1_bp.route("/api/extract-block", methods=["POST"])
+def api_extract_block():
+    body = request.get_json(silent=True) or {}
+
+    output = body.get("output", "")
+    ticket = (body.get("ticket") or "A").strip().upper()
+    translate_groq = body.get("translate_groq", False)
+    append_rules = body.get("append_rules", True)
+
+    if not output:
+        return jsonify({"block": "", "success": False})
+
+    block = extract_claude_ready_block_from_output(output, ticket)
+    if not block:
+        return jsonify({"block": "", "success": False})
+
+    block = block.strip()
+
+    if "Ticket " in block:
+        block = slice_single_ticket_from_block(block, ticket).strip()
+
+    if "Ticket " not in block:
+        recovered = recover_ticket_chunk_from_output(output, ticket)
+        if recovered:
+            block = block.rstrip() + "\n\n" + recovered + "\n"
+
+    if translate_groq:
+        api_key = os.environ.get("GROQ_API_KEY", "").strip()
+        if api_key:
+            if "Ticket " in block:
+                try:
+                    tickets_map, original_kr = extract_tickets_from_claude_block(block)
+                    if tickets_map:
+                        en_map = rewrite_tickets_to_english_via_groq(tickets_map, original_kr, api_key)
+                        en_map.pop("__KR__", None)
+                        block = apply_english_tickets_to_claude_block(block, en_map)
+                except Exception:
+                    pass
+
+            if _contains_korean(block):
+                try:
+                    block = translate_non_code_to_english(block)
+                    block = _translate_remaining_korean(block, api_key)
+                except Exception:
+                    pass
+
+    if append_rules:
+        block = block.rstrip() + "\n" + IMPL_RULES_SUFFIX
+
+    return jsonify({"block": block, "success": True})
+
+
+@v1_bp.route("/api/prompts", methods=["POST"])
+def api_prompts_save():
+    body = request.get_json(silent=True) or {}
+    prompts = body.get("prompts", [])
+    _write_json_file(PROMPTS_FILE, {"prompts": prompts})
+    return jsonify({"success": True, "count": len(prompts)})
+
+
+@v1_bp.route("/api/feedback", methods=["POST"])
+def api_feedback_save():
+    body = request.get_json(silent=True) or {}
+    feedback = body.get("feedback", {})
+    _write_json_file(FEEDBACK_FILE, {"feedback": feedback})
+    return jsonify({"success": True, "count": len(feedback)})
