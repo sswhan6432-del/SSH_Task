@@ -7,6 +7,7 @@
   <meta name="description" content="Rate and improve LLM routing accuracy with your feedback.">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="router.css">
+  <link rel="stylesheet" href="auth.css">
   <style>
     .feedback-stats {
       display: grid;
@@ -156,7 +157,9 @@
         <li><a href="/batch.html">Batch</a></li>
         <li><a href="/prompts.html">Prompts</a></li>
         <li><a href="/feedback.html" class="active">Feedback</a></li>
+        <li><a href="/dashboard.html">Dashboard</a></li>
       </ul>
+      <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span>
       </button>
@@ -173,7 +176,9 @@
       <li><a href="/batch.html">Batch Router</a></li>
       <li><a href="/prompts.html">Prompt Library</a></li>
       <li><a href="/feedback.html">Feedback</a></li>
+      <li><a href="/dashboard.html">Dashboard</a></li>
     </ul>
+    <div class="mobile-auth" id="mobile-auth"></div>
   </div>
 
   <main class="router-main">
@@ -219,6 +224,7 @@
 
   <div class="toast" id="toast"></div>
   <script src="feedback.js"></script>
+  <script src="auth.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

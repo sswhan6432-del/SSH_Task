@@ -49,3 +49,12 @@ env/
 # Temporary files
 *.tmp
 *.temp
+
+# Enterprise data (sensitive)
+data/api_keys.json
+data/audit_log.json
+data/token_usage.json
+data/token_budgets.json
+data/users.json
+data/sessions.json
+.vercel

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise Dashboard — Token Analytics</title>
+  <meta name="description" content="Real-time enterprise analytics dashboard for token usage, budgets, and performance monitoring.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="router.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body data-auth-required="true">
+
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <div class="nav-inner">
+      <a href="/index.html#hero" class="nav-logo">SSH</a>
+      <ul class="nav-links">
+        <li><a href="/index.html">Portfolio</a></li>
+        <li><a href="/router.html">Splitter</a></li>
+        <li><a href="/saveToken.html">TokenSaver</a></li>
+        <li><a href="/costTracker.html">Cost</a></li>
+        <li><a href="/history.html">History</a></li>
+        <li><a href="/batch.html">Batch</a></li>
+        <li><a href="/prompts.html">Prompts</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+        <li><a href="/dashboard.html" class="active">Dashboard</a></li>
+      </ul>
+      <div class="nav-auth" id="nav-auth"></div>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="/index.html">Portfolio</a></li>
+      <li><a href="/router.html">Task Splitter</a></li>
+      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html">Cost Tracker</a></li>
+      <li><a href="/history.html">History</a></li>
+      <li><a href="/batch.html">Batch Router</a></li>
+      <li><a href="/prompts.html">Prompt Library</a></li>
+      <li><a href="/feedback.html">Feedback</a></li>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+    </ul>
+    <div class="mobile-auth" id="mobile-auth"></div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Main Content -->
+  <main class="dashboard-main">
+
+    <!-- Header -->
+    <header class="dashboard-header">
+      <p class="section-label">Enterprise</p>
+      <h1 class="section-title">Analytics Dashboard</h1>
+      <p class="dashboard-sub">Real-time token usage, budget monitoring, and performance analytics.</p>
+      <div class="connection-status" id="connection-status">
+        <span class="connection-dot" id="connection-dot"></span>
+        <span id="connection-text">Disconnected</span>
+      </div>
+    </header>
+
+    <!-- Period Selector -->
+    <div class="period-selector" role="group" aria-label="Time period selector">
+      <button class="period-btn" data-period="1h" aria-label="Last 1 hour">1H</button>
+      <button class="period-btn active" data-period="24h" aria-label="Last 24 hours" aria-pressed="true">24H</button>
+      <button class="period-btn" data-period="7d" aria-label="Last 7 days">7D</button>
+      <button class="period-btn" data-period="30d" aria-label="Last 30 days">30D</button>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-value" id="stat-tokens">0</span>
+        <span class="stat-label">Total Tokens</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="stat-cost">$0.00</span>
+        <span class="stat-label">Total Cost</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="stat-requests">0</span>
+        <span class="stat-label">Requests</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="stat-burn-rate">0</span>
+        <span class="stat-label">Daily Token Rate</span>
+      </div>
+    </div>
+
+    <!-- Charts Row 1: Budget Gauge + Model Distribution -->
+    <div class="charts-grid">
+      <section class="chart-card" role="region" aria-label="Budget Usage">
+        <h3 class="chart-title">Budget Usage</h3>
+        <div class="gauge-container" id="gauge-container">
+          <svg viewBox="0 0 200 120" width="200" height="120">
+            <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" class="gauge-track" stroke-width="12" stroke-linecap="round"/>
+            <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" id="gauge-fill" class="gauge-fill" stroke="var(--black)" stroke-width="12" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251"/>
+            <text x="100" y="85" text-anchor="middle" class="gauge-text" id="gauge-pct">0%</text>
+            <text x="100" y="105" text-anchor="middle" class="gauge-sub" id="gauge-label">No budget set</text>
+          </svg>
+        </div>
+        <div id="budget-details" style="text-align:center;font-size:13px;color:var(--gray);margin-top:8px;"></div>
+      </section>
+
+      <section class="chart-card" role="region" aria-label="Token by Model">
+        <h3 class="chart-title">Token by Model</h3>
+        <div class="chart-canvas-wrap">
+          <canvas id="donut-chart"></canvas>
+        </div>
+        <div class="donut-legend" id="donut-legend"></div>
+      </section>
+    </div>
+
+    <!-- Charts Row 2: Cost Trend -->
+    <div class="charts-grid">
+      <section class="chart-card full-width" role="region" aria-label="Cost Trend">
+        <h3 class="chart-title">Cost Trend</h3>
+        <div class="chart-canvas-wrap" style="height:180px;">
+          <canvas id="cost-chart"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <!-- Heatmap -->
+    <div class="charts-grid">
+      <section class="chart-card full-width" role="region" aria-label="Usage Heatmap">
+        <h3 class="chart-title">Usage Heatmap (24h x 7 days)</h3>
+        <div class="heatmap-grid" id="heatmap" role="grid" aria-label="Request frequency heatmap"></div>
+      </section>
+    </div>
+
+    <!-- Charts Row 3: Latency + Burn Rate -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3 class="chart-title">Latency Percentiles</h3>
+        <div class="latency-bars" id="latency-bars">
+          <div class="latency-bar-group">
+            <span class="latency-value" id="lat-p50">—</span>
+            <div class="latency-bar" id="bar-p50" style="height:4px;"></div>
+            <span class="latency-label">p50</span>
+          </div>
+          <div class="latency-bar-group">
+            <span class="latency-value" id="lat-p95">—</span>
+            <div class="latency-bar" id="bar-p95" style="height:4px;"></div>
+            <span class="latency-label">p95</span>
+          </div>
+          <div class="latency-bar-group">
+            <span class="latency-value" id="lat-p99">—</span>
+            <div class="latency-bar" id="bar-p99" style="height:4px;"></div>
+            <span class="latency-label">p99</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3 class="chart-title">Burn Rate Projection</h3>
+        <div style="padding:16px 0;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span style="font-size:13px;color:var(--gray);">Daily Rate</span>
+            <span style="font-size:15px;font-weight:700;" id="burn-daily">0 tokens</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span style="font-size:13px;color:var(--gray);">Monthly Projection</span>
+            <span style="font-size:15px;font-weight:700;" id="burn-monthly">0 tokens</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+            <span style="font-size:13px;color:var(--gray);">Monthly Cost Est.</span>
+            <span style="font-size:15px;font-weight:700;" id="burn-cost">$0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="alerts-section">
+      <h3 class="chart-title" style="margin-bottom:16px;">Recent Alerts</h3>
+      <div id="alerts-list">
+        <div class="alert-item">
+          <span class="alert-dot info"></span>
+          <span>No alerts yet. Budget alerts will appear here.</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+  <script src="auth.js"></script>
+  <script src="page-transition.js"></script>
+</body>
+</html>

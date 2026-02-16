@@ -17,5 +17,9 @@ tiktoken>=0.7.0
 # Utilities
 tqdm>=4.66.0
 
+# Web Framework (Enterprise API)
+flask>=3.0.0
+flask-cors>=4.0.0
+
 # Note: spaCy removed due to Python 3.14 incompatibility
 # NLP processing now uses transformers (BERT) + regex patterns

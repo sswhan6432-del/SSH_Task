@@ -1,0 +1,447 @@
+/* Dashboard — Enterprise Analytics */
+
+.dashboard-main {
+  padding: calc(var(--nav-height) + 32px) 24px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.dashboard-header .section-label {
+  margin-bottom: 8px;
+}
+
+.dashboard-header .section-title {
+  margin-bottom: 12px;
+}
+
+.dashboard-sub {
+  color: var(--gray);
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+/* Period Selector */
+.period-selector {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.period-btn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.12);
+  background: var(--white);
+  color: var(--black);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.4s var(--ease-spring), transform 0.4s var(--ease-spring),
+              color 0.4s var(--ease-spring), border-color 0.4s var(--ease-spring);
+}
+
+.period-btn:hover {
+  background: var(--light-bg);
+  transform: scale(1.03);
+}
+
+.period-btn:active {
+  transform: scale(0.96);
+  transition-duration: 0.1s;
+}
+
+.period-btn.active {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+/* Stats Grid */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--black);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  color: var(--white);
+  opacity: 0;
+  transform: scale(0.98) translateY(8px);
+  animation: fadeInCard 0.8s var(--ease-out-quart) forwards;
+  will-change: opacity, transform;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0s; }
+.stat-card:nth-child(2) { animation-delay: 0.08s; }
+.stat-card:nth-child(3) { animation-delay: 0.16s; }
+.stat-card:nth-child(4) { animation-delay: 0.24s; }
+
+@keyframes fadeInCard {
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Charts Grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.chart-card {
+  background: var(--light-bg);
+  border-radius: 16px;
+  padding: 24px;
+  opacity: 0;
+  transform: scale(0.98) translateY(8px);
+  animation: fadeInCard 0.8s var(--ease-out-quart) forwards;
+  animation-delay: 0.3s;
+  will-change: opacity, transform;
+}
+
+.chart-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.chart-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--black);
+}
+
+/* Budget Gauge */
+.gauge-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.gauge-container svg {
+  max-width: 200px;
+}
+
+.gauge-text {
+  font-size: 28px;
+  font-weight: 700;
+  fill: var(--black);
+}
+
+.gauge-sub {
+  font-size: 12px;
+  fill: var(--gray);
+}
+
+.gauge-track {
+  stroke: rgba(0,0,0,0.08);
+}
+
+.gauge-fill {
+  transition: stroke-dashoffset 1s var(--ease-out-quart);
+  will-change: stroke-dashoffset;
+}
+
+/* Canvas Chart */
+.chart-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+}
+
+.chart-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Heatmap */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: 40px repeat(24, 1fr);
+  gap: 2px;
+  font-size: 10px;
+  contain: layout style;
+}
+
+.heatmap-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  color: var(--gray);
+  font-weight: 500;
+}
+
+.heatmap-hour-labels {
+  display: contents;
+}
+
+.heatmap-hour-label {
+  text-align: center;
+  color: var(--gray);
+  font-size: 9px;
+  padding-bottom: 4px;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.04);
+  transition: transform 0.4s var(--ease-spring), opacity 0.4s var(--ease-spring);
+  min-height: 14px;
+  will-change: transform;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.3);
+  z-index: 1;
+  opacity: 0.85;
+}
+
+/* Heatmap intensity levels — using opacity for GPU acceleration */
+.heatmap-cell.level-1 { background: rgba(0,0,0,0.10); }
+.heatmap-cell.level-2 { background: rgba(0,0,0,0.20); }
+.heatmap-cell.level-3 { background: rgba(0,0,0,0.35); border: 1px solid rgba(0,0,0,0.05); }
+.heatmap-cell.level-4 { background: rgba(0,0,0,0.55); border: 1px solid rgba(0,0,0,0.08); }
+.heatmap-cell.level-5 { background: rgba(0,0,0,0.80); border: 1px solid rgba(0,0,0,0.12); }
+
+/* Latency Bars */
+.latency-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  height: 160px;
+  padding: 0 24px;
+}
+
+.latency-bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.latency-bar {
+  width: 48px;
+  border-radius: 8px 8px 0 0;
+  background: var(--black);
+  transition: height 0.8s var(--ease-out-quart);
+  min-height: 4px;
+  will-change: height;
+}
+
+.latency-value {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--black);
+}
+
+.latency-label {
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* Alerts */
+.alerts-section {
+  margin-bottom: 32px;
+}
+
+.alert-item {
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  opacity: 0;
+  animation: fadeInCard 0.4s var(--ease-out-quart) forwards;
+}
+
+.alert-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.alert-dot.warning { background: #f59e0b; }
+.alert-dot.danger { background: #ef4444; }
+.alert-dot.info { background: var(--gray); }
+
+.alert-time {
+  color: var(--gray);
+  font-size: 12px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Toast */
+.toast-container {
+  position: fixed;
+  top: calc(var(--nav-height) + 16px);
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--black);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateX(40px);
+  animation: toastIn 0.4s var(--ease-out-quart) forwards;
+  max-width: 360px;
+  pointer-events: auto;
+  will-change: opacity, transform;
+}
+
+.toast.removing {
+  animation: toastOut 0.3s var(--ease-in-out-quart) forwards;
+}
+
+@keyframes toastIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(40px); }
+}
+
+/* Connection Status */
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--gray);
+  margin-top: 8px;
+}
+
+.connection-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  transition: background 0.4s var(--ease-spring);
+}
+
+.connection-dot.connected {
+  background: #22c55e;
+}
+
+/* Donut Chart Legend */
+.donut-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--gray);
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .stat-card,
+  .chart-card,
+  .alert-item,
+  .toast {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .heatmap-cell {
+    transition: none;
+  }
+  .gauge-fill {
+    transition: none;
+  }
+  .latency-bar {
+    transition: none;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+  .latency-bars {
+    gap: 16px;
+    padding: 0;
+  }
+  .latency-bar {
+    width: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .stat-value {
+    font-size: 1.5rem;
+  }
+  .heatmap-grid {
+    font-size: 8px;
+  }
+}

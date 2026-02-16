@@ -3,13 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Batch Router — Bulk Task Processing</title>
-  <meta name="description" content="Process multiple tasks at once through the LLM router.">
+  <title>Batch Router — Advanced Bulk Processing</title>
+  <meta name="description" content="Process multiple tasks at once with parallel execution, retry, and analytics.">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="router.css">
+  <link rel="stylesheet" href="auth.css">
   <style>
+    /* === Batch Page Styles === */
+
+    /* --- Controls Bar --- */
+    .batch-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      background: var(--light-bg);
+      border-radius: 12px;
+    }
+    .batch-control-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .batch-control-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .batch-control-group select,
+    .batch-control-group input[type="range"] {
+      cursor: pointer;
+    }
+    .concurrency-value {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--black);
+      min-width: 20px;
+      text-align: center;
+    }
+    .batch-control-group input[type="range"] {
+      width: 80px;
+      accent-color: var(--black);
+    }
+
+    /* --- Input Area --- */
     .batch-input {
       margin-bottom: 24px;
+      position: relative;
     }
     .batch-input textarea {
       min-height: 200px;
@@ -17,15 +62,77 @@
       font-size: 13px;
       line-height: 1.6;
     }
+    .batch-input-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
     .batch-help {
       font-size: 12px;
       color: var(--gray);
-      margin-top: 8px;
       line-height: 1.5;
     }
-    .progress-bar-container {
+    .task-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray);
+      padding: 4px 10px;
+      background: var(--light-bg);
+      border-radius: 100px;
+    }
+    .task-count strong { color: var(--black); }
+
+    /* --- Drop Zone --- */
+    .batch-input.drag-over textarea {
+      border-color: var(--black);
+      background: rgba(0,0,0,0.02);
+    }
+    .drop-hint {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.92);
+      border: 2px dashed var(--black);
+      border-radius: 12px;
+      z-index: 10;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--black);
+      pointer-events: none;
+    }
+    .batch-input.drag-over .drop-hint {
+      display: flex;
+    }
+
+    /* --- Progress Area --- */
+    .progress-section {
       display: none;
       margin-bottom: 24px;
+      padding: 20px;
+      background: var(--light-bg);
+      border-radius: 16px;
+    }
+    .progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .progress-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .progress-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .progress-eta {
+      font-size: 12px;
+      color: var(--gray);
     }
     .progress-bar-bg {
       width: 100%;
@@ -36,22 +143,179 @@
     }
     .progress-bar-fill {
       height: 100%;
-      background: #1a1a1a;
+      background: var(--black);
       border-radius: 4px;
-      transition: width 0.3s ease;
+      transition: width 0.4s var(--ease-out-quart);
       width: 0%;
     }
     .progress-text {
       font-size: 13px;
       color: var(--gray);
-      margin-top: 6px;
+      margin-top: 8px;
       text-align: center;
     }
+    .progress-tasks {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .progress-pip {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: #e0e0e0;
+      transition: background 0.4s var(--ease-spring);
+    }
+    .progress-pip.running {
+      background: var(--gray);
+      animation: pulse-pip 1s ease-in-out infinite;
+    }
+    .progress-pip.done { background: var(--black); }
+    .progress-pip.error { background: #999; }
+    @keyframes pulse-pip {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* --- Summary Cards --- */
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .summary-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .summary-card-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .summary-card-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .summary-card.highlight {
+      background: var(--black);
+    }
+    .summary-card.highlight .summary-card-value,
+    .summary-card.highlight .summary-card-label {
+      color: var(--white);
+    }
+
+    /* --- Route Distribution Chart --- */
+    .route-chart {
+      display: flex;
+      height: 32px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      background: #e0e0e0;
+    }
+    .route-chart-seg {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      transition: width 0.6s var(--ease-out-quart);
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .route-chart-seg.claude { background: #1a1a1a; }
+    .route-chart-seg.cheap_llm { background: #86868b; color: #fff; }
+    .route-chart-seg.split { background: #b0b0b0; color: #333; }
+    .route-chart-seg.error { background: #d4d4d4; color: #666; }
+    .route-legend {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .route-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gray);
+    }
+    .route-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+    .route-legend-dot.claude { background: #1a1a1a; }
+    .route-legend-dot.cheap_llm { background: #86868b; }
+    .route-legend-dot.split { background: #b0b0b0; }
+    .route-legend-dot.error { background: #d4d4d4; }
+
+    /* --- Filter Tabs --- */
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      background: #f0f0f0;
+      border-radius: 10px;
+      padding: 3px;
+      overflow-x: auto;
+    }
+    .filter-tab {
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--gray);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.4s var(--ease-spring);
+      white-space: nowrap;
+      font-family: var(--font);
+    }
+    .filter-tab:hover { color: var(--black); }
+    .filter-tab.active {
+      background: var(--white);
+      color: var(--black);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .filter-tab .tab-count {
+      display: inline-block;
+      min-width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(0,0,0,0.08);
+      border-radius: 100px;
+      margin-left: 6px;
+      padding: 0 5px;
+    }
+    .filter-tab.active .tab-count {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    /* --- Result Table --- */
     .result-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
-      margin-top: 16px;
+      margin-top: 8px;
     }
     .result-table th {
       text-align: left;
@@ -62,13 +326,28 @@
       letter-spacing: 0.04em;
       padding: 10px 12px;
       border-bottom: 2px solid rgba(0,0,0,0.1);
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s;
     }
+    .result-table th:hover { color: var(--black); }
+    .result-table th .sort-arrow {
+      display: inline-block;
+      margin-left: 4px;
+      font-size: 10px;
+      opacity: 0.4;
+    }
+    .result-table th.sorted .sort-arrow { opacity: 1; }
     .result-table td {
       padding: 10px 12px;
       border-bottom: 1px solid rgba(0,0,0,0.05);
       vertical-align: top;
     }
-    .result-table tr:hover td { background: rgba(0,0,0,0.02); }
+    .result-table tr.batch-row {
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .result-table tr.batch-row:hover td { background: rgba(0,0,0,0.02); }
     .route-badge {
       display: inline-block;
       font-size: 11px;
@@ -80,29 +359,11 @@
     .route-badge.claude { background: #1a1a1a; color: white; }
     .route-badge.cheap_llm { background: #e0e0e0; color: #333; }
     .route-badge.split { background: #86868b; color: white; }
+    .route-badge.error { background: #f0f0f0; color: #999; }
     .status-icon { font-weight: 700; }
     .status-icon.done { color: #333; }
     .status-icon.pending { color: #ccc; }
     .status-icon.error { color: #999; }
-    .results-section {
-      background: var(--light-bg);
-      border-radius: 16px;
-      padding: 24px;
-      display: none;
-    }
-    .results-section h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    .results-summary {
-      display: flex;
-      gap: 24px;
-      margin-bottom: 16px;
-      font-size: 14px;
-      color: var(--gray);
-    }
-    .results-summary strong { color: var(--black); }
     .task-detail-output {
       display: none;
       margin-top: 8px;
@@ -115,6 +376,154 @@
       white-space: pre-wrap;
       max-height: 200px;
       overflow-y: auto;
+    }
+    .row-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .row-action-btn {
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 6px;
+      background: var(--white);
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.3s var(--ease-spring);
+      font-family: var(--font);
+      white-space: nowrap;
+    }
+    .row-action-btn:hover {
+      border-color: var(--black);
+      color: var(--black);
+    }
+
+    /* --- Results Section --- */
+    .results-section {
+      background: var(--light-bg);
+      border-radius: 16px;
+      padding: 24px;
+      display: none;
+    }
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .results-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .results-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* --- History Panel --- */
+    .history-panel {
+      margin-top: 32px;
+    }
+    .history-panel summary {
+      padding: 16px 0;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray);
+      list-style: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .history-panel summary::-webkit-details-marker { display: none; }
+    .history-panel summary::after {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-right: 2px solid var(--gray);
+      border-bottom: 2px solid var(--gray);
+      transform: rotate(-45deg);
+      transition: transform 0.4s var(--ease-in-out-quart);
+    }
+    .history-panel[open] summary::after {
+      transform: rotate(45deg);
+    }
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 16px;
+    }
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--white);
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: box-shadow 0.3s var(--ease-spring);
+    }
+    .history-item:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .history-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .history-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--black);
+    }
+    .history-item-meta {
+      font-size: 11px;
+      color: var(--gray);
+    }
+    .history-item-actions {
+      display: flex;
+      gap: 6px;
+    }
+    .history-empty {
+      text-align: center;
+      padding: 24px;
+      color: var(--gray);
+      font-size: 13px;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 734px) {
+      .batch-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .filter-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .results-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .results-actions {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+      .results-actions .btn {
+        flex: 1;
+        text-align: center;
+      }
+      .row-actions {
+        flex-wrap: wrap;
+      }
     }
   </style>
 </head>
@@ -132,7 +541,9 @@
         <li><a href="/batch.html" class="active">Batch</a></li>
         <li><a href="/prompts.html">Prompts</a></li>
         <li><a href="/feedback.html">Feedback</a></li>
+        <li><a href="/dashboard.html">Dashboard</a></li>
       </ul>
+      <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span>
       </button>
@@ -149,50 +560,128 @@
       <li><a href="/batch.html">Batch Router</a></li>
       <li><a href="/prompts.html">Prompt Library</a></li>
       <li><a href="/feedback.html">Feedback</a></li>
+      <li><a href="/dashboard.html">Dashboard</a></li>
     </ul>
+    <div class="mobile-auth" id="mobile-auth"></div>
   </div>
 
   <main class="router-main">
     <header class="router-header">
-      <p class="section-label">Bulk Processing</p>
+      <p class="section-label">Advanced Bulk Processing</p>
       <h1 class="section-title">Batch Router</h1>
-      <p class="router-sub">Enter multiple tasks, one per line. Each will be routed independently.</p>
+      <p class="router-sub">Process multiple tasks with parallel execution, smart retry, and full analytics.</p>
     </header>
 
-    <section class="batch-input">
+    <!-- Controls Bar -->
+    <div class="batch-controls">
+      <div class="batch-control-group">
+        <label for="concurrency-slider">Concurrency</label>
+        <input type="range" id="concurrency-slider" min="1" max="5" value="3" step="1">
+        <span class="concurrency-value" id="concurrency-value">3</span>
+      </div>
+      <div class="batch-control-group">
+        <label for="mode-select">Mode</label>
+        <select id="mode-select">
+          <option value="basic">Basic Splitter</option>
+          <option value="v5">NLP/ML v5</option>
+        </select>
+      </div>
+      <div class="batch-control-group">
+        <label>
+          <input type="checkbox" id="auto-retry" checked style="accent-color:var(--black);cursor:pointer;">
+          Auto-retry
+        </label>
+      </div>
+      <div class="batch-control-group">
+        <label for="economy-select">Economy</label>
+        <select id="economy-select">
+          <option value="strict">Strict</option>
+          <option value="balanced">Balanced</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Task Input -->
+    <section class="batch-input" id="batch-input-area">
       <label class="area-label" for="batch-textarea">Tasks (one per line)</label>
       <textarea id="batch-textarea" rows="10" placeholder="Build a login page with email validation
 Add dark mode toggle to the settings page
 Fix the navigation menu on mobile
 Create a contact form with SMTP integration
 Optimize database queries for user dashboard"></textarea>
-      <p class="batch-help">Enter one task per line. Empty lines are ignored. Each task is processed through the router individually.</p>
+      <div class="drop-hint">Drop .txt or .csv file here</div>
+      <div class="batch-input-footer">
+        <p class="batch-help">One task per line. Empty lines ignored. Max 50 tasks. Drag & drop a .txt file to import.</p>
+        <span class="task-count" id="task-count"><strong>0</strong> tasks</span>
+      </div>
     </section>
 
     <div class="btn-row" style="margin-bottom:24px;">
       <button class="btn btn-primary btn-large" id="btn-run-batch" type="button">Run Batch</button>
+      <button class="btn" id="btn-pause" type="button" style="display:none;">Pause</button>
+      <button class="btn" id="btn-cancel" type="button" style="display:none;">Cancel</button>
       <button class="btn" id="btn-clear" type="button">Clear</button>
       <button class="btn" id="btn-load-sample" type="button">Load Sample</button>
+      <button class="btn" id="btn-import-file" type="button">Import File</button>
+      <input type="file" id="file-input" accept=".txt,.csv" style="display:none;">
     </div>
 
-    <div class="progress-bar-container" id="progress-container">
+    <!-- Progress Section -->
+    <section class="progress-section" id="progress-section">
+      <div class="progress-header">
+        <div class="progress-header-left">
+          <span class="progress-title" id="progress-title">Processing...</span>
+          <span class="progress-eta" id="progress-eta"></span>
+        </div>
+        <span class="progress-text" id="progress-text">0 / 0</span>
+      </div>
       <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
-      <div class="progress-text" id="progress-text">0 / 0 tasks processed</div>
-    </div>
+      <div class="progress-tasks" id="progress-tasks"></div>
+    </section>
 
+    <!-- Results Section -->
     <section class="results-section" id="results-section">
-      <h3>Results</h3>
-      <div class="results-summary" id="results-summary"></div>
+      <div class="results-header">
+        <h3>Results</h3>
+        <div class="results-actions">
+          <button class="btn" id="btn-retry-failed" type="button">Retry Failed</button>
+          <button class="btn" id="btn-send-splitter" type="button">Open in Splitter</button>
+          <button class="btn" id="btn-save-history" type="button">Save to History</button>
+        </div>
+      </div>
+
+      <!-- Summary Cards -->
+      <div class="summary-cards" id="summary-cards"></div>
+
+      <!-- Route Distribution -->
+      <div class="route-chart" id="route-chart"></div>
+      <div class="route-legend" id="route-legend"></div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs" id="filter-tabs"></div>
+
+      <!-- Table -->
       <div id="results-table-container"></div>
+
+      <!-- Export Row -->
       <div class="btn-row" style="margin-top:16px;">
-        <button class="btn btn-primary" id="btn-export" type="button">Export Results</button>
-        <button class="btn" id="btn-copy-all" type="button">Copy All Outputs</button>
+        <button class="btn btn-primary" id="btn-export-csv" type="button">Export CSV</button>
+        <button class="btn" id="btn-export-json" type="button">Export JSON</button>
+        <button class="btn" id="btn-copy-all" type="button">Copy All</button>
       </div>
     </section>
+
+    <!-- History Panel -->
+    <details class="history-panel" id="history-panel">
+      <summary>Batch History</summary>
+      <div class="history-list" id="history-list"></div>
+    </details>
   </main>
 
   <div class="toast" id="toast"></div>
   <script src="batch.js"></script>
+  <script src="auth.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

@@ -625,22 +625,45 @@ def main():
 
     Supports all v4.0 flags plus new v5.0 flags
     """
-    # Parse v5.0 specific flags
-    v5_enabled = "--v5" in sys.argv or "--enable-v5" in sys.argv
-    enable_compression = "--compress" in sys.argv or v5_enabled
-    compression_level = 2  # Default
-    show_stats = "--show-stats" in sys.argv
-    fallback_v4 = "--fallback-v4" in sys.argv or True
-    no_cache = "--no-cache" in sys.argv
+    # Parse v5.0 specific flags from argv
+    args = sys.argv[1:]
 
-    # Parse compression level
-    for i, arg in enumerate(sys.argv):
-        if arg == "--compression-level" and i + 1 < len(sys.argv):
+    v5_enabled = "--v5" in args or "--enable-v5" in args
+    enable_compression = "--compress" in args or v5_enabled
+    compression_level = 2  # Default
+    show_stats = "--show-stats" in args
+    fallback_v4 = "--no-fallback" not in args
+    no_cache = "--no-cache" in args
+
+    # Parse compression level (flag with value)
+    for i, arg in enumerate(args):
+        if arg == "--compression-level" and i + 1 < len(args):
             try:
-                compression_level = int(sys.argv[i + 1])
+                compression_level = int(args[i + 1])
                 compression_level = max(1, min(3, compression_level))  # Clamp to 1-3
             except ValueError:
-                logger.warning(f"Invalid compression level: {sys.argv[i + 1]}, using default (2)")
+                logger.warning(f"Invalid compression level: {args[i + 1]}, using default (2)")
+
+    # Strip all v5 flags (simple flags and value flags) to isolate the request text
+    v5_simple_flags = {
+        "--v5", "--enable-v5", "--compress", "--show-stats",
+        "--fallback-v4", "--no-fallback", "--no-cache", "--intent-detect", "--smart-priority",
+    }
+    v5_value_flags = {"--compression-level"}
+
+    cleaned = []
+    skip_next = False
+    for i, arg in enumerate(args):
+        if skip_next:
+            skip_next = False
+            continue
+        if arg in v5_simple_flags:
+            continue
+        if arg in v5_value_flags:
+            skip_next = True
+            continue
+        cleaned.append(arg)
+    args = cleaned
 
     # Check if NLP is available
     if v5_enabled and not NLP_AVAILABLE:
@@ -649,7 +672,11 @@ def main():
 
     # If v5 not explicitly requested or not available, use v4.0 directly
     if not v5_enabled:
+        # Restore cleaned args for v4 (replace sys.argv temporarily)
+        orig_argv = sys.argv
+        sys.argv = [sys.argv[0]] + args
         v4.main()
+        sys.argv = orig_argv
         return
 
     # Initialize v5.0 router
@@ -661,13 +688,36 @@ def main():
         use_cache=not no_cache
     )
 
-    # Get request from args (same as v4.0)
-    if len(sys.argv) < 2 or sys.argv[1].startswith("--"):
+    # Get request from remaining args (after stripping v5 flags)
+    if not args:
         print("Usage: python3 llm_router_v5.py 'request' [flags]", file=sys.stderr)
         print("Run with --help for full documentation.", file=sys.stderr)
         sys.exit(1)
 
-    request = sys.argv[1]
+    # v4 flags are still in args — strip them too and join remainder as request
+    v4_simple_flags = {
+        "--json", "--desktop-edit", "--opus-only", "--tickets-md",
+        "--friendly", "--force-split",
+    }
+    v4_value_flags = {
+        "--economy", "--phase", "--one-task", "--save-tickets",
+        "--max-tickets", "--min-tickets", "--merge",
+    }
+
+    request_parts = []
+    skip_next = False
+    for i, arg in enumerate(args):
+        if skip_next:
+            skip_next = False
+            continue
+        if arg in v4_simple_flags:
+            continue
+        if arg in v4_value_flags:
+            skip_next = True
+            continue
+        request_parts.append(arg)
+
+    request = " ".join(request_parts) if request_parts else args[-1]
 
     # Route request
     result = router.route(request)

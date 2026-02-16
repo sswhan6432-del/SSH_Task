@@ -8,13 +8,16 @@ Usage:
     python3 web_server.py [--port 8080]
 """
 
+import hashlib
 import json
 import os
 import re
+import secrets
 import ssl
 import sys
 import subprocess
 import threading
+import time
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
 
@@ -93,7 +96,6 @@ def _translate_remaining_korean(text: str, api_key: str) -> str:
         return text
 
     # Parse translated lines
-    import re
     for match in re.finditer(r"\[(\d+)\]\s*(.+)", result):
         idx = int(match.group(1))
         translated = match.group(2).strip()
@@ -158,6 +160,134 @@ class ThreadedHTTPServer(HTTPServer):
             self.shutdown_request(request)
 
 
+# ---------- Auth helpers ----------
+
+AUTH_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+USERS_FILE = os.path.join(AUTH_DATA_DIR, "users.json")
+SESSIONS_FILE = os.path.join(AUTH_DATA_DIR, "sessions.json")
+SESSION_MAX_AGE = 30 * 24 * 3600  # 30 days in seconds
+_sessions = {}  # { token: { user_id, name, email, created_at } }
+_sessions_lock = threading.Lock()
+_users_lock = threading.Lock()
+
+
+def _load_users():
+    os.makedirs(AUTH_DATA_DIR, exist_ok=True)
+    if not os.path.isfile(USERS_FILE):
+        return {"users": []}
+    with open(USERS_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _save_users(data):
+    os.makedirs(AUTH_DATA_DIR, exist_ok=True)
+    tmp = USERS_FILE + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+    os.replace(tmp, USERS_FILE)
+
+
+def _load_sessions():
+    """Load persisted sessions from disk into memory."""
+    global _sessions
+    os.makedirs(AUTH_DATA_DIR, exist_ok=True)
+    if not os.path.isfile(SESSIONS_FILE):
+        return
+    try:
+        with open(SESSIONS_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        now = time.time()
+        with _sessions_lock:
+            for token, info in data.items():
+                if now - info.get("created_at", 0) < SESSION_MAX_AGE:
+                    _sessions[token] = info
+    except (json.JSONDecodeError, OSError):
+        pass
+
+
+def _persist_sessions():
+    """Save current sessions to disk."""
+    os.makedirs(AUTH_DATA_DIR, exist_ok=True)
+    with _sessions_lock:
+        data = dict(_sessions)
+    tmp = SESSIONS_FILE + ".tmp"
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False)
+        os.replace(tmp, SESSIONS_FILE)
+    except OSError:
+        pass
+
+
+def _hash_password(password, salt):
+    """Hash password with PBKDF2-HMAC-SHA256 (600K iterations)."""
+    return hashlib.pbkdf2_hmac(
+        "sha256", password.encode("utf-8"), salt.encode("utf-8"), iterations=600_000
+    ).hex()
+
+
+def _hash_password_legacy(password, salt):
+    """Legacy SHA256 hash — used only for migration verification."""
+    return hashlib.sha256((salt + password).encode("utf-8")).hexdigest()
+
+
+def _verify_and_migrate(user, password, users_data):
+    """Verify password against current or legacy hash; auto-migrate if legacy.
+
+    Returns True if password matches (and migrates hash if needed).
+    """
+    salt = user["salt"]
+    stored_hash = user["password_hash"]
+
+    # Try current PBKDF2 hash first
+    if _hash_password(password, salt) == stored_hash:
+        return True
+
+    # Try legacy SHA256 hash
+    if _hash_password_legacy(password, salt) == stored_hash:
+        # Migrate to PBKDF2
+        user["password_hash"] = _hash_password(password, salt)
+        user["hash_scheme"] = "pbkdf2"
+        _save_users(users_data)
+        return True
+
+    return False
+
+
+def _create_session(user):
+    token = secrets.token_hex(32)
+    with _sessions_lock:
+        _sessions[token] = {
+            "user_id": user["id"],
+            "name": user["name"],
+            "email": user["email"],
+            "created_at": time.time(),
+        }
+    _persist_sessions()
+    return token
+
+
+def _validate_session(token):
+    with _sessions_lock:
+        info = _sessions.get(token)
+    if not info:
+        return None
+    if time.time() - info.get("created_at", 0) >= SESSION_MAX_AGE:
+        _remove_session(token)
+        return None
+    return info
+
+
+def _remove_session(token):
+    with _sessions_lock:
+        _sessions.pop(token, None)
+    _persist_sessions()
+
+
+# Load persisted sessions on startup
+_load_sessions()
+
+
 class RouterHandler(SimpleHTTPRequestHandler):
     """HTTP handler: static files from website/ + JSON API."""
 
@@ -169,10 +299,13 @@ class RouterHandler(SimpleHTTPRequestHandler):
     # ---------- routing ----------
 
     def end_headers(self):
-        """Disable browser caching for all responses."""
-        self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
-        self.send_header("Pragma", "no-cache")
-        self.send_header("Expires", "0")
+        """Set caching headers: no-cache for API, allow cache for static files."""
+        path = urlparse(self.path).path
+        if path.startswith("/api/"):
+            self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+            self.send_header("Pragma", "no-cache")
+            self.send_header("Expires", "0")
+        self.send_header("X-Content-Type-Options", "nosniff")
         super().end_headers()
 
     def do_GET(self):
@@ -190,6 +323,14 @@ class RouterHandler(SimpleHTTPRequestHandler):
             return self._api_feedback_get()
         if path == "/api/cost-stats":
             return self._api_cost_stats()
+        if path == "/api/auth/me":
+            return self._api_auth_me()
+        if path == "/api/v2/analytics":
+            return self._api_v2_analytics()
+        if path == "/api/v2/budget":
+            return self._api_v2_budget()
+        if path == "/api/v2/stream":
+            return self._api_v2_stream()
 
         # Default file: router.html
         if path == "/":
@@ -202,12 +343,30 @@ class RouterHandler(SimpleHTTPRequestHandler):
 
         if path == "/api/route":
             return self._api_route()
+        if path == "/api/blueprint":
+            return self._api_blueprint()
         if path == "/api/extract-block":
             return self._api_extract_block()
         if path == "/api/prompts":
             return self._api_prompts_save()
         if path == "/api/feedback":
             return self._api_feedback_save()
+        if path == "/api/auth/signup":
+            return self._api_auth_signup()
+        if path == "/api/auth/login":
+            return self._api_auth_login()
+        if path == "/api/auth/logout":
+            return self._api_auth_logout()
+
+        self._json_response({"error": "Not found"}, 404)
+
+    def do_DELETE(self):
+        path = urlparse(self.path).path
+
+        if path == "/api/history":
+            return self._api_history_delete_all()
+        if path.startswith("/api/history/"):
+            return self._api_history_delete_one(path)
 
         self._json_response({"error": "Not found"}, 404)
 
@@ -217,6 +376,8 @@ class RouterHandler(SimpleHTTPRequestHandler):
         try:
             length = int(self.headers.get("Content-Length", 0))
         except (ValueError, TypeError):
+            return {}
+        if length > 5 * 1024 * 1024:  # 5 MB limit
             return {}
         raw = self.rfile.read(length) if length else b"{}"
         try:
@@ -239,6 +400,102 @@ class RouterHandler(SimpleHTTPRequestHandler):
                 super().log_message(fmt, *args)
         except (TypeError, AttributeError):
             pass  # Suppress logs on error
+
+    # ---------- Auth API ----------
+
+    def _get_bearer_token(self):
+        auth = self.headers.get("Authorization", "")
+        if auth.startswith("Bearer "):
+            return auth[7:].strip()
+        return None
+
+    def _api_auth_signup(self):
+        try:
+            body = self._read_json_body()
+        except Exception as e:
+            return self._json_response({"error": f"Bad JSON: {e}"}, 400)
+
+        name = (body.get("name") or "").strip()
+        email = (body.get("email") or "").strip().lower()
+        password = body.get("password") or ""
+
+        if not name or not email or not password:
+            return self._json_response({"error": "Name, email and password required"}, 400)
+        if len(password) < 6:
+            return self._json_response({"error": "Password must be at least 6 characters"}, 400)
+        if not re.match(r"^[^@]+@[^@]+\.[^@]+$", email):
+            return self._json_response({"error": "Invalid email format"}, 400)
+
+        with _users_lock:
+            data = _load_users()
+            if any(u["email"] == email for u in data["users"]):
+                return self._json_response({"error": "Email already registered"}, 409)
+
+            salt = secrets.token_hex(8)
+            user = {
+                "id": "u_" + secrets.token_hex(6),
+                "name": name,
+                "email": email,
+                "password_hash": _hash_password(password, salt),
+                "salt": salt,
+                "hash_scheme": "pbkdf2",
+                "created_at": time.time(),
+            }
+            data["users"].append(user)
+            _save_users(data)
+
+        token = _create_session(user)
+        self._json_response({
+            "ok": True,
+            "token": token,
+            "user": {"name": user["name"], "email": user["email"]},
+        })
+
+    def _api_auth_login(self):
+        try:
+            body = self._read_json_body()
+        except Exception as e:
+            return self._json_response({"error": f"Bad JSON: {e}"}, 400)
+
+        email = (body.get("email") or "").strip().lower()
+        password = body.get("password") or ""
+
+        if not email or not password:
+            return self._json_response({"error": "Email and password required"}, 400)
+
+        with _users_lock:
+            data = _load_users()
+            user = next((u for u in data["users"] if u["email"] == email), None)
+
+            if not user or not _verify_and_migrate(user, password, data):
+                return self._json_response({"error": "Invalid email or password"}, 401)
+
+        token = _create_session(user)
+        self._json_response({
+            "ok": True,
+            "token": token,
+            "user": {"name": user["name"], "email": user["email"]},
+        })
+
+    def _api_auth_me(self):
+        token = self._get_bearer_token()
+        if not token:
+            return self._json_response({"error": "Not authenticated"}, 401)
+
+        session = _validate_session(token)
+        if not session:
+            return self._json_response({"error": "Not authenticated"}, 401)
+
+        self._json_response({
+            "ok": True,
+            "user": {"name": session["name"], "email": session["email"]},
+        })
+
+    def _api_auth_logout(self):
+        token = self._get_bearer_token()
+        if token:
+            _remove_session(token)
+        self._json_response({"ok": True})
 
     # ---------- API endpoints ----------
 
@@ -280,6 +537,17 @@ class RouterHandler(SimpleHTTPRequestHandler):
             return self._json_response({"error": "Empty request", "output": "", "tickets": []}, 400)
 
         # Build command
+        # When v5 is enabled, force llm_router_v5.py which properly strips v5 flags
+        # before falling back to v4. Using the user-selected v4 router directly with
+        # v5 flags causes the v4 router to treat flag names as request text.
+        v5_enabled = body.get("v5_enabled", False)
+        if v5_enabled:
+            v5_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "llm_router_v5.py")
+            if os.path.isfile(v5_script):
+                router = v5_script
+            else:
+                v5_enabled = False  # v5 script not found, disable v5
+
         cmd = [sys.executable, router]
 
         if body.get("friendly", False):
@@ -320,8 +588,8 @@ class RouterHandler(SimpleHTTPRequestHandler):
         if merge:
             cmd.extend(["--merge", merge])
 
-        # v5.0 NLP/ML flags
-        if body.get("v5_enabled", False):
+        # v5.0 NLP/ML flags (only added when router is llm_router_v5.py)
+        if v5_enabled:
             cmd.append("--v5")
             if body.get("compress", True):
                 cmd.append("--compress")
@@ -343,7 +611,8 @@ class RouterHandler(SimpleHTTPRequestHandler):
         except subprocess.TimeoutExpired:
             return self._json_response({"error": "Router timed out (120s)", "output": "", "tickets": []})
         except Exception as e:
-            return self._json_response({"error": str(e), "output": "", "tickets": []})
+            print(f"[ERROR] Router execution failed: {e}", file=sys.stderr)
+            return self._json_response({"error": "Router execution failed", "output": "", "tickets": []})
 
         out = (result.stdout or "").strip()
         err = (result.stderr or "").strip()
@@ -431,6 +700,114 @@ class RouterHandler(SimpleHTTPRequestHandler):
 
         self._json_response(resp)
 
+    def _api_blueprint(self):
+        """Generate AI-powered project blueprint using Groq API."""
+        try:
+            body = self._read_json_body()
+        except Exception as e:
+            return self._json_response({"error": f"Bad JSON: {e}"}, 400)
+
+        idea = body.get("idea", "").strip()
+        if not idea:
+            return self._json_response({"error": "No idea provided"}, 400)
+
+        api_key = os.environ.get("GROQ_API_KEY", "").strip()
+        if not api_key:
+            return self._json_response({"error": "GROQ_API_KEY not set"}, 500)
+
+        system_prompt = """You are a senior software architect. The user gives you a short project idea. You must generate a detailed implementation blueprint with exactly 10 phases.
+
+OUTPUT FORMAT (strict JSON array):
+[
+  {
+    "letter": "A",
+    "title": "Phase title (5-8 words)",
+    "summary": "One-line description of this phase",
+    "description": "A short English one-line summary describing what this phase does (e.g. 'Set up project structure and choose the tech stack')",
+    "prompt": "A detailed, Claude-ready prompt (200-400 words) that someone can copy and paste into Claude AI to get working code for this phase. Include specific technologies, file names, data structures, API endpoints, and implementation details. Be extremely specific to the project idea."
+  },
+  ...
+]
+
+The 10 phases MUST be:
+A: Project Overview & Tech Stack Selection
+B: Database Schema & Data Model Design
+C: Authentication & User Management
+D: Core Feature #1 (the primary unique feature of this project)
+E: Core Feature #2 (secondary key feature)
+F: UI/UX Pages & Component Design
+G: REST API Endpoints & Backend Logic
+H: Search, Filter & Data Display
+I: Admin Dashboard & Analytics
+J: Testing, Security, SEO & Deployment
+
+CRITICAL LANGUAGE RULE:
+ALL fields ("letter", "title", "summary", "description", "prompt") MUST be written ONLY in English.
+Even if the user input is in Korean, Chinese, Japanese, or any non-English language, you MUST write every single field in English.
+NEVER output Korean, Japanese, Chinese, or any non-English characters in any field. This is a hard requirement.
+
+RULES:
+- Each prompt must be SPECIFIC to the project idea, not generic
+- Include actual table names, field names, component names relevant to the project
+- Mention specific tech recommendations (e.g., "Use Next.js with Tailwind CSS because...")
+- The prompt should be self-contained - Claude should be able to implement it without additional context
+- If the input is in Korean, include the Korean project name in the prompts for context but write the rest in English
+- Return ONLY the JSON array, no other text"""
+
+        user_msg = f"Project idea: {idea}"
+
+        try:
+            result = _groq_chat(
+                [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_msg},
+                ],
+                api_key=api_key,
+                max_tokens=4000,
+                temperature=0.7,
+            )
+
+            # Parse JSON from response
+            # Handle potential markdown code blocks
+            cleaned = result.strip()
+            if cleaned.startswith("```"):
+                cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned)
+                cleaned = re.sub(r"\s*```$", "", cleaned)
+
+            tickets = json.loads(cleaned)
+
+            # Validate structure
+            if not isinstance(tickets, list) or len(tickets) == 0:
+                raise ValueError("Invalid blueprint format")
+
+            # Ensure all tickets have required fields
+            letters = "ABCDEFGHIJ"
+            for i, t in enumerate(tickets):
+                if "letter" not in t:
+                    t["letter"] = letters[i] if i < len(letters) else str(i + 1)
+                if "title" not in t:
+                    t["title"] = f"Phase {t['letter']}"
+                if "prompt" not in t:
+                    t["prompt"] = t.get("summary", "")
+                if "summary" not in t:
+                    t["summary"] = t["title"]
+                # Map "description" field to "summary_ko" for frontend
+                if "description" in t:
+                    t["summary_ko"] = t["description"]
+                elif "summary_ko" not in t:
+                    t["summary_ko"] = t["summary"]
+
+            self._json_response({"tickets": tickets, "error": ""})
+
+        except json.JSONDecodeError as e:
+            # Fallback: return the raw text as a single ticket
+            self._json_response({
+                "error": f"Failed to parse AI response: {e}",
+                "raw": result if 'result' in dir() else "",
+            }, 500)
+        except Exception as e:
+            self._json_response({"error": f"Groq API error: {e}"}, 500)
+
     def _api_extract_block(self):
         try:
             body = self._read_json_body()
@@ -506,7 +883,304 @@ class RouterHandler(SimpleHTTPRequestHandler):
             entries = []
         self._json_response({"entries": entries})
 
+    def _api_history_delete_all(self):
+        _write_json_file(HISTORY_FILE, [])
+        self._json_response({"success": True, "deleted": "all"})
+
+    def _api_history_delete_one(self, path):
+        # path = /api/history/<index>
+        try:
+            idx = int(path.split("/")[-1])
+        except (ValueError, IndexError):
+            self._json_response({"error": "Invalid index"}, 400)
+            return
+
+        data = _read_json_file(HISTORY_FILE, [])
+        entries = data if isinstance(data, list) else data.get("entries", data.get("history", []))
+
+        if idx < 0 or idx >= len(entries):
+            self._json_response({"error": "Index out of range"}, 404)
+            return
+
+        removed = entries.pop(idx)
+        _write_json_file(HISTORY_FILE, entries)
+        self._json_response({"success": True, "deleted_index": idx})
+
     # ---------- Cost Stats API ----------
+
+    # ---------- V2 Analytics (Claude Code integration) ----------
+
+    def _api_v2_analytics(self):
+        """Return analytics from Claude Code stats-cache.json + session-meta."""
+        from urllib.parse import parse_qs
+        query = parse_qs(urlparse(self.path).query)
+        period = (query.get("period") or ["24h"])[0]
+
+        stats_path = os.path.expanduser("~/.claude/stats-cache.json")
+        meta_dir = os.path.expanduser("~/.claude/usage-data/session-meta/")
+
+        # Load stats cache
+        stats = {}
+        try:
+            with open(stats_path, "r", encoding="utf-8") as f:
+                stats = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+
+        # --- Burn rate from daily activity ---
+        daily = stats.get("dailyActivity", [])
+        daily_tokens = stats.get("dailyModelTokens", [])
+        model_usage = stats.get("modelUsage", {})
+
+        # Period filter
+        import datetime
+        now = datetime.datetime.now()
+        period_map = {"1h": 0.042, "24h": 1, "7d": 7, "30d": 30}
+        days_back = period_map.get(period, 1)
+
+        cutoff = (now - datetime.timedelta(days=days_back)).strftime("%Y-%m-%d")
+
+        filtered_daily = [d for d in daily if d.get("date", "") >= cutoff]
+        filtered_tokens = [d for d in daily_tokens if d.get("date", "") >= cutoff]
+
+        total_messages = sum(d.get("messageCount", 0) for d in filtered_daily)
+        total_sessions = sum(d.get("sessionCount", 0) for d in filtered_daily)
+        total_tool_calls = sum(d.get("toolCallCount", 0) for d in filtered_daily)
+
+        # Token totals from filtered daily model tokens
+        total_tokens = 0
+        model_dist = {}
+        for d in filtered_tokens:
+            for model, toks in d.get("tokensByModel", {}).items():
+                total_tokens += toks
+                short = model.split("-")[1] if "-" in model else model  # e.g. "opus", "sonnet", "haiku"
+                model_dist[short] = model_dist.get(short, 0) + toks
+
+        # Cost estimation (per 1K output tokens)
+        cost_rates = {
+            "opus": 0.075, "sonnet": 0.015, "haiku": 0.005,
+        }
+        total_cost = 0.0
+        for model, toks in model_dist.items():
+            rate = cost_rates.get(model, 0.015)
+            total_cost += (toks / 1000) * rate
+
+        # Daily token rate
+        num_days = max(1, len(filtered_daily))
+        daily_token_rate = total_tokens / num_days
+        monthly_projection = daily_token_rate * 30
+        monthly_cost_projection = (total_cost / num_days) * 30
+
+        # --- Heatmap + fallback tokens from session-meta ---
+        heatmap = [[0] * 24 for _ in range(7)]
+        meta_sessions = 0
+        meta_tokens = 0
+        try:
+            for fname in os.listdir(meta_dir):
+                if not fname.endswith(".json"):
+                    continue
+                fpath = os.path.join(meta_dir, fname)
+                try:
+                    with open(fpath, "r", encoding="utf-8") as f:
+                        sess = json.load(f)
+                    st = sess.get("start_time", "")
+                    if not st:
+                        continue
+                    dt = datetime.datetime.fromisoformat(st.replace("Z", "+00:00"))
+                    local_dt = dt.astimezone()
+                    if local_dt.strftime("%Y-%m-%d") < cutoff:
+                        continue
+                    dow = local_dt.weekday()  # 0=Mon
+                    hour = local_dt.hour
+                    msg_count = sess.get("user_message_count", 0) + sess.get("assistant_message_count", 0)
+                    heatmap[dow][hour] += max(1, msg_count)
+                    meta_sessions += 1
+                    meta_tokens += sess.get("input_tokens", 0) + sess.get("output_tokens", 0)
+                except (json.JSONDecodeError, ValueError, KeyError):
+                    continue
+        except FileNotFoundError:
+            pass
+
+        # Fallback: if stats-cache had no data for this period, use session-meta tokens
+        if total_tokens == 0 and meta_tokens > 0:
+            total_tokens = meta_tokens
+            total_cost = (meta_tokens / 1000) * 0.015  # estimate with sonnet rate
+            model_dist = {"mixed": meta_tokens}
+            total_sessions = meta_sessions
+            num_days = max(1, days_back) if days_back >= 1 else 1
+            daily_token_rate = total_tokens / num_days
+            monthly_projection = daily_token_rate * 30
+            monthly_cost_projection = (total_cost / num_days) * 30
+
+        # --- Latency from session-meta (estimate from duration/messages) ---
+        latencies = []
+        try:
+            for fname in os.listdir(meta_dir):
+                if not fname.endswith(".json"):
+                    continue
+                fpath = os.path.join(meta_dir, fname)
+                try:
+                    with open(fpath, "r", encoding="utf-8") as f:
+                        sess = json.load(f)
+                    st = sess.get("start_time", "")
+                    if st and st[:10] >= cutoff:
+                        dur = sess.get("duration_minutes", 0)
+                        msgs = sess.get("assistant_message_count", 1) or 1
+                        avg_ms = int((dur * 60 * 1000) / msgs) if dur > 0 else 0
+                        if avg_ms > 0:
+                            latencies.append(avg_ms)
+                except (json.JSONDecodeError, ValueError, KeyError):
+                    continue
+        except FileNotFoundError:
+            pass
+
+        latencies.sort()
+        p50 = latencies[len(latencies) // 2] if latencies else 0
+        p95 = latencies[int(len(latencies) * 0.95)] if latencies else 0
+        p99 = latencies[int(len(latencies) * 0.99)] if latencies else 0
+
+        # --- Cost trends ---
+        cost_trends = []
+        for d in filtered_tokens:
+            day_cost = 0.0
+            for model, toks in d.get("tokensByModel", {}).items():
+                short = model.split("-")[1] if "-" in model else model
+                rate = cost_rates.get(short, 0.015)
+                day_cost += (toks / 1000) * rate
+            cost_trends.append({"date": d.get("date", ""), "cost": round(day_cost, 4)})
+
+        self._json_response({
+            "burn_rate": {
+                "total_tokens": total_tokens,
+                "total_cost": round(total_cost, 4),
+                "request_count": total_sessions,
+                "daily_token_rate": int(daily_token_rate),
+                "monthly_projection": int(monthly_projection),
+                "monthly_cost_projection": round(monthly_cost_projection, 2),
+            },
+            "heatmap": heatmap,
+            "latency": {"p50": p50, "p95": p95, "p99": p99},
+            "cost_trends": cost_trends,
+            "model_distribution": model_dist,
+        })
+
+    def _api_v2_budget(self):
+        """Return token budget info from Claude Code stats."""
+        stats_path = os.path.expanduser("~/.claude/stats-cache.json")
+        try:
+            with open(stats_path, "r", encoding="utf-8") as f:
+                stats = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return self._json_response({"budgets": []})
+
+        # Estimate monthly budget from usage pattern
+        daily_tokens = stats.get("dailyModelTokens", [])
+        if not daily_tokens:
+            return self._json_response({"budgets": []})
+
+        # Sum last 30 days
+        recent = daily_tokens[-30:]
+        total_used = 0
+        for d in recent:
+            for toks in d.get("tokensByModel", {}).values():
+                total_used += toks
+
+        # Estimate monthly limit from Anthropic plan (Max plan = ~$200/month equivalent)
+        monthly_limit = 50_000_000  # 50M tokens estimate for Max plan
+        usage_pct = min(100, (total_used / monthly_limit) * 100) if monthly_limit > 0 else 0
+
+        self._json_response({
+            "budgets": [{
+                "name": "Claude Code Monthly",
+                "used": total_used,
+                "limit": monthly_limit,
+                "usage_pct": round(usage_pct, 1),
+                "period": "monthly",
+            }]
+        })
+
+    def _api_v2_stream(self):
+        """Server-Sent Events stream with file-watching for real-time updates."""
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream")
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Connection", "keep-alive")
+        self.end_headers()
+
+        import time as _time
+
+        meta_dir = os.path.expanduser("~/.claude/usage-data/session-meta/")
+        stats_path = os.path.expanduser("~/.claude/stats-cache.json")
+
+        # Snapshot current state
+        try:
+            known_files = set(os.listdir(meta_dir))
+        except FileNotFoundError:
+            known_files = set()
+        try:
+            stats_mtime = os.path.getmtime(stats_path)
+        except FileNotFoundError:
+            stats_mtime = 0
+
+        # Send connected event
+        self.wfile.write(b"event: connected\ndata: {}\n\n")
+        self.wfile.flush()
+
+        poll_interval = 3  # seconds
+        heartbeat_counter = 0
+
+        try:
+            while True:
+                _time.sleep(poll_interval)
+                heartbeat_counter += poll_interval
+                changed = False
+
+                # Check for new session-meta files
+                try:
+                    current_files = set(os.listdir(meta_dir))
+                    new_files = current_files - known_files
+                    if new_files:
+                        known_files = current_files
+                        for fname in new_files:
+                            if not fname.endswith(".json"):
+                                continue
+                            try:
+                                fpath = os.path.join(meta_dir, fname)
+                                with open(fpath, "r", encoding="utf-8") as f:
+                                    sess = json.load(f)
+                                event_data = json.dumps({
+                                    "type": "new_session",
+                                    "input_tokens": sess.get("input_tokens", 0),
+                                    "output_tokens": sess.get("output_tokens", 0),
+                                    "model": sess.get("model", "unknown"),
+                                    "duration": sess.get("duration_minutes", 0),
+                                })
+                                self.wfile.write(f"event: session_update\ndata: {event_data}\n\n".encode())
+                                changed = True
+                            except (json.JSONDecodeError, OSError):
+                                continue
+                except FileNotFoundError:
+                    pass
+
+                # Check if stats-cache was updated
+                try:
+                    new_mtime = os.path.getmtime(stats_path)
+                    if new_mtime > stats_mtime:
+                        stats_mtime = new_mtime
+                        self.wfile.write(b"event: stats_updated\ndata: {}\n\n")
+                        changed = True
+                except FileNotFoundError:
+                    pass
+
+                if changed:
+                    self.wfile.flush()
+                elif heartbeat_counter >= 15:
+                    # Heartbeat every 15s if no changes
+                    heartbeat_counter = 0
+                    self.wfile.write(b"event: heartbeat\ndata: {}\n\n")
+                    self.wfile.flush()
+        except (BrokenPipeError, ConnectionResetError, OSError):
+            pass  # Client disconnected
 
     def _api_cost_stats(self):
         data = _read_json_file(HISTORY_FILE, [])
@@ -584,7 +1258,7 @@ def main():
     groq_key = os.environ.get("GROQ_API_KEY", "").strip()
     print(f"Router Web UI running at http://localhost:{port}")
     print(f"Serving files from {WEBSITE_DIR}")
-    print(f"GROQ_API_KEY: {'set (' + groq_key[:4] + '...)' if groq_key else 'NOT SET — translation disabled'}")
+    print(f"GROQ_API_KEY: {'set' if groq_key else 'NOT SET — translation disabled'}")
     print("Press Ctrl+C to stop.\n")
 
     try:

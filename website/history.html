@@ -7,7 +7,9 @@
   <meta name="description" content="View and filter your routing history.">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="router.css">
+  <link rel="stylesheet" href="auth.css">
   <style>
+    /* --- Filter Bar --- */
     .filter-bar {
       display: flex;
       gap: 12px;
@@ -29,93 +31,366 @@
       padding: 6px 10px;
       font-size: 13px;
     }
+    .filter-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* --- Summary Row --- */
+    .summary-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .summary-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray);
+      transition: box-shadow 0.4s var(--ease-spring);
+    }
+    .summary-chip:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .summary-chip strong {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1;
+    }
+    .summary-chip.chip-total strong { color: var(--black); }
+    .summary-chip.chip-claude strong { color: #1a1a1a; }
+    .summary-chip.chip-groq strong { color: #555; }
+    .summary-chip.chip-split strong { color: #86868b; }
+
+    /* --- History List --- */
     .history-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
+
+    /* --- History Card --- */
     .history-card {
-      background: white;
+      background: var(--white);
       border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px;
-      padding: 16px 20px;
-      transition: box-shadow 0.2s;
-      cursor: pointer;
+      border-radius: 14px;
+      padding: 0;
+      transition: box-shadow 0.4s var(--ease-spring), transform 0.4s var(--ease-spring), opacity 0.4s var(--ease-out-quart);
+      overflow: hidden;
+      position: relative;
     }
     .history-card:hover {
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      transform: translateY(-1px);
+    }
+    .history-card-inner {
+      padding: 16px 20px;
+      cursor: pointer;
     }
     .history-card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
+      gap: 12px;
+    }
+    .history-card-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .history-num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--black);
+      border-radius: 6px;
+      padding: 3px 8px;
+      flex-shrink: 0;
+      line-height: 1.3;
     }
     .history-card-header h4 {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
+      color: var(--black);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .history-card-header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
     }
     .history-time {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--gray);
+      white-space: nowrap;
     }
     .history-card-body {
       font-size: 13px;
-      color: var(--gray);
-      line-height: 1.5;
+      color: #555;
+      line-height: 1.6;
+    }
+    .history-card-body p {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .history-tasks {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
-      margin-top: 8px;
+      margin-top: 10px;
     }
     .task-chip {
       font-size: 11px;
       font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 4px;
+      padding: 3px 10px;
+      border-radius: 100px;
       background: #f0f0f0;
+      letter-spacing: 0.02em;
     }
     .task-chip.claude { background: #1a1a1a; color: white; }
-    .task-chip.cheap_llm { background: #e0e0e0; color: #333; }
+    .task-chip.cheap_llm { background: #e8e8e8; color: #444; }
     .task-chip.split { background: #86868b; color: white; }
-    .summary-row {
+
+    /* --- Delete button on card --- */
+    .history-delete-btn {
       display: flex;
-      gap: 24px;
-      margin-bottom: 24px;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.4s var(--ease-spring);
+      flex-shrink: 0;
+      opacity: 0;
     }
-    .summary-item {
+    .history-card:hover .history-delete-btn {
+      opacity: 1;
+    }
+    .history-delete-btn:hover {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .history-delete-btn:active {
+      transform: scale(0.9);
+      transition-duration: 0.1s;
+    }
+    .history-delete-btn svg {
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+    }
+
+    /* --- Detail expand --- */
+    .history-detail {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s var(--ease-in-out-quart), opacity 0.45s var(--ease-in-out-quart);
+      opacity: 0;
+    }
+    .history-card.expanded .history-detail {
+      max-height: 400px;
+      opacity: 1;
+    }
+    .history-detail-inner {
+      padding: 0 20px 16px;
+    }
+    .history-detail pre {
+      padding: 14px 16px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      font-family: "SF Mono", "Menlo", monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+      white-space: pre-wrap;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .history-detail pre::-webkit-scrollbar { width: 5px; }
+    .history-detail pre::-webkit-scrollbar-track { background: transparent; }
+    .history-detail pre::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+    /* --- Card remove animation --- */
+    .history-card.removing {
+      opacity: 0;
+      transform: translateX(60px) scale(0.95);
+      max-height: 0;
+      margin-bottom: 0;
+      padding: 0;
+      border-width: 0;
+      transition: opacity 0.35s var(--ease-out-quart),
+                  transform 0.35s var(--ease-out-quart),
+                  max-height 0.4s var(--ease-in-out-quart) 0.1s,
+                  margin-bottom 0.4s var(--ease-in-out-quart) 0.1s,
+                  padding 0.4s var(--ease-in-out-quart) 0.1s,
+                  border-width 0.4s var(--ease-in-out-quart) 0.1s;
+    }
+
+    /* --- Empty State --- */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--gray);
+    }
+    .empty-state-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 16px;
+      background: var(--light-bg);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .empty-state-icon svg {
+      width: 28px;
+      height: 28px;
+      color: var(--gray);
+      opacity: 0.5;
+    }
+    .empty-state h3 {
+      font-size: 18px;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+    .empty-state p {
       font-size: 14px;
       color: var(--gray);
     }
-    .summary-item strong {
-      color: var(--black);
-    }
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--gray);
-    }
-    .empty-state h3 { font-size: 20px; color: var(--black); margin-bottom: 8px; }
-    .history-detail {
-      display: none;
-      margin-top: 12px;
-      padding: 12px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      font-family: "SF Mono", "Menlo", monospace;
-      font-size: 12px;
-      white-space: pre-wrap;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    .history-card.expanded .history-detail { display: block; }
+
+    /* --- Pagination --- */
     .pagination {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin-top: 24px;
+      gap: 6px;
+      margin-top: 28px;
+    }
+
+    /* --- Delete All Confirm Modal --- */
+    .confirm-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1500;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s var(--ease-out-quart), visibility 0.4s var(--ease-out-quart);
+    }
+    .confirm-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .confirm-box {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 28px 32px;
+      max-width: 360px;
+      width: 90%;
+      text-align: center;
+      transform: scale(0.92) translateY(10px);
+      transition: transform 0.45s var(--ease-spring);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .confirm-overlay.show .confirm-box {
+      transform: scale(1) translateY(0);
+    }
+    .confirm-box h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .confirm-box p {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .confirm-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .btn-danger {
+      background: #dc2626;
+      color: white;
+      border-color: #dc2626;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
+      border-color: #b91c1c;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 734px) {
+      .filter-bar {
+        padding: 12px 14px;
+        gap: 8px;
+      }
+      .filter-actions {
+        margin-left: 0;
+        width: 100%;
+      }
+      .filter-actions .btn {
+        flex: 1;
+        text-align: center;
+      }
+      .summary-row {
+        gap: 8px;
+      }
+      .summary-chip {
+        padding: 8px 12px;
+        font-size: 12px;
+        flex: 1;
+        min-width: 0;
+        justify-content: center;
+      }
+      .summary-chip strong {
+        font-size: 16px;
+      }
+      .history-card-inner {
+        padding: 14px 16px;
+      }
+      .history-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .history-card-header-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .history-delete-btn {
+        opacity: 1;
+      }
+      .history-detail-inner {
+        padding: 0 16px 14px;
+      }
     }
   </style>
 </head>
@@ -133,7 +408,9 @@
         <li><a href="/batch.html">Batch</a></li>
         <li><a href="/prompts.html">Prompts</a></li>
         <li><a href="/feedback.html">Feedback</a></li>
+        <li><a href="/dashboard.html">Dashboard</a></li>
       </ul>
+      <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span>
       </button>
@@ -150,7 +427,9 @@
       <li><a href="/batch.html">Batch Router</a></li>
       <li><a href="/prompts.html">Prompt Library</a></li>
       <li><a href="/feedback.html">Feedback</a></li>
+      <li><a href="/dashboard.html">Dashboard</a></li>
     </ul>
+    <div class="mobile-auth" id="mobile-auth"></div>
   </div>
 
   <main class="router-main">
@@ -170,25 +449,60 @@
       </select>
       <label>Search:</label>
       <input type="text" id="filter-search" placeholder="Search tasks..." style="width:200px;">
-      <button class="btn btn-sm" id="btn-refresh" type="button">Refresh</button>
+      <div class="filter-actions">
+        <button class="btn btn-sm" id="btn-refresh" type="button">Refresh</button>
+        <button class="btn btn-sm btn-danger" id="btn-delete-all" type="button">Delete All</button>
+      </div>
     </div>
 
     <div class="summary-row" id="summary-row">
-      <div class="summary-item">Total: <strong id="sum-total">0</strong></div>
-      <div class="summary-item">Claude: <strong id="sum-claude">0</strong></div>
-      <div class="summary-item">Groq: <strong id="sum-groq">0</strong></div>
-      <div class="summary-item">Split: <strong id="sum-split">0</strong></div>
+      <div class="summary-chip chip-total">
+        <span>Total</span>
+        <strong id="sum-total">0</strong>
+      </div>
+      <div class="summary-chip chip-claude">
+        <span>Claude</span>
+        <strong id="sum-claude">0</strong>
+      </div>
+      <div class="summary-chip chip-groq">
+        <span>Groq</span>
+        <strong id="sum-groq">0</strong>
+      </div>
+      <div class="summary-chip chip-split">
+        <span>Split</span>
+        <strong id="sum-split">0</strong>
+      </div>
     </div>
 
     <div class="history-list" id="history-list">
-      <div class="empty-state"><h3>Loading...</h3></div>
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3>Loading...</h3>
+      </div>
     </div>
 
     <div class="pagination" id="pagination"></div>
   </main>
 
+  <!-- Delete All Confirm Modal -->
+  <div class="confirm-overlay" id="confirm-overlay">
+    <div class="confirm-box">
+      <h3>Delete all history?</h3>
+      <p>This will permanently remove all routing history entries. This action cannot be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn btn-sm" id="confirm-cancel" type="button">Cancel</button>
+        <button class="btn btn-sm btn-danger" id="confirm-delete" type="button">Delete All</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
   <script src="history.js"></script>
+  <script src="auth.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

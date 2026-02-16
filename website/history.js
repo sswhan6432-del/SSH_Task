@@ -1,6 +1,7 @@
 (function () {
   "use strict";
 
+  // --- Mobile menu ---
   const navToggle = document.getElementById("nav-toggle");
   const mobileMenu = document.getElementById("mobile-menu");
   if (navToggle && mobileMenu) {
@@ -18,6 +19,7 @@
     });
   }
 
+  // --- Toast ---
   const toast = document.getElementById("toast");
   let toastTimer = null;
   function showToast(msg, dur) {
@@ -28,11 +30,21 @@
     toastTimer = setTimeout(() => toast.classList.remove("show"), dur);
   }
 
+  // --- State ---
   let allEntries = [];
   let filtered = [];
   const PAGE_SIZE = 20;
   let currentPage = 0;
 
+  // --- Trash icon SVG ---
+  const TRASH_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+    '<polyline points="3 6 5 6 21 6"/>' +
+    '<path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>' +
+    '<line x1="10" y1="11" x2="10" y2="17"/>' +
+    '<line x1="14" y1="11" x2="14" y2="17"/>' +
+    '</svg>';
+
+  // --- Load data ---
   async function loadData() {
     try {
       const res = await fetch("/api/history");
@@ -42,10 +54,18 @@
       applyFilters();
     } catch (e) {
       document.getElementById("history-list").innerHTML =
-        '<div class="empty-state"><h3>Failed to load</h3><p>' + e.message + "</p></div>";
+        '<div class="empty-state">' +
+          '<div class="empty-state-icon">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+              '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>' +
+            '</svg>' +
+          '</div>' +
+          '<h3>Failed to load</h3><p>' + escapeHtml(e.message) + '</p>' +
+        '</div>';
     }
   }
 
+  // --- Filters ---
   function applyFilters() {
     const routeFilter = document.getElementById("filter-route").value;
     const search = document.getElementById("filter-search").value.toLowerCase().trim();
@@ -68,6 +88,7 @@
     renderPagination();
   }
 
+  // --- Summary ---
   function renderSummary() {
     let claude = 0, groq = 0, split = 0;
     filtered.forEach((e) => {
@@ -85,13 +106,22 @@
     document.getElementById("sum-split").textContent = split;
   }
 
+  // --- Render list ---
   function renderList() {
     const container = document.getElementById("history-list");
     const start = currentPage * PAGE_SIZE;
     const page = filtered.slice(start, start + PAGE_SIZE);
 
     if (!page.length) {
-      container.innerHTML = '<div class="empty-state"><h3>No results</h3><p>Try adjusting your filters.</p></div>';
+      container.innerHTML =
+        '<div class="empty-state">' +
+          '<div class="empty-state-icon">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+              '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>' +
+            '</svg>' +
+          '</div>' +
+          '<h3>No results</h3><p>Try adjusting your filters.</p>' +
+        '</div>';
       return;
     }
 
@@ -100,10 +130,18 @@
       const card = document.createElement("div");
       card.className = "history-card";
 
+      // Entrance animation
+      card.style.opacity = "0";
+      card.style.transform = "translateY(10px)";
+
       const tasks = entry.tasks || [{ id: "A", route: entry.route || "unknown", summary: entry.request || "" }];
       const route = entry.route || tasks[0].route || "unknown";
-      const ts = entry.timestamp ? new Date(entry.timestamp).toLocaleString() : "N/A";
+      const ts = entry.timestamp ? formatTime(entry.timestamp) : "N/A";
       const request = entry.request || tasks.map((t) => t.summary || "").join(", ") || "(no request)";
+      const entryNum = allEntries.length - (start + i);
+
+      // The original index in the non-reversed array (for delete API)
+      const originalIndex = allEntries.length - 1 - (start + i);
 
       let tasksHTML = "";
       tasks.forEach((t) => {
@@ -112,21 +150,137 @@
       });
 
       card.innerHTML =
-        '<div class="history-card-header">' +
-        "<h4>#" + (allEntries.length - (start + i)) + " &mdash; " + route + "</h4>" +
-        '<span class="history-time">' + ts + "</span>" +
-        "</div>" +
-        '<div class="history-card-body">' +
-        "<p>" + escapeHtml(request.substring(0, 200)) + (request.length > 200 ? "..." : "") + "</p>" +
-        '<div class="history-tasks">' + tasksHTML + "</div>" +
-        "</div>" +
-        '<div class="history-detail">' + escapeHtml(JSON.stringify(entry, null, 2)) + "</div>";
+        '<div class="history-card-inner">' +
+          '<div class="history-card-header">' +
+            '<div class="history-card-header-left">' +
+              '<span class="history-num">#' + entryNum + '</span>' +
+              '<h4>' + escapeHtml(route) + '</h4>' +
+            '</div>' +
+            '<div class="history-card-header-right">' +
+              '<span class="history-time">' + ts + '</span>' +
+              '<button class="history-delete-btn" data-idx="' + originalIndex + '" type="button" title="Delete this entry">' + TRASH_SVG + '</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="history-card-body">' +
+            '<p>' + escapeHtml(request.substring(0, 200)) + (request.length > 200 ? "..." : "") + '</p>' +
+            '<div class="history-tasks">' + tasksHTML + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="history-detail">' +
+          '<div class="history-detail-inner">' +
+            '<pre>' + escapeHtml(JSON.stringify(entry, null, 2)) + '</pre>' +
+          '</div>' +
+        '</div>';
 
-      card.addEventListener("click", () => card.classList.toggle("expanded"));
+      // Click to expand (but not when clicking delete button)
+      card.querySelector(".history-card-inner").addEventListener("click", function (e) {
+        if (e.target.closest(".history-delete-btn")) return;
+        card.classList.toggle("expanded");
+      });
+
+      // Delete single entry
+      card.querySelector(".history-delete-btn").addEventListener("click", function (e) {
+        e.stopPropagation();
+        deleteEntry(card, parseInt(this.getAttribute("data-idx"), 10));
+      });
+
       container.appendChild(card);
+
+      // Staggered entrance animation
+      setTimeout(function () {
+        card.style.transition = "opacity 0.5s var(--ease-out-quart), transform 0.5s var(--ease-out-quart)";
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, i * 40);
     });
   }
 
+  // --- Delete single entry ---
+  async function deleteEntry(cardEl, originalIndex) {
+    // Set initial height for collapse animation
+    cardEl.style.maxHeight = cardEl.offsetHeight + "px";
+    cardEl.style.overflow = "hidden";
+
+    // Force reflow
+    cardEl.offsetHeight;
+
+    // Apply removing animation
+    cardEl.classList.add("removing");
+
+    try {
+      const res = await fetch("/api/history/" + originalIndex, { method: "DELETE" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+
+      // Wait for animation to finish, then reload data
+      setTimeout(function () {
+        loadData();
+        showToast("Entry deleted");
+      }, 450);
+    } catch (e) {
+      // Revert animation on error
+      cardEl.classList.remove("removing");
+      cardEl.style.maxHeight = "";
+      cardEl.style.overflow = "";
+      showToast("Delete failed: " + e.message, 3000);
+    }
+  }
+
+  // --- Delete all ---
+  const confirmOverlay = document.getElementById("confirm-overlay");
+  const btnDeleteAll = document.getElementById("btn-delete-all");
+  const confirmCancel = document.getElementById("confirm-cancel");
+  const confirmDelete = document.getElementById("confirm-delete");
+
+  btnDeleteAll.addEventListener("click", function () {
+    if (allEntries.length === 0) {
+      showToast("No entries to delete");
+      return;
+    }
+    confirmOverlay.classList.add("show");
+  });
+
+  confirmCancel.addEventListener("click", function () {
+    confirmOverlay.classList.remove("show");
+  });
+
+  confirmOverlay.addEventListener("click", function (e) {
+    if (e.target === confirmOverlay) {
+      confirmOverlay.classList.remove("show");
+    }
+  });
+
+  confirmDelete.addEventListener("click", async function () {
+    confirmOverlay.classList.remove("show");
+
+    // Animate all cards out
+    var cards = document.querySelectorAll(".history-card");
+    cards.forEach(function (card, i) {
+      card.style.maxHeight = card.offsetHeight + "px";
+      card.style.overflow = "hidden";
+      setTimeout(function () {
+        card.classList.add("removing");
+      }, i * 30);
+    });
+
+    try {
+      const res = await fetch("/api/history", { method: "DELETE" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+
+      setTimeout(function () {
+        allEntries = [];
+        filtered = [];
+        renderSummary();
+        renderList();
+        renderPagination();
+        showToast("All history deleted");
+      }, cards.length * 30 + 400);
+    } catch (e) {
+      loadData();
+      showToast("Delete failed: " + e.message, 3000);
+    }
+  });
+
+  // --- Pagination ---
   function renderPagination() {
     const container = document.getElementById("pagination");
     const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
@@ -147,10 +301,24 @@
     }
   }
 
+  // --- Helpers ---
   function escapeHtml(str) {
     const div = document.createElement("div");
     div.textContent = str;
     return div.innerHTML;
+  }
+
+  function formatTime(ts) {
+    try {
+      const d = new Date(ts);
+      var month = d.getMonth() + 1;
+      var day = d.getDate();
+      var hours = d.getHours();
+      var minutes = d.getMinutes();
+      return month + "/" + day + " " + (hours < 10 ? "0" : "") + hours + ":" + (minutes < 10 ? "0" : "") + minutes;
+    } catch (e) {
+      return ts;
+    }
   }
 
   function debounce(fn, ms) {
@@ -163,9 +331,11 @@
     };
   }
 
+  // --- Event listeners ---
   document.getElementById("filter-route").addEventListener("change", applyFilters);
   document.getElementById("filter-search").addEventListener("input", debounce(applyFilters, 300));
   document.getElementById("btn-refresh").addEventListener("click", () => { loadData(); showToast("Refreshed"); });
 
+  // --- Init ---
   loadData();
 })();
