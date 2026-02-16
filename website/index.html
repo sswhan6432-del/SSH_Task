@@ -15,10 +15,10 @@
     <div class="nav-inner">
       <a href="#hero" class="nav-logo">SSH</a>
       <ul class="nav-links" id="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#tools">Tools</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+        <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+        <li><a href="#tools" data-i18n="nav.tools">Tools</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
         <!-- <li><a href="/router.html">Splitter</a></li>
         <li><a href="/saveToken.html">TokenSaver</a></li>
         <li><a href="/costTracker.html">Cost</a></li>
@@ -27,6 +27,11 @@
         <li><a href="/prompts.html">Prompts</a></li>
         <li><a href="/feedback.html">Feedback</a></li> -->
       </ul>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
       <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span>
@@ -38,18 +43,18 @@
   <!-- Mobile Menu Overlay -->
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#tools">Tools</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="/router.html">Task Splitter</a></li>
-      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
-      <li><a href="/costTracker.html">Cost Tracker</a></li>
-      <li><a href="/history.html">History</a></li>
-      <li><a href="/batch.html">Batch Router</a></li>
-      <li><a href="/prompts.html">Prompt Library</a></li>
-      <li><a href="/feedback.html">Feedback</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="#about" data-i18n="mob.about">About</a></li>
+      <li><a href="#projects" data-i18n="mob.projects">Projects</a></li>
+      <li><a href="#tools" data-i18n="mob.tools">Tools</a></li>
+      <li><a href="#contact" data-i18n="mob.contact">Contact</a></li>
+      <li><a href="/router.html" data-i18n="mob.splitter">Task Splitter</a></li>
+      <li><a href="/saveToken.html" data-i18n="mob.tokensaver">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html" data-i18n="mob.cost">Cost Tracker</a></li>
+      <li><a href="/history.html" data-i18n="mob.history">History</a></li>
+      <li><a href="/batch.html" data-i18n="mob.batch">Batch Router</a></li>
+      <li><a href="/prompts.html" data-i18n="mob.prompts">Prompt Library</a></li>
+      <li><a href="/feedback.html" data-i18n="mob.feedback">Feedback</a></li>
+      <li><a href="/dashboard.html" data-i18n="mob.dashboard">Dashboard</a></li>
     </ul>
     <div class="mobile-auth" id="mobile-auth"></div>
   </div>
@@ -58,11 +63,11 @@
   <section class="hero" id="hero">
     <div class="hero-content">
       <h1 class="hero-title">
-        <span class="hero-line" style="--i:0">Build.</span>
-        <span class="hero-line" style="--i:1">Ship.</span>
-        <span class="hero-line" style="--i:2">Iterate.</span>
+        <span class="hero-line" style="--i:0" data-i18n="index.hero.build">Build.</span>
+        <span class="hero-line" style="--i:1" data-i18n="index.hero.ship">Ship.</span>
+        <span class="hero-line" style="--i:2" data-i18n="index.hero.iterate">Iterate.</span>
       </h1>
-      <p class="hero-sub">AI-powered tools and applications that solve real problems.</p>
+      <p class="hero-sub" data-i18n="index.hero.sub">AI-powered tools and applications that solve real problems.</p>
     </div>
     <div class="scroll-indicator" id="scroll-indicator">
       <span></span>
@@ -73,9 +78,9 @@
   <section class="section section-light" id="about">
     <div class="container">
       <div class="fade-in">
-        <p class="section-label">About</p>
-        <h2 class="section-title">Developer who builds<br>intelligent systems.</h2>
-        <p class="section-body">
+        <p class="section-label" data-i18n="index.about.label">About</p>
+        <h2 class="section-title" data-i18n-html="index.about.title">Developer who builds<br>intelligent systems.</h2>
+        <p class="section-body" data-i18n="index.about.body">
           I design and build AI-integrated applications — from intelligent task routers
           that protect your codebase, to cross-platform apps powered by large language models.
           Every tool I create focuses on practical automation and developer productivity.
@@ -99,26 +104,26 @@
   <section class="section section-white" id="projects">
     <div class="container">
       <div class="fade-in">
-        <p class="section-label">Projects</p>
-        <h2 class="section-title">Things I've built.</h2>
+        <p class="section-label" data-i18n="index.projects.label">Projects</p>
+        <h2 class="section-title" data-i18n="index.projects.title">Things I've built.</h2>
       </div>
 
       <!-- Featured Project: LLM Router GUI -->
       <div class="project-featured fade-in">
         <div class="project-featured-info">
-          <span class="project-badge">Featured</span>
-          <h3>LLM Router GUI</h3>
-          <p>
+          <span class="project-badge" data-i18n="index.projects.featured">Featured</span>
+          <h3 data-i18n="index.projects.llm.title">LLM Router GUI</h3>
+          <p data-i18n="index.projects.llm.desc">
             A desktop application that acts as a safe bridge between your requests and Claude.
             It analyzes task complexity, detects risk levels, routes work to the right LLM,
             and generates fence-safe prompts with multi-ticket isolation.
           </p>
           <ul class="project-features">
-            <li>Risk scoring with regex-based pattern matching</li>
-            <li>Fence-safe parsing for code block handling</li>
-            <li>Multi-ticket isolation and priority routing</li>
-            <li>Groq-powered automatic English translation</li>
-            <li>One-click Claude block copy with implementation rules</li>
+            <li data-i18n="index.projects.llm.f1">Risk scoring with regex-based pattern matching</li>
+            <li data-i18n="index.projects.llm.f2">Fence-safe parsing for code block handling</li>
+            <li data-i18n="index.projects.llm.f3">Multi-ticket isolation and priority routing</li>
+            <li data-i18n="index.projects.llm.f4">Groq-powered automatic English translation</li>
+            <li data-i18n="index.projects.llm.f5">One-click Claude block copy with implementation rules</li>
           </ul>
           <div class="project-tech">
             <span>Python</span>
@@ -165,29 +170,29 @@
   <section class="section section-dark" id="workflow">
     <div class="container">
       <div class="fade-in">
-        <p class="section-label">Workflow</p>
-        <h2 class="section-title">How I work.</h2>
+        <p class="section-label" data-i18n="index.workflow.label">Workflow</p>
+        <h2 class="section-title" data-i18n="index.workflow.title">How I work.</h2>
       </div>
       <div class="workflow-steps">
         <div class="workflow-step fade-in">
           <div class="step-number">01</div>
-          <h3>Analyze</h3>
-          <p>Break down the problem. Identify risks, dependencies, and the right tools for the job.</p>
+          <h3 data-i18n="index.workflow.s1.title">Analyze</h3>
+          <p data-i18n="index.workflow.s1.desc">Break down the problem. Identify risks, dependencies, and the right tools for the job.</p>
         </div>
         <div class="workflow-step fade-in">
           <div class="step-number">02</div>
-          <h3>Route</h3>
-          <p>Match each task to the optimal approach — whether it needs AI assistance, manual precision, or both.</p>
+          <h3 data-i18n="index.workflow.s2.title">Route</h3>
+          <p data-i18n="index.workflow.s2.desc">Match each task to the optimal approach — whether it needs AI assistance, manual precision, or both.</p>
         </div>
         <div class="workflow-step fade-in">
           <div class="step-number">03</div>
-          <h3>Implement</h3>
-          <p>Build incrementally with isolated changes. Each piece is tested before moving to the next.</p>
+          <h3 data-i18n="index.workflow.s3.title">Implement</h3>
+          <p data-i18n="index.workflow.s3.desc">Build incrementally with isolated changes. Each piece is tested before moving to the next.</p>
         </div>
         <div class="workflow-step fade-in">
           <div class="step-number">04</div>
-          <h3>Verify</h3>
-          <p>Gap analysis between design and implementation. Iterate until quality criteria are met.</p>
+          <h3 data-i18n="index.workflow.s4.title">Verify</h3>
+          <p data-i18n="index.workflow.s4.desc">Gap analysis between design and implementation. Iterate until quality criteria are met.</p>
         </div>
       </div>
     </div>
@@ -197,9 +202,9 @@
   <section class="section section-white" id="tools">
     <div class="container">
       <div class="fade-in">
-        <p class="section-label">Tools</p>
-        <h2 class="section-title">Everything you need.</h2>
-        <p class="section-body">A suite of AI-powered tools designed for developer productivity — from task splitting to cost tracking, all in one place.</p>
+        <p class="section-label" data-i18n="index.tools.label">Tools</p>
+        <h2 class="section-title" data-i18n="index.tools.title">Everything you need.</h2>
+        <p class="section-body" data-i18n="index.tools.sub">A suite of AI-powered tools designed for developer productivity — from task splitting to cost tracking, all in one place.</p>
       </div>
       <div class="tools-grid fade-in">
 
@@ -212,8 +217,8 @@
               <rect x="14" y="14" width="7" height="7" rx="1"/>
             </svg>
           </div>
-          <h3>Task Splitter</h3>
-          <p>Break down complex requests into simple, isolated tasks for Claude AI. One-click copy and paste workflow.</p>
+          <h3 data-i18n="index.tools.splitter.title">Task Splitter</h3>
+          <p data-i18n="index.tools.splitter.desc">Break down complex requests into simple, isolated tasks for Claude AI. One-click copy and paste workflow.</p>
         </a>
 
         <a href="/saveToken.html" class="tool-card">
@@ -222,8 +227,8 @@
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
             </svg>
           </div>
-          <h3>TokenSaver Pro</h3>
-          <p>Optimize your prompts for token efficiency. Reduce API costs while maintaining output quality.</p>
+          <h3 data-i18n="index.tools.tokensaver.title">TokenSaver Pro</h3>
+          <p data-i18n="index.tools.tokensaver.desc">Optimize your prompts for token efficiency. Reduce API costs while maintaining output quality.</p>
         </a>
 
         <a href="/costTracker.html" class="tool-card">
@@ -233,8 +238,8 @@
               <path d="M22 12A10 10 0 0012 2v10z"/>
             </svg>
           </div>
-          <h3>Cost Tracker</h3>
-          <p>Monitor API usage and costs in real time. Visual breakdowns by route, model, and session.</p>
+          <h3 data-i18n="index.tools.cost.title">Cost Tracker</h3>
+          <p data-i18n="index.tools.cost.desc">Monitor API usage and costs in real time. Visual breakdowns by route, model, and session.</p>
         </a>
 
         <a href="/history.html" class="tool-card">
@@ -244,8 +249,8 @@
               <polyline points="12 6 12 12 16 14"/>
             </svg>
           </div>
-          <h3>History</h3>
-          <p>Review past task executions with full context. Search, filter, and replay previous routing sessions.</p>
+          <h3 data-i18n="index.tools.history.title">History</h3>
+          <p data-i18n="index.tools.history.desc">Review past task executions with full context. Search, filter, and replay previous routing sessions.</p>
         </a>
 
         <a href="/batch.html" class="tool-card">
@@ -258,8 +263,8 @@
               <line x1="4" y1="4" x2="9" y2="9"/>
             </svg>
           </div>
-          <h3>Batch Router</h3>
-          <p>Process multiple tasks in parallel. Queue, prioritize, and execute batch operations efficiently.</p>
+          <h3 data-i18n="index.tools.batch.title">Batch Router</h3>
+          <p data-i18n="index.tools.batch.desc">Process multiple tasks in parallel. Queue, prioritize, and execute batch operations efficiently.</p>
         </a>
 
         <a href="/prompts.html" class="tool-card">
@@ -272,8 +277,8 @@
               <polyline points="10 9 9 9 8 9"/>
             </svg>
           </div>
-          <h3>Prompt Library</h3>
-          <p>Save, organize, and reuse your best prompts. Build a personal collection of proven templates.</p>
+          <h3 data-i18n="index.tools.prompts.title">Prompt Library</h3>
+          <p data-i18n="index.tools.prompts.desc">Save, organize, and reuse your best prompts. Build a personal collection of proven templates.</p>
         </a>
 
         <a href="/feedback.html" class="tool-card">
@@ -282,8 +287,8 @@
               <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
             </svg>
           </div>
-          <h3>Feedback</h3>
-          <p>Rate routing quality and track improvements. Help the system learn from your usage patterns.</p>
+          <h3 data-i18n="index.tools.feedback.title">Feedback</h3>
+          <p data-i18n="index.tools.feedback.desc">Rate routing quality and track improvements. Help the system learn from your usage patterns.</p>
         </a>
 
 
@@ -295,8 +300,8 @@
   <section class="section section-light" id="contact">
     <div class="container">
       <div class="fade-in">
-        <p class="section-label">Contact</p>
-        <h2 class="section-title">Let's connect.</h2>
+        <p class="section-label" data-i18n="index.contact.label">Contact</p>
+        <h2 class="section-title" data-i18n="index.contact.title">Let's connect.</h2>
       </div>
       <div class="contact-links fade-in">
         <a href="mailto:hello@example.com" class="contact-row">
@@ -321,12 +326,13 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2026 Song Seunghwan. All rights reserved.</p>
+      <p data-i18n="index.footer">&copy; 2026 Song Seunghwan. All rights reserved.</p>
     </div>
   </footer>
 
   <script src="script.js"></script>
   <script src="auth.js"></script>
+  <script src="i18n.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

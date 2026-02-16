@@ -143,16 +143,21 @@
     <div class="nav-inner">
       <a href="/index.html#hero" class="nav-logo">SSH</a>
       <ul class="nav-links">
-        <li><a href="/index.html">Portfolio</a></li>
-        <li><a href="/router.html">Splitter</a></li>
-        <li><a href="/saveToken.html">TokenSaver</a></li>
-        <li><a href="/costTracker.html">Cost</a></li>
-        <li><a href="/history.html">History</a></li>
-        <li><a href="/batch.html">Batch</a></li>
-        <li><a href="/prompts.html" class="active">Prompts</a></li>
-        <li><a href="/feedback.html">Feedback</a></li>
-        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/index.html" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="/router.html" data-i18n="nav.splitter">Splitter</a></li>
+        <li><a href="/saveToken.html" data-i18n="nav.tokensaver">TokenSaver</a></li>
+        <li><a href="/costTracker.html" data-i18n="nav.cost">Cost</a></li>
+        <li><a href="/history.html" data-i18n="nav.history">History</a></li>
+        <li><a href="/batch.html" data-i18n="nav.batch">Batch</a></li>
+        <li><a href="/prompts.html" class="active" data-i18n="nav.prompts">Prompts</a></li>
+        <li><a href="/feedback.html" data-i18n="nav.feedback">Feedback</a></li>
+        <li><a href="/dashboard.html" data-i18n="nav.dashboard">Dashboard</a></li>
       </ul>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
       <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span>
@@ -162,73 +167,73 @@
 
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="/index.html">Portfolio</a></li>
-      <li><a href="/router.html">Task Splitter</a></li>
-      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
-      <li><a href="/costTracker.html">Cost Tracker</a></li>
-      <li><a href="/history.html">History</a></li>
-      <li><a href="/batch.html">Batch Router</a></li>
-      <li><a href="/prompts.html">Prompt Library</a></li>
-      <li><a href="/feedback.html">Feedback</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/index.html" data-i18n="mob.portfolio">Portfolio</a></li>
+      <li><a href="/router.html" data-i18n="mob.splitter">Task Splitter</a></li>
+      <li><a href="/saveToken.html" data-i18n="mob.tokensaver">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html" data-i18n="mob.cost">Cost Tracker</a></li>
+      <li><a href="/history.html" data-i18n="mob.history">History</a></li>
+      <li><a href="/batch.html" data-i18n="mob.batch">Batch Router</a></li>
+      <li><a href="/prompts.html" data-i18n="mob.prompts">Prompt Library</a></li>
+      <li><a href="/feedback.html" data-i18n="mob.feedback">Feedback</a></li>
+      <li><a href="/dashboard.html" data-i18n="mob.dashboard">Dashboard</a></li>
     </ul>
     <div class="mobile-auth" id="mobile-auth"></div>
   </div>
 
   <main class="router-main">
     <header class="router-header">
-      <p class="section-label">Templates</p>
-      <h1 class="section-title">Prompt Library</h1>
-      <p class="router-sub">Save, organize, and reuse your best prompt templates.</p>
+      <p class="section-label" data-i18n="prompts.label">Templates</p>
+      <h1 class="section-title" data-i18n="prompts.title">Prompt Library</h1>
+      <p class="router-sub" data-i18n="prompts.sub">Save, organize, and reuse your best prompt templates.</p>
     </header>
 
     <div class="prompt-toolbar">
-      <input type="text" id="search-input" placeholder="Search prompts...">
-      <button class="btn btn-primary" id="btn-new" type="button">New Prompt</button>
+      <input type="text" id="search-input" placeholder="Search prompts..." data-i18n-placeholder="prompts.search">
+      <button class="btn btn-primary" id="btn-new" type="button" data-i18n="prompts.btn.new">New Prompt</button>
     </div>
 
     <div class="category-tabs" id="category-tabs">
-      <button class="cat-tab active" data-cat="all">All</button>
-      <button class="cat-tab" data-cat="feature">Feature</button>
-      <button class="cat-tab" data-cat="bugfix">Bug Fix</button>
-      <button class="cat-tab" data-cat="refactor">Refactor</button>
-      <button class="cat-tab" data-cat="ui">UI/UX</button>
-      <button class="cat-tab" data-cat="api">API</button>
-      <button class="cat-tab" data-cat="other">Other</button>
+      <button class="cat-tab active" data-cat="all" data-i18n="prompts.cat.all">All</button>
+      <button class="cat-tab" data-cat="feature" data-i18n="prompts.cat.feature">Feature</button>
+      <button class="cat-tab" data-cat="bugfix" data-i18n="prompts.cat.bugfix">Bug Fix</button>
+      <button class="cat-tab" data-cat="refactor" data-i18n="prompts.cat.refactor">Refactor</button>
+      <button class="cat-tab" data-cat="ui" data-i18n="prompts.cat.ui">UI/UX</button>
+      <button class="cat-tab" data-cat="api" data-i18n="prompts.cat.api">API</button>
+      <button class="cat-tab" data-cat="other" data-i18n="prompts.cat.other">Other</button>
     </div>
 
     <div class="prompt-grid" id="prompt-grid">
-      <div class="empty-state"><h3>Loading...</h3></div>
+      <div class="empty-state"><h3 data-i18n="prompts.loading">Loading...</h3></div>
     </div>
   </main>
 
   <!-- Modal -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal">
-      <h3 id="modal-title">New Prompt</h3>
+      <h3 id="modal-title" data-i18n="prompts.modal.new">New Prompt</h3>
       <div class="form-group">
-        <label for="prompt-name">Name</label>
-        <input type="text" id="prompt-name" placeholder="e.g., Login Page with OAuth">
+        <label for="prompt-name" data-i18n="prompts.modal.name">Name</label>
+        <input type="text" id="prompt-name" placeholder="e.g., Login Page with OAuth" data-i18n-placeholder="prompts.modal.namePlaceholder">
       </div>
       <div class="form-group">
-        <label for="prompt-category">Category</label>
+        <label for="prompt-category" data-i18n="prompts.modal.category">Category</label>
         <select id="prompt-category">
-          <option value="feature">Feature</option>
-          <option value="bugfix">Bug Fix</option>
-          <option value="refactor">Refactor</option>
-          <option value="ui">UI/UX</option>
-          <option value="api">API</option>
-          <option value="other">Other</option>
+          <option value="feature" data-i18n="prompts.cat.feature">Feature</option>
+          <option value="bugfix" data-i18n="prompts.cat.bugfix">Bug Fix</option>
+          <option value="refactor" data-i18n="prompts.cat.refactor">Refactor</option>
+          <option value="ui" data-i18n="prompts.cat.ui">UI/UX</option>
+          <option value="api" data-i18n="prompts.cat.api">API</option>
+          <option value="other" data-i18n="prompts.cat.other">Other</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="prompt-content">Prompt Template</label>
-        <textarea id="prompt-content" rows="8" placeholder="Write your reusable prompt template here..."></textarea>
+        <label for="prompt-content" data-i18n="prompts.modal.template">Prompt Template</label>
+        <textarea id="prompt-content" rows="8" placeholder="Write your reusable prompt template here..." data-i18n-placeholder="prompts.modal.templatePlaceholder"></textarea>
       </div>
       <input type="hidden" id="prompt-edit-id" value="">
       <div class="modal-actions">
-        <button class="btn" id="btn-cancel" type="button">Cancel</button>
-        <button class="btn btn-primary" id="btn-save" type="button">Save</button>
+        <button class="btn" id="btn-cancel" type="button" data-i18n="prompts.modal.cancel">Cancel</button>
+        <button class="btn btn-primary" id="btn-save" type="button" data-i18n="prompts.modal.save">Save</button>
       </div>
     </div>
   </div>
@@ -236,6 +241,7 @@
   <div class="toast" id="toast"></div>
   <script src="prompts.js"></script>
   <script src="auth.js"></script>
+  <script src="i18n.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

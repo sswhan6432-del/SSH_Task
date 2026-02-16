@@ -16,16 +16,21 @@
     <div class="nav-inner">
       <a href="/index.html#hero" class="nav-logo">SSH</a>
       <ul class="nav-links">
-        <li><a href="/index.html">Portfolio</a></li>
-        <li><a href="/router.html" class="active">Splitter</a></li>
-        <li><a href="/saveToken.html">TokenSaver</a></li>
-        <li><a href="/costTracker.html">Cost</a></li>
-        <li><a href="/history.html">History</a></li>
-        <li><a href="/batch.html">Batch</a></li>
-        <li><a href="/prompts.html">Prompts</a></li>
-        <li><a href="/feedback.html">Feedback</a></li>
-        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/index.html" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="/router.html" class="active" data-i18n="nav.splitter">Splitter</a></li>
+        <li><a href="/saveToken.html" data-i18n="nav.tokensaver">TokenSaver</a></li>
+        <li><a href="/costTracker.html" data-i18n="nav.cost">Cost</a></li>
+        <li><a href="/history.html" data-i18n="nav.history">History</a></li>
+        <li><a href="/batch.html" data-i18n="nav.batch">Batch</a></li>
+        <li><a href="/prompts.html" data-i18n="nav.prompts">Prompts</a></li>
+        <li><a href="/feedback.html" data-i18n="nav.feedback">Feedback</a></li>
+        <li><a href="/dashboard.html" data-i18n="nav.dashboard">Dashboard</a></li>
       </ul>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
       <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span>
@@ -37,15 +42,15 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="/index.html">Portfolio</a></li>
-      <li><a href="/router.html">Task Splitter</a></li>
-      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
-      <li><a href="/costTracker.html">Cost Tracker</a></li>
-      <li><a href="/history.html">History</a></li>
-      <li><a href="/batch.html">Batch Router</a></li>
-      <li><a href="/prompts.html">Prompt Library</a></li>
-      <li><a href="/feedback.html">Feedback</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/index.html" data-i18n="mob.portfolio">Portfolio</a></li>
+      <li><a href="/router.html" data-i18n="mob.splitter">Task Splitter</a></li>
+      <li><a href="/saveToken.html" data-i18n="mob.tokensaver">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html" data-i18n="mob.cost">Cost Tracker</a></li>
+      <li><a href="/history.html" data-i18n="mob.history">History</a></li>
+      <li><a href="/batch.html" data-i18n="mob.batch">Batch Router</a></li>
+      <li><a href="/prompts.html" data-i18n="mob.prompts">Prompt Library</a></li>
+      <li><a href="/feedback.html" data-i18n="mob.feedback">Feedback</a></li>
+      <li><a href="/dashboard.html" data-i18n="mob.dashboard">Dashboard</a></li>
     </ul>
     <div class="mobile-auth" id="mobile-auth"></div>
   </div>
@@ -55,9 +60,9 @@
 
     <!-- Header -->
     <header class="router-header">
-      <p class="section-label">Free Tool</p>
-      <h1 class="section-title" id="page-title">AI Task Splitter</h1>
-      <p class="router-sub" id="page-sub">Break down complex requests into simple tasks for Claude AI.<br>No signup. No cost. Just paste and go.</p>
+      <p class="section-label" data-i18n="router.label">Free Tool</p>
+      <h1 class="section-title" id="page-title" data-i18n="router.title">AI Task Splitter</h1>
+      <p class="router-sub" id="page-sub" data-i18n-html="router.sub">Break down complex requests into simple tasks for Claude AI.<br>No signup. No cost. Just paste and go.</p>
     </header>
 
     <!-- Version Toggle -->
@@ -69,7 +74,7 @@
             <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
           </svg>
         </span>
-        Basic Splitter
+        <span data-i18n="router.mode.basic">Basic Splitter</span>
       </button>
       <button class="version-btn" data-mode="v5" id="btn-mode-v5">
         <span class="version-btn-icon">
@@ -78,7 +83,7 @@
             <line x1="10" y1="18" x2="14" y2="18"/><line x1="10" y1="21" x2="14" y2="21"/>
           </svg>
         </span>
-        NLP/ML Engine v5
+        <span data-i18n="router.mode.v5">NLP/ML Engine v5</span>
       </button>
       <button class="version-btn" data-mode="blueprint" id="btn-mode-blueprint">
         <span class="version-btn-icon">
@@ -87,7 +92,7 @@
             <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
           </svg>
         </span>
-        Blueprint
+        <span data-i18n="router.mode.blueprint">Blueprint</span>
       </button>
     </div>
 
@@ -95,10 +100,10 @@
     <div class="v5-options-bar" id="v5-options-bar" style="display:none;">
       <div class="v5-options-inner">
         <label class="v5-opt">
-          <input type="checkbox" id="opt-v5-compress" checked> Compression
+          <input type="checkbox" id="opt-v5-compress" checked> <span data-i18n="router.v5.compression">Compression</span>
         </label>
         <label class="v5-opt">
-          Level:
+          <span data-i18n="router.v5.level">Level:</span>
           <select id="sel-v5-level">
             <option value="1">1 (Mild)</option>
             <option value="2" selected>2 (Balanced)</option>
@@ -106,53 +111,53 @@
           </select>
         </label>
         <label class="v5-opt">
-          <input type="checkbox" id="opt-v5-stats" checked> Show Stats
+          <input type="checkbox" id="opt-v5-stats" checked> <span data-i18n="router.v5.stats">Show Stats</span>
         </label>
       </div>
     </div>
 
     <!-- How it works -->
     <section class="how-it-works">
-      <h2>How to use</h2>
+      <h2 data-i18n="router.howto">How to use</h2>
       <div class="steps">
         <div class="step">
           <span class="step-num">1</span>
-          <p>Type your request below (like "Build a login page and add dark mode")</p>
+          <p data-i18n="router.step1">Type your request below (like "Build a login page and add dark mode")</p>
         </div>
         <div class="step">
           <span class="step-num">2</span>
-          <p>Click "Split Tasks" and get simple, numbered steps</p>
+          <p data-i18n="router.step2">Click "Split Tasks" and get simple, numbered steps</p>
         </div>
         <div class="step">
           <span class="step-num">3</span>
-          <p>Copy each task block and paste it to Claude, one at a time</p>
+          <p data-i18n="router.step3">Copy each task block and paste it to Claude, one at a time</p>
         </div>
       </div>
     </section>
 
     <!-- Request Input -->
     <section class="input-section">
-      <label class="area-label" for="request-input">What do you want to build?</label>
-      <textarea id="request-input" rows="6" placeholder="Example: Build a contact form with email validation and add a thank you page"></textarea>
+      <label class="area-label" for="request-input" data-i18n="router.input.label">What do you want to build?</label>
+      <textarea id="request-input" rows="6" placeholder="Example: Build a contact form with email validation and add a thank you page" data-i18n-placeholder="router.input.placeholder"></textarea>
       <div class="btn-row">
-        <button class="btn btn-primary btn-large" id="btn-run" type="button">
+        <button class="btn btn-primary btn-large" id="btn-run" type="button" data-i18n="router.btn.split">
           Split Tasks
         </button>
-        <button class="btn" id="btn-clear-input" type="button">Clear</button>
+        <button class="btn" id="btn-clear-input" type="button" data-i18n="router.btn.clear">Clear</button>
       </div>
     </section>
 
     <!-- Output -->
     <section class="output-section">
       <div class="output-header">
-        <label class="area-label">Your Tasks (Copy one at a time)</label>
+        <label class="area-label" data-i18n="router.output.label">Your Tasks (Copy one at a time)</label>
         <div class="output-header-right">
           <div class="ticket-selector" id="ticket-selector" style="display:none;">
-            <label for="ticket-select">Select task:</label>
+            <label for="ticket-select" data-i18n="router.output.select">Select task:</label>
             <select id="ticket-select"></select>
           </div>
           <button class="easy-toggle" id="easy-toggle" type="button" aria-label="Toggle Easy Mode">
-            <span class="easy-toggle-label" id="easy-toggle-label">Easy</span>
+            <span class="easy-toggle-label" id="easy-toggle-label" data-i18n="router.output.easy">Easy</span>
             <span class="easy-toggle-track">
               <span class="easy-toggle-thumb"></span>
             </span>
@@ -162,7 +167,7 @@
 
       <!-- Terminal View (default) -->
       <div class="output-display" id="output-display">
-        <pre id="output-text">Your split tasks will appear here...</pre>
+        <pre id="output-text" data-i18n="router.output.placeholder">Your split tasks will appear here...</pre>
       </div>
 
       <!-- Easy View (hidden by default) -->
@@ -172,15 +177,15 @@
             <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/>
             <line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/>
           </svg>
-          <p>Split your tasks and they will appear here as easy-to-follow cards.</p>
+          <p data-i18n="router.output.easyPlaceholder">Split your tasks and they will appear here as easy-to-follow cards.</p>
         </div>
         <div class="easy-cards" id="easy-cards"></div>
       </div>
 
       <div class="btn-row" id="terminal-btn-row">
-        <button class="btn btn-primary" id="btn-copy-block" type="button">Copy This Task</button>
-        <button class="btn" id="btn-send-batch" type="button">Send to Batch</button>
-        <button class="btn" id="btn-clear-output" type="button">Clear</button>
+        <button class="btn btn-primary" id="btn-copy-block" type="button" data-i18n="router.btn.copy">Copy This Task</button>
+        <button class="btn" id="btn-send-batch" type="button" data-i18n="router.btn.sendBatch">Send to Batch</button>
+        <button class="btn" id="btn-clear-output" type="button" data-i18n="router.btn.clear">Clear</button>
       </div>
 
       <!-- v5.0 Stats -->
@@ -192,25 +197,25 @@
 
     <!-- Advanced Settings (hidden by default) -->
     <details class="advanced-settings">
-      <summary>Advanced Settings (for experts)</summary>
+      <summary data-i18n="router.advanced">Advanced Settings (for experts)</summary>
       <div class="config-body" id="config-body">
         <div class="config-row">
           <div class="config-field config-field-wide">
-            <label for="router-select">Router Script</label>
+            <label for="router-select" data-i18n="router.advanced.router">Router Script</label>
             <select id="router-select"></select>
           </div>
-          <button class="btn btn-sm" id="btn-refresh" type="button">Refresh</button>
+          <button class="btn btn-sm" id="btn-refresh" type="button" data-i18n="router.advanced.refresh">Refresh</button>
         </div>
 
         <div class="options-grid">
           <label class="check-label">
-            <input type="checkbox" id="opt-friendly" checked> Beginner Mode
+            <input type="checkbox" id="opt-friendly" checked> <span data-i18n="router.advanced.beginner">Beginner Mode</span>
           </label>
           <label class="check-label">
-            <input type="checkbox" id="opt-force-split" checked> Force Split
+            <input type="checkbox" id="opt-force-split" checked> <span data-i18n="router.advanced.forceSplit">Force Split</span>
           </label>
           <label class="check-label">
-            <input type="checkbox" id="opt-groq-translate" checked> Auto-translate
+            <input type="checkbox" id="opt-groq-translate" checked> <span data-i18n="router.advanced.autoTranslate">Auto-translate</span>
           </label>
         </div>
 
@@ -240,11 +245,12 @@
   <!-- Loading overlay -->
   <div class="loading-overlay" id="loading-overlay" style="display:none;">
     <div class="spinner"></div>
-    <p id="loading-text">Splitting your tasks...</p>
+    <p id="loading-text" data-i18n="router.loading">Splitting your tasks...</p>
   </div>
 
   <script src="router.js"></script>
   <script src="auth.js"></script>
+  <script src="i18n.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

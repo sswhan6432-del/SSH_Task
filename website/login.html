@@ -15,16 +15,21 @@
     <div class="nav-inner">
       <a href="/index.html#hero" class="nav-logo">SSH</a>
       <ul class="nav-links">
-        <li><a href="/index.html">Portfolio</a></li>
-        <li><a href="/router.html">Splitter</a></li>
-        <li><a href="/saveToken.html">TokenSaver</a></li>
-        <li><a href="/costTracker.html">Cost</a></li>
-        <li><a href="/history.html">History</a></li>
-        <li><a href="/batch.html">Batch</a></li>
-        <li><a href="/prompts.html">Prompts</a></li>
-        <li><a href="/feedback.html">Feedback</a></li>
-        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/index.html" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="/router.html" data-i18n="nav.splitter">Splitter</a></li>
+        <li><a href="/saveToken.html" data-i18n="nav.tokensaver">TokenSaver</a></li>
+        <li><a href="/costTracker.html" data-i18n="nav.cost">Cost</a></li>
+        <li><a href="/history.html" data-i18n="nav.history">History</a></li>
+        <li><a href="/batch.html" data-i18n="nav.batch">Batch</a></li>
+        <li><a href="/prompts.html" data-i18n="nav.prompts">Prompts</a></li>
+        <li><a href="/feedback.html" data-i18n="nav.feedback">Feedback</a></li>
+        <li><a href="/dashboard.html" data-i18n="nav.dashboard">Dashboard</a></li>
       </ul>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
       <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span>
@@ -36,15 +41,15 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="/index.html">Portfolio</a></li>
-      <li><a href="/router.html">Task Splitter</a></li>
-      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
-      <li><a href="/costTracker.html">Cost Tracker</a></li>
-      <li><a href="/history.html">History</a></li>
-      <li><a href="/batch.html">Batch Router</a></li>
-      <li><a href="/prompts.html">Prompt Library</a></li>
-      <li><a href="/feedback.html">Feedback</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/index.html" data-i18n="mob.portfolio">Portfolio</a></li>
+      <li><a href="/router.html" data-i18n="mob.splitter">Task Splitter</a></li>
+      <li><a href="/saveToken.html" data-i18n="mob.tokensaver">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html" data-i18n="mob.cost">Cost Tracker</a></li>
+      <li><a href="/history.html" data-i18n="mob.history">History</a></li>
+      <li><a href="/batch.html" data-i18n="mob.batch">Batch Router</a></li>
+      <li><a href="/prompts.html" data-i18n="mob.prompts">Prompt Library</a></li>
+      <li><a href="/feedback.html" data-i18n="mob.feedback">Feedback</a></li>
+      <li><a href="/dashboard.html" data-i18n="mob.dashboard">Dashboard</a></li>
     </ul>
     <div class="mobile-auth" id="mobile-auth"></div>
   </div>
@@ -52,31 +57,32 @@
   <!-- Main Content -->
   <main class="auth-main">
     <div class="auth-card">
-      <h1 class="auth-title">Welcome back</h1>
-      <p class="auth-sub">Sign in to your account</p>
+      <h1 class="auth-title" data-i18n="login.title">Welcome back</h1>
+      <p class="auth-sub" data-i18n="login.sub">Sign in to your account</p>
 
       <form id="login-form" class="auth-form" novalidate>
         <div class="auth-field">
-          <label for="email">Email</label>
+          <label for="email" data-i18n="login.email">Email</label>
           <input type="email" id="email" name="email" required autocomplete="email"
-                 placeholder="you@example.com">
+                 placeholder="you@example.com" data-i18n-placeholder="login.emailPlaceholder">
         </div>
         <div class="auth-field">
-          <label for="password">Password</label>
+          <label for="password" data-i18n="login.password">Password</label>
           <input type="password" id="password" name="password" required autocomplete="current-password"
-                 placeholder="Your password">
+                 placeholder="Your password" data-i18n-placeholder="login.passwordPlaceholder">
         </div>
         <div class="auth-error" id="login-error" role="alert"></div>
-        <button type="submit" class="auth-submit">Sign In</button>
+        <button type="submit" class="auth-submit" data-i18n="login.submit">Sign In</button>
       </form>
 
       <p class="auth-switch">
-        Don't have an account? <a href="/signup.html">Create one</a>
+        <span data-i18n="login.switch">Don't have an account?</span> <a href="/signup.html" data-i18n="login.switchLink">Create one</a>
       </p>
     </div>
   </main>
 
   <script src="auth.js"></script>
+  <script src="i18n.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

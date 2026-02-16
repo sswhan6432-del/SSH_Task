@@ -149,16 +149,21 @@
     <div class="nav-inner">
       <a href="/index.html#hero" class="nav-logo">SSH</a>
       <ul class="nav-links">
-        <li><a href="/index.html">Portfolio</a></li>
-        <li><a href="/router.html">Splitter</a></li>
-        <li><a href="/saveToken.html">TokenSaver</a></li>
-        <li><a href="/costTracker.html">Cost</a></li>
-        <li><a href="/history.html">History</a></li>
-        <li><a href="/batch.html">Batch</a></li>
-        <li><a href="/prompts.html">Prompts</a></li>
-        <li><a href="/feedback.html" class="active">Feedback</a></li>
-        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/index.html" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="/router.html" data-i18n="nav.splitter">Splitter</a></li>
+        <li><a href="/saveToken.html" data-i18n="nav.tokensaver">TokenSaver</a></li>
+        <li><a href="/costTracker.html" data-i18n="nav.cost">Cost</a></li>
+        <li><a href="/history.html" data-i18n="nav.history">History</a></li>
+        <li><a href="/batch.html" data-i18n="nav.batch">Batch</a></li>
+        <li><a href="/prompts.html" data-i18n="nav.prompts">Prompts</a></li>
+        <li><a href="/feedback.html" class="active" data-i18n="nav.feedback">Feedback</a></li>
+        <li><a href="/dashboard.html" data-i18n="nav.dashboard">Dashboard</a></li>
       </ul>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
       <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span>
@@ -168,63 +173,64 @@
 
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="/index.html">Portfolio</a></li>
-      <li><a href="/router.html">Task Splitter</a></li>
-      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
-      <li><a href="/costTracker.html">Cost Tracker</a></li>
-      <li><a href="/history.html">History</a></li>
-      <li><a href="/batch.html">Batch Router</a></li>
-      <li><a href="/prompts.html">Prompt Library</a></li>
-      <li><a href="/feedback.html">Feedback</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/index.html" data-i18n="mob.portfolio">Portfolio</a></li>
+      <li><a href="/router.html" data-i18n="mob.splitter">Task Splitter</a></li>
+      <li><a href="/saveToken.html" data-i18n="mob.tokensaver">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html" data-i18n="mob.cost">Cost Tracker</a></li>
+      <li><a href="/history.html" data-i18n="mob.history">History</a></li>
+      <li><a href="/batch.html" data-i18n="mob.batch">Batch Router</a></li>
+      <li><a href="/prompts.html" data-i18n="mob.prompts">Prompt Library</a></li>
+      <li><a href="/feedback.html" data-i18n="mob.feedback">Feedback</a></li>
+      <li><a href="/dashboard.html" data-i18n="mob.dashboard">Dashboard</a></li>
     </ul>
     <div class="mobile-auth" id="mobile-auth"></div>
   </div>
 
   <main class="router-main">
     <header class="router-header">
-      <p class="section-label">Quality</p>
-      <h1 class="section-title">Feedback</h1>
-      <p class="router-sub">Rate routing results to help improve accuracy over time.</p>
+      <p class="section-label" data-i18n="feedback.label">Quality</p>
+      <h1 class="section-title" data-i18n="feedback.title">Feedback</h1>
+      <p class="router-sub" data-i18n="feedback.sub">Rate routing results to help improve accuracy over time.</p>
     </header>
 
     <div class="feedback-stats">
       <div class="fb-stat">
         <span class="value" id="total-feedback">0</span>
-        <span class="label">Total Ratings</span>
+        <span class="label" data-i18n="feedback.stat.total">Total Ratings</span>
       </div>
       <div class="fb-stat">
         <span class="value" id="positive-rate">N/A</span>
-        <span class="label">Positive Rate</span>
+        <span class="label" data-i18n="feedback.stat.positive">Positive Rate</span>
       </div>
       <div class="fb-stat">
         <span class="value" id="total-comments">0</span>
-        <span class="label">Comments</span>
+        <span class="label" data-i18n="feedback.stat.comments">Comments</span>
       </div>
     </div>
 
     <div class="accuracy-bar">
-      <h3>Routing Accuracy</h3>
+      <h3 data-i18n="feedback.accuracy">Routing Accuracy</h3>
       <div class="acc-bar-bg">
         <div class="acc-bar-fill good" id="accuracy-fill" style="width:0%">0%</div>
       </div>
     </div>
 
-    <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;">Recent Sessions</h3>
+    <h3 style="font-size:18px;font-weight:700;margin-bottom:16px;" data-i18n="feedback.recent">Recent Sessions</h3>
 
     <div class="feedback-list" id="feedback-list">
-      <div class="empty-state"><h3>Loading...</h3></div>
+      <div class="empty-state"><h3 data-i18n="feedback.loading">Loading...</h3></div>
     </div>
 
     <div class="btn-row">
-      <button class="btn" id="btn-refresh" type="button">Refresh</button>
-      <button class="btn" id="btn-export" type="button">Export Feedback</button>
+      <button class="btn" id="btn-refresh" type="button" data-i18n="feedback.btn.refresh">Refresh</button>
+      <button class="btn" id="btn-export" type="button" data-i18n="feedback.btn.export">Export Feedback</button>
     </div>
   </main>
 
   <div class="toast" id="toast"></div>
   <script src="feedback.js"></script>
   <script src="auth.js"></script>
+  <script src="i18n.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

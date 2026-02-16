@@ -400,16 +400,21 @@
     <div class="nav-inner">
       <a href="/index.html#hero" class="nav-logo">SSH</a>
       <ul class="nav-links">
-        <li><a href="/index.html">Portfolio</a></li>
-        <li><a href="/router.html">Splitter</a></li>
-        <li><a href="/saveToken.html">TokenSaver</a></li>
-        <li><a href="/costTracker.html">Cost</a></li>
-        <li><a href="/history.html" class="active">History</a></li>
-        <li><a href="/batch.html">Batch</a></li>
-        <li><a href="/prompts.html">Prompts</a></li>
-        <li><a href="/feedback.html">Feedback</a></li>
-        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/index.html" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="/router.html" data-i18n="nav.splitter">Splitter</a></li>
+        <li><a href="/saveToken.html" data-i18n="nav.tokensaver">TokenSaver</a></li>
+        <li><a href="/costTracker.html" data-i18n="nav.cost">Cost</a></li>
+        <li><a href="/history.html" class="active" data-i18n="nav.history">History</a></li>
+        <li><a href="/batch.html" data-i18n="nav.batch">Batch</a></li>
+        <li><a href="/prompts.html" data-i18n="nav.prompts">Prompts</a></li>
+        <li><a href="/feedback.html" data-i18n="nav.feedback">Feedback</a></li>
+        <li><a href="/dashboard.html" data-i18n="nav.dashboard">Dashboard</a></li>
       </ul>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
       <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span>
@@ -419,45 +424,45 @@
 
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="/index.html">Portfolio</a></li>
-      <li><a href="/router.html">Task Splitter</a></li>
-      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
-      <li><a href="/costTracker.html">Cost Tracker</a></li>
-      <li><a href="/history.html">History</a></li>
-      <li><a href="/batch.html">Batch Router</a></li>
-      <li><a href="/prompts.html">Prompt Library</a></li>
-      <li><a href="/feedback.html">Feedback</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/index.html" data-i18n="mob.portfolio">Portfolio</a></li>
+      <li><a href="/router.html" data-i18n="mob.splitter">Task Splitter</a></li>
+      <li><a href="/saveToken.html" data-i18n="mob.tokensaver">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html" data-i18n="mob.cost">Cost Tracker</a></li>
+      <li><a href="/history.html" data-i18n="mob.history">History</a></li>
+      <li><a href="/batch.html" data-i18n="mob.batch">Batch Router</a></li>
+      <li><a href="/prompts.html" data-i18n="mob.prompts">Prompt Library</a></li>
+      <li><a href="/feedback.html" data-i18n="mob.feedback">Feedback</a></li>
+      <li><a href="/dashboard.html" data-i18n="mob.dashboard">Dashboard</a></li>
     </ul>
     <div class="mobile-auth" id="mobile-auth"></div>
   </div>
 
   <main class="router-main">
     <header class="router-header">
-      <p class="section-label">Analytics</p>
-      <h1 class="section-title">Routing History</h1>
-      <p class="router-sub">Browse and filter all past routing sessions.</p>
+      <p class="section-label" data-i18n="history.label">Analytics</p>
+      <h1 class="section-title" data-i18n="history.title">Routing History</h1>
+      <p class="router-sub" data-i18n="history.sub">Browse and filter all past routing sessions.</p>
     </header>
 
     <div class="filter-bar">
-      <label>Route:</label>
+      <label data-i18n="history.filter.route">Route:</label>
       <select id="filter-route">
-        <option value="all">All</option>
+        <option value="all" data-i18n="history.filter.all">All</option>
         <option value="claude">Claude</option>
         <option value="cheap_llm">Groq</option>
         <option value="split">Split</option>
       </select>
-      <label>Search:</label>
-      <input type="text" id="filter-search" placeholder="Search tasks..." style="width:200px;">
+      <label data-i18n="history.filter.search">Search:</label>
+      <input type="text" id="filter-search" placeholder="Search tasks..." data-i18n-placeholder="history.filter.searchPlaceholder" style="width:200px;">
       <div class="filter-actions">
-        <button class="btn btn-sm" id="btn-refresh" type="button">Refresh</button>
-        <button class="btn btn-sm btn-danger" id="btn-delete-all" type="button">Delete All</button>
+        <button class="btn btn-sm" id="btn-refresh" type="button" data-i18n="history.btn.refresh">Refresh</button>
+        <button class="btn btn-sm btn-danger" id="btn-delete-all" type="button" data-i18n="history.btn.deleteAll">Delete All</button>
       </div>
     </div>
 
     <div class="summary-row" id="summary-row">
       <div class="summary-chip chip-total">
-        <span>Total</span>
+        <span data-i18n="history.summary.total">Total</span>
         <strong id="sum-total">0</strong>
       </div>
       <div class="summary-chip chip-claude">
@@ -469,7 +474,7 @@
         <strong id="sum-groq">0</strong>
       </div>
       <div class="summary-chip chip-split">
-        <span>Split</span>
+        <span data-i18n="history.summary.split">Split</span>
         <strong id="sum-split">0</strong>
       </div>
     </div>
@@ -481,7 +486,7 @@
             <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
           </svg>
         </div>
-        <h3>Loading...</h3>
+        <h3 data-i18n="history.loading">Loading...</h3>
       </div>
     </div>
 
@@ -491,11 +496,11 @@
   <!-- Delete All Confirm Modal -->
   <div class="confirm-overlay" id="confirm-overlay">
     <div class="confirm-box">
-      <h3>Delete all history?</h3>
-      <p>This will permanently remove all routing history entries. This action cannot be undone.</p>
+      <h3 data-i18n="history.confirm.title">Delete all history?</h3>
+      <p data-i18n="history.confirm.body">This will permanently remove all routing history entries. This action cannot be undone.</p>
       <div class="confirm-actions">
-        <button class="btn btn-sm" id="confirm-cancel" type="button">Cancel</button>
-        <button class="btn btn-sm btn-danger" id="confirm-delete" type="button">Delete All</button>
+        <button class="btn btn-sm" id="confirm-cancel" type="button" data-i18n="history.confirm.cancel">Cancel</button>
+        <button class="btn btn-sm btn-danger" id="confirm-delete" type="button" data-i18n="history.confirm.delete">Delete All</button>
       </div>
     </div>
   </div>
@@ -503,6 +508,7 @@
   <div class="toast" id="toast"></div>
   <script src="history.js"></script>
   <script src="auth.js"></script>
+  <script src="i18n.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

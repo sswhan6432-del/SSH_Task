@@ -138,16 +138,21 @@
     <div class="nav-inner">
       <a href="/index.html#hero" class="nav-logo">SSH</a>
       <ul class="nav-links">
-        <li><a href="/index.html">Portfolio</a></li>
-        <li><a href="/router.html">Splitter</a></li>
-        <li><a href="/saveToken.html" class="active">TokenSaver</a></li>
-        <li><a href="/costTracker.html">Cost</a></li>
-        <li><a href="/history.html">History</a></li>
-        <li><a href="/batch.html">Batch</a></li>
-        <li><a href="/prompts.html">Prompts</a></li>
-        <li><a href="/feedback.html">Feedback</a></li>
-        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/index.html" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="/router.html" data-i18n="nav.splitter">Splitter</a></li>
+        <li><a href="/saveToken.html" class="active" data-i18n="nav.tokensaver">TokenSaver</a></li>
+        <li><a href="/costTracker.html" data-i18n="nav.cost">Cost</a></li>
+        <li><a href="/history.html" data-i18n="nav.history">History</a></li>
+        <li><a href="/batch.html" data-i18n="nav.batch">Batch</a></li>
+        <li><a href="/prompts.html" data-i18n="nav.prompts">Prompts</a></li>
+        <li><a href="/feedback.html" data-i18n="nav.feedback">Feedback</a></li>
+        <li><a href="/dashboard.html" data-i18n="nav.dashboard">Dashboard</a></li>
       </ul>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
       <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span>
@@ -159,15 +164,15 @@
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="/index.html">Portfolio</a></li>
-      <li><a href="/router.html">Task Splitter</a></li>
-      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
-      <li><a href="/costTracker.html">Cost Tracker</a></li>
-      <li><a href="/history.html">History</a></li>
-      <li><a href="/batch.html">Batch Router</a></li>
-      <li><a href="/prompts.html">Prompt Library</a></li>
-      <li><a href="/feedback.html">Feedback</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/index.html" data-i18n="mob.portfolio">Portfolio</a></li>
+      <li><a href="/router.html" data-i18n="mob.splitter">Task Splitter</a></li>
+      <li><a href="/saveToken.html" data-i18n="mob.tokensaver">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html" data-i18n="mob.cost">Cost Tracker</a></li>
+      <li><a href="/history.html" data-i18n="mob.history">History</a></li>
+      <li><a href="/batch.html" data-i18n="mob.batch">Batch Router</a></li>
+      <li><a href="/prompts.html" data-i18n="mob.prompts">Prompt Library</a></li>
+      <li><a href="/feedback.html" data-i18n="mob.feedback">Feedback</a></li>
+      <li><a href="/dashboard.html" data-i18n="mob.dashboard">Dashboard</a></li>
     </ul>
     <div class="mobile-auth" id="mobile-auth"></div>
   </div>
@@ -177,9 +182,9 @@
 
     <!-- Header -->
     <header class="router-header">
-      <p class="section-label">Performance Optimization</p>
-      <h1 class="section-title">TokenSaver Pro</h1>
-      <p class="router-sub">
+      <p class="section-label" data-i18n="savetoken.label">Performance Optimization</p>
+      <h1 class="section-title" data-i18n="savetoken.title">TokenSaver Pro</h1>
+      <p class="router-sub" data-i18n-html="savetoken.sub">
         Generate optimized CLAUDE.md configuration for maximum performance.<br>
         Reduce token usage by up to 87% with smart AI settings.
       </p>
@@ -189,15 +194,15 @@
     <div class="stats-bar">
       <div class="stat-item">
         <span class="stat-value" id="selected-count">0</span>
-        <span class="stat-label">Features Selected</span>
+        <span class="stat-label" data-i18n="savetoken.stat.selected">Features Selected</span>
       </div>
       <div class="stat-item">
         <span class="stat-value" id="token-savings">0%</span>
-        <span class="stat-label">Est. Token Savings</span>
+        <span class="stat-label" data-i18n="savetoken.stat.savings">Est. Token Savings</span>
       </div>
       <div class="stat-item">
         <span class="stat-value" id="config-size">0</span>
-        <span class="stat-label">Config Lines</span>
+        <span class="stat-label" data-i18n="savetoken.stat.lines">Config Lines</span>
       </div>
     </div>
 
@@ -207,29 +212,29 @@
       <div class="category-section">
         <h2 class="category-title">
           <span class="category-icon">[P]</span>
-          Performance Optimization
+          <span data-i18n="savetoken.cat.perf">Performance Optimization</span>
         </h2>
-        <p class="category-desc">Reduce token usage and increase response speed</p>
+        <p class="category-desc" data-i18n="savetoken.cat.perf.desc">Reduce token usage and increase response speed</p>
         <div class="option-grid">
           <label class="option-card" data-category="performance">
             <input type="checkbox" value="fast_mode" data-tokens="15" data-lines="3">
             <div class="option-content">
-              <div class="option-name">Fast Mode</div>
-              <div class="option-detail">Enable faster output with same quality</div>
+              <div class="option-name" data-i18n="savetoken.opt.fast">Fast Mode</div>
+              <div class="option-detail" data-i18n="savetoken.opt.fast.desc">Enable faster output with same quality</div>
             </div>
           </label>
           <label class="option-card" data-category="performance">
             <input type="checkbox" value="parallel_exec" data-tokens="25" data-lines="4">
             <div class="option-content">
-              <div class="option-name">Parallel Execution</div>
-              <div class="option-detail">Run independent tool calls simultaneously</div>
+              <div class="option-name" data-i18n="savetoken.opt.parallel">Parallel Execution</div>
+              <div class="option-detail" data-i18n="savetoken.opt.parallel.desc">Run independent tool calls simultaneously</div>
             </div>
           </label>
           <label class="option-card" data-category="performance">
             <input type="checkbox" value="auto_compress" data-tokens="30" data-lines="5">
             <div class="option-content">
-              <div class="option-name">Auto Compression</div>
-              <div class="option-detail">Automatic context compression at limits</div>
+              <div class="option-name" data-i18n="savetoken.opt.compress">Auto Compression</div>
+              <div class="option-detail" data-i18n="savetoken.opt.compress.desc">Automatic context compression at limits</div>
             </div>
           </label>
         </div>
@@ -239,36 +244,36 @@
       <div class="category-section">
         <h2 class="category-title">
           <span class="category-icon">[S]</span>
-          Response Style
+          <span data-i18n="savetoken.cat.style">Response Style</span>
         </h2>
-        <p class="category-desc">Control how Claude communicates with you</p>
+        <p class="category-desc" data-i18n="savetoken.cat.style.desc">Control how Claude communicates with you</p>
         <div class="option-grid">
           <label class="option-card" data-category="style">
             <input type="checkbox" value="concise" data-tokens="20" data-lines="6">
             <div class="option-content">
-              <div class="option-name">Concise Answers</div>
-              <div class="option-detail">Short, focused responses without fluff</div>
+              <div class="option-name" data-i18n="savetoken.opt.concise">Concise Answers</div>
+              <div class="option-detail" data-i18n="savetoken.opt.concise.desc">Short, focused responses without fluff</div>
             </div>
           </label>
           <label class="option-card" data-category="style">
             <input type="checkbox" value="no_emoji" data-tokens="5" data-lines="2">
             <div class="option-content">
-              <div class="option-name">No Emojis</div>
-              <div class="option-detail">Professional text-only output</div>
+              <div class="option-name" data-i18n="savetoken.opt.noEmoji">No Emojis</div>
+              <div class="option-detail" data-i18n="savetoken.opt.noEmoji.desc">Professional text-only output</div>
             </div>
           </label>
           <label class="option-card" data-category="style">
             <input type="checkbox" value="korean_explain" data-tokens="0" data-lines="3">
             <div class="option-content">
-              <div class="option-name">Korean Explanations</div>
-              <div class="option-detail">Use Korean for explanations, English for code</div>
+              <div class="option-name" data-i18n="savetoken.opt.korean">Korean Explanations</div>
+              <div class="option-detail" data-i18n="savetoken.opt.korean.desc">Use Korean for explanations, English for code</div>
             </div>
           </label>
           <label class="option-card" data-category="style">
             <input type="checkbox" value="bullet_points" data-tokens="10" data-lines="3">
             <div class="option-content">
-              <div class="option-name">Bullet Points</div>
-              <div class="option-detail">Prefer lists over paragraphs</div>
+              <div class="option-name" data-i18n="savetoken.opt.bullets">Bullet Points</div>
+              <div class="option-detail" data-i18n="savetoken.opt.bullets.desc">Prefer lists over paragraphs</div>
             </div>
           </label>
         </div>
@@ -278,29 +283,29 @@
       <div class="category-section">
         <h2 class="category-title">
           <span class="category-icon">[W]</span>
-          Workflow Efficiency
+          <span data-i18n="savetoken.cat.workflow">Workflow Efficiency</span>
         </h2>
-        <p class="category-desc">Optimize how Claude performs tasks</p>
+        <p class="category-desc" data-i18n="savetoken.cat.workflow.desc">Optimize how Claude performs tasks</p>
         <div class="option-grid">
           <label class="option-card" data-category="workflow">
             <input type="checkbox" value="smart_delegation" data-tokens="35" data-lines="5">
             <div class="option-content">
-              <div class="option-name">Smart Delegation</div>
-              <div class="option-detail">Auto-delegate tasks to specialized agents</div>
+              <div class="option-name" data-i18n="savetoken.opt.delegate">Smart Delegation</div>
+              <div class="option-detail" data-i18n="savetoken.opt.delegate.desc">Auto-delegate tasks to specialized agents</div>
             </div>
           </label>
           <label class="option-card" data-category="workflow">
             <input type="checkbox" value="tool_priority" data-tokens="15" data-lines="4">
             <div class="option-content">
-              <div class="option-name">Tool Prioritization</div>
-              <div class="option-detail">Use dedicated tools before Bash commands</div>
+              <div class="option-name" data-i18n="savetoken.opt.toolPrio">Tool Prioritization</div>
+              <div class="option-detail" data-i18n="savetoken.opt.toolPrio.desc">Use dedicated tools before Bash commands</div>
             </div>
           </label>
           <label class="option-card" data-category="workflow">
             <input type="checkbox" value="minimal_reads" data-tokens="20" data-lines="4">
             <div class="option-content">
-              <div class="option-name">Minimal File Reads</div>
-              <div class="option-detail">Read only essential sections with offset/limit</div>
+              <div class="option-name" data-i18n="savetoken.opt.minReads">Minimal File Reads</div>
+              <div class="option-detail" data-i18n="savetoken.opt.minReads.desc">Read only essential sections with offset/limit</div>
             </div>
           </label>
         </div>
@@ -310,22 +315,22 @@
       <div class="category-section">
         <h2 class="category-title">
           <span class="category-icon">[M]</span>
-          Memory Management
+          <span data-i18n="savetoken.cat.memory">Memory Management</span>
         </h2>
-        <p class="category-desc">Handle context and session memory</p>
+        <p class="category-desc" data-i18n="savetoken.cat.memory.desc">Handle context and session memory</p>
         <div class="option-grid">
           <label class="option-card" data-category="memory">
             <input type="checkbox" value="session_memory" data-tokens="40" data-lines="6">
             <div class="option-content">
-              <div class="option-name">Session Memory</div>
-              <div class="option-detail">Auto-save learnings to persistent memory</div>
+              <div class="option-name" data-i18n="savetoken.opt.memory">Session Memory</div>
+              <div class="option-detail" data-i18n="savetoken.opt.memory.desc">Auto-save learnings to persistent memory</div>
             </div>
           </label>
           <label class="option-card" data-category="memory">
             <input type="checkbox" value="context_limit" data-tokens="25" data-lines="4">
             <div class="option-content">
-              <div class="option-name">Context Limits</div>
-              <div class="option-detail">Set max file read limits per session</div>
+              <div class="option-name" data-i18n="savetoken.opt.context">Context Limits</div>
+              <div class="option-detail" data-i18n="savetoken.opt.context.desc">Set max file read limits per session</div>
             </div>
           </label>
         </div>
@@ -335,29 +340,29 @@
       <div class="category-section">
         <h2 class="category-title">
           <span class="category-icon">[X]</span>
-          Security & Safety
+          <span data-i18n="savetoken.cat.security">Security & Safety</span>
         </h2>
-        <p class="category-desc">Protect sensitive information</p>
+        <p class="category-desc" data-i18n="savetoken.cat.security.desc">Protect sensitive information</p>
         <div class="option-grid">
           <label class="option-card" data-category="security">
             <input type="checkbox" value="secret_protection" data-tokens="0" data-lines="8">
             <div class="option-content">
-              <div class="option-name">Secret Protection</div>
-              <div class="option-detail">Block .env, credentials, and key files</div>
+              <div class="option-name" data-i18n="savetoken.opt.secret">Secret Protection</div>
+              <div class="option-detail" data-i18n="savetoken.opt.secret.desc">Block .env, credentials, and key files</div>
             </div>
           </label>
           <label class="option-card" data-category="security">
             <input type="checkbox" value="git_safety" data-tokens="0" data-lines="6">
             <div class="option-content">
-              <div class="option-name">Git Safety</div>
-              <div class="option-detail">Prevent force-push and destructive operations</div>
+              <div class="option-name" data-i18n="savetoken.opt.git">Git Safety</div>
+              <div class="option-detail" data-i18n="savetoken.opt.git.desc">Prevent force-push and destructive operations</div>
             </div>
           </label>
           <label class="option-card" data-category="security">
             <input type="checkbox" value="file_limit" data-tokens="0" data-lines="3">
             <div class="option-content">
-              <div class="option-name">Change Limit</div>
-              <div class="option-detail">Max 3 files modified per session</div>
+              <div class="option-name" data-i18n="savetoken.opt.fileLimit">Change Limit</div>
+              <div class="option-detail" data-i18n="savetoken.opt.fileLimit.desc">Max 3 files modified per session</div>
             </div>
           </label>
         </div>
@@ -367,21 +372,21 @@
     <!-- Action Buttons -->
     <section class="input-section">
       <div class="btn-row">
-        <button class="btn btn-primary btn-large" id="btn-generate" type="button">
+        <button class="btn btn-primary btn-large" id="btn-generate" type="button" data-i18n="savetoken.btn.generate">
           Generate CLAUDE.md
         </button>
-        <button class="btn" id="btn-select-all" type="button">Select All</button>
-        <button class="btn" id="btn-reset" type="button">Reset</button>
+        <button class="btn" id="btn-select-all" type="button" data-i18n="savetoken.btn.selectAll">Select All</button>
+        <button class="btn" id="btn-reset" type="button" data-i18n="savetoken.btn.reset">Reset</button>
       </div>
     </section>
 
     <!-- Preview Section -->
     <section class="preview-section" id="preview-section" style="display:none;">
       <div class="preview-header">
-        <label class="area-label">Generated Configuration</label>
+        <label class="area-label" data-i18n="savetoken.preview.label">Generated Configuration</label>
         <div>
-          <button class="btn btn-primary" id="btn-download" type="button">Download CLAUDE.md</button>
-          <button class="btn" id="btn-copy-config" type="button">Copy to Clipboard</button>
+          <button class="btn btn-primary" id="btn-download" type="button" data-i18n="savetoken.btn.download">Download CLAUDE.md</button>
+          <button class="btn" id="btn-copy-config" type="button" data-i18n="savetoken.btn.copy">Copy to Clipboard</button>
         </div>
       </div>
       <div class="preview-code" id="preview-code"></div>
@@ -394,6 +399,7 @@
 
   <script src="saveToken.js"></script>
   <script src="auth.js"></script>
+  <script src="i18n.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>

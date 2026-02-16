@@ -533,16 +533,21 @@
     <div class="nav-inner">
       <a href="/index.html#hero" class="nav-logo">SSH</a>
       <ul class="nav-links">
-        <li><a href="/index.html">Portfolio</a></li>
-        <li><a href="/router.html">Splitter</a></li>
-        <li><a href="/saveToken.html">TokenSaver</a></li>
-        <li><a href="/costTracker.html">Cost</a></li>
-        <li><a href="/history.html">History</a></li>
-        <li><a href="/batch.html" class="active">Batch</a></li>
-        <li><a href="/prompts.html">Prompts</a></li>
-        <li><a href="/feedback.html">Feedback</a></li>
-        <li><a href="/dashboard.html">Dashboard</a></li>
+        <li><a href="/index.html" data-i18n="nav.portfolio">Portfolio</a></li>
+        <li><a href="/router.html" data-i18n="nav.splitter">Splitter</a></li>
+        <li><a href="/saveToken.html" data-i18n="nav.tokensaver">TokenSaver</a></li>
+        <li><a href="/costTracker.html" data-i18n="nav.cost">Cost</a></li>
+        <li><a href="/history.html" data-i18n="nav.history">History</a></li>
+        <li><a href="/batch.html" class="active" data-i18n="nav.batch">Batch</a></li>
+        <li><a href="/prompts.html" data-i18n="nav.prompts">Prompts</a></li>
+        <li><a href="/feedback.html" data-i18n="nav.feedback">Feedback</a></li>
+        <li><a href="/dashboard.html" data-i18n="nav.dashboard">Dashboard</a></li>
       </ul>
+      <div class="lang-toggle" id="lang-toggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="ko">KO</button>
+      </div>
       <div class="nav-auth" id="nav-auth"></div>
       <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
         <span></span><span></span>
@@ -552,78 +557,78 @@
 
   <div class="mobile-menu" id="mobile-menu">
     <ul>
-      <li><a href="/index.html">Portfolio</a></li>
-      <li><a href="/router.html">Task Splitter</a></li>
-      <li><a href="/saveToken.html">TokenSaver Pro</a></li>
-      <li><a href="/costTracker.html">Cost Tracker</a></li>
-      <li><a href="/history.html">History</a></li>
-      <li><a href="/batch.html">Batch Router</a></li>
-      <li><a href="/prompts.html">Prompt Library</a></li>
-      <li><a href="/feedback.html">Feedback</a></li>
-      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/index.html" data-i18n="mob.portfolio">Portfolio</a></li>
+      <li><a href="/router.html" data-i18n="mob.splitter">Task Splitter</a></li>
+      <li><a href="/saveToken.html" data-i18n="mob.tokensaver">TokenSaver Pro</a></li>
+      <li><a href="/costTracker.html" data-i18n="mob.cost">Cost Tracker</a></li>
+      <li><a href="/history.html" data-i18n="mob.history">History</a></li>
+      <li><a href="/batch.html" data-i18n="mob.batch">Batch Router</a></li>
+      <li><a href="/prompts.html" data-i18n="mob.prompts">Prompt Library</a></li>
+      <li><a href="/feedback.html" data-i18n="mob.feedback">Feedback</a></li>
+      <li><a href="/dashboard.html" data-i18n="mob.dashboard">Dashboard</a></li>
     </ul>
     <div class="mobile-auth" id="mobile-auth"></div>
   </div>
 
   <main class="router-main">
     <header class="router-header">
-      <p class="section-label">Advanced Bulk Processing</p>
-      <h1 class="section-title">Batch Router</h1>
-      <p class="router-sub">Process multiple tasks with parallel execution, smart retry, and full analytics.</p>
+      <p class="section-label" data-i18n="batch.label">Advanced Bulk Processing</p>
+      <h1 class="section-title" data-i18n="batch.title">Batch Router</h1>
+      <p class="router-sub" data-i18n="batch.sub">Process multiple tasks with parallel execution, smart retry, and full analytics.</p>
     </header>
 
     <!-- Controls Bar -->
     <div class="batch-controls">
       <div class="batch-control-group">
-        <label for="concurrency-slider">Concurrency</label>
+        <label for="concurrency-slider" data-i18n="batch.concurrency">Concurrency</label>
         <input type="range" id="concurrency-slider" min="1" max="5" value="3" step="1">
         <span class="concurrency-value" id="concurrency-value">3</span>
       </div>
       <div class="batch-control-group">
-        <label for="mode-select">Mode</label>
+        <label for="mode-select" data-i18n="batch.mode">Mode</label>
         <select id="mode-select">
-          <option value="basic">Basic Splitter</option>
-          <option value="v5">NLP/ML v5</option>
+          <option value="basic" data-i18n="batch.mode.basic">Basic Splitter</option>
+          <option value="v5" data-i18n="batch.mode.v5">NLP/ML v5</option>
         </select>
       </div>
       <div class="batch-control-group">
         <label>
           <input type="checkbox" id="auto-retry" checked style="accent-color:var(--black);cursor:pointer;">
-          Auto-retry
+          <span data-i18n="batch.autoRetry">Auto-retry</span>
         </label>
       </div>
       <div class="batch-control-group">
-        <label for="economy-select">Economy</label>
+        <label for="economy-select" data-i18n="batch.economy">Economy</label>
         <select id="economy-select">
-          <option value="strict">Strict</option>
-          <option value="balanced">Balanced</option>
-          <option value="none">None</option>
+          <option value="strict" data-i18n="batch.economy.strict">Strict</option>
+          <option value="balanced" data-i18n="batch.economy.balanced">Balanced</option>
+          <option value="none" data-i18n="batch.economy.none">None</option>
         </select>
       </div>
     </div>
 
     <!-- Task Input -->
     <section class="batch-input" id="batch-input-area">
-      <label class="area-label" for="batch-textarea">Tasks (one per line)</label>
+      <label class="area-label" for="batch-textarea" data-i18n="batch.input.label">Tasks (one per line)</label>
       <textarea id="batch-textarea" rows="10" placeholder="Build a login page with email validation
 Add dark mode toggle to the settings page
 Fix the navigation menu on mobile
 Create a contact form with SMTP integration
 Optimize database queries for user dashboard"></textarea>
-      <div class="drop-hint">Drop .txt or .csv file here</div>
+      <div class="drop-hint" data-i18n="batch.input.drop">Drop .txt or .csv file here</div>
       <div class="batch-input-footer">
-        <p class="batch-help">One task per line. Empty lines ignored. Max 50 tasks. Drag & drop a .txt file to import.</p>
+        <p class="batch-help" data-i18n="batch.input.help">One task per line. Empty lines ignored. Max 50 tasks. Drag & drop a .txt file to import.</p>
         <span class="task-count" id="task-count"><strong>0</strong> tasks</span>
       </div>
     </section>
 
     <div class="btn-row" style="margin-bottom:24px;">
-      <button class="btn btn-primary btn-large" id="btn-run-batch" type="button">Run Batch</button>
-      <button class="btn" id="btn-pause" type="button" style="display:none;">Pause</button>
-      <button class="btn" id="btn-cancel" type="button" style="display:none;">Cancel</button>
-      <button class="btn" id="btn-clear" type="button">Clear</button>
-      <button class="btn" id="btn-load-sample" type="button">Load Sample</button>
-      <button class="btn" id="btn-import-file" type="button">Import File</button>
+      <button class="btn btn-primary btn-large" id="btn-run-batch" type="button" data-i18n="batch.btn.run">Run Batch</button>
+      <button class="btn" id="btn-pause" type="button" style="display:none;" data-i18n="batch.btn.pause">Pause</button>
+      <button class="btn" id="btn-cancel" type="button" style="display:none;" data-i18n="batch.btn.cancel">Cancel</button>
+      <button class="btn" id="btn-clear" type="button" data-i18n="batch.btn.clear">Clear</button>
+      <button class="btn" id="btn-load-sample" type="button" data-i18n="batch.btn.sample">Load Sample</button>
+      <button class="btn" id="btn-import-file" type="button" data-i18n="batch.btn.import">Import File</button>
       <input type="file" id="file-input" accept=".txt,.csv" style="display:none;">
     </div>
 
@@ -631,7 +636,7 @@ Optimize database queries for user dashboard"></textarea>
     <section class="progress-section" id="progress-section">
       <div class="progress-header">
         <div class="progress-header-left">
-          <span class="progress-title" id="progress-title">Processing...</span>
+          <span class="progress-title" id="progress-title" data-i18n="batch.progress.title">Processing...</span>
           <span class="progress-eta" id="progress-eta"></span>
         </div>
         <span class="progress-text" id="progress-text">0 / 0</span>
@@ -643,11 +648,11 @@ Optimize database queries for user dashboard"></textarea>
     <!-- Results Section -->
     <section class="results-section" id="results-section">
       <div class="results-header">
-        <h3>Results</h3>
+        <h3 data-i18n="batch.results">Results</h3>
         <div class="results-actions">
-          <button class="btn" id="btn-retry-failed" type="button">Retry Failed</button>
-          <button class="btn" id="btn-send-splitter" type="button">Open in Splitter</button>
-          <button class="btn" id="btn-save-history" type="button">Save to History</button>
+          <button class="btn" id="btn-retry-failed" type="button" data-i18n="batch.btn.retry">Retry Failed</button>
+          <button class="btn" id="btn-send-splitter" type="button" data-i18n="batch.btn.openSplitter">Open in Splitter</button>
+          <button class="btn" id="btn-save-history" type="button" data-i18n="batch.btn.saveHistory">Save to History</button>
         </div>
       </div>
 
@@ -666,15 +671,15 @@ Optimize database queries for user dashboard"></textarea>
 
       <!-- Export Row -->
       <div class="btn-row" style="margin-top:16px;">
-        <button class="btn btn-primary" id="btn-export-csv" type="button">Export CSV</button>
-        <button class="btn" id="btn-export-json" type="button">Export JSON</button>
-        <button class="btn" id="btn-copy-all" type="button">Copy All</button>
+        <button class="btn btn-primary" id="btn-export-csv" type="button" data-i18n="batch.btn.exportCsv">Export CSV</button>
+        <button class="btn" id="btn-export-json" type="button" data-i18n="batch.btn.exportJson">Export JSON</button>
+        <button class="btn" id="btn-copy-all" type="button" data-i18n="batch.btn.copyAll">Copy All</button>
       </div>
     </section>
 
     <!-- History Panel -->
     <details class="history-panel" id="history-panel">
-      <summary>Batch History</summary>
+      <summary data-i18n="batch.history">Batch History</summary>
       <div class="history-list" id="history-list"></div>
     </details>
   </main>
@@ -682,6 +687,7 @@ Optimize database queries for user dashboard"></textarea>
   <div class="toast" id="toast"></div>
   <script src="batch.js"></script>
   <script src="auth.js"></script>
+  <script src="i18n.js"></script>
   <script src="page-transition.js"></script>
 </body>
 </html>
