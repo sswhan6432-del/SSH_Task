@@ -1,0 +1,5 @@
+# Vercel deployment dependencies (slim — no ML/torch)
+# For full v5 NLP/ML deps, see requirements-v5.txt
+flask>=3.0.0
+flask-cors>=4.0.0
+certifi

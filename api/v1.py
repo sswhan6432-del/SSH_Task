@@ -4,6 +4,7 @@ All existing endpoints preserved with identical behavior.
 No authentication required (backward compatible).
 """
 
+import io
 import json
 import os
 import re
@@ -11,6 +12,8 @@ import ssl
 import sys
 import subprocess
 import threading
+from contextlib import redirect_stdout
+from dataclasses import asdict
 
 from flask import Blueprint, request, jsonify
 
@@ -27,28 +30,95 @@ try:
 except ImportError:
     pass
 
-# Import helpers from router_gui
+# Ensure project root on sys.path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from router_gui import (
-    find_router_candidates,
-    git_status_summary,
-    detect_ticket_ids,
-    extract_claude_ready_block_from_output,
-    recover_ticket_chunk_from_output,
-    recover_change_log_stub_from_output,
-    slice_single_ticket_from_block,
-    extract_tickets_from_claude_block,
-    rewrite_tickets_to_english_via_groq,
-    apply_english_tickets_to_claude_block,
-    translate_output_via_groq,
-    translate_non_code_to_english,
-    _groq_chat,
-    _contains_korean,
-    IMPL_RULES_SUFFIX,
-)
+
+# Import router_gui helpers — may fail on Vercel (tkinter unavailable)
+_HAS_ROUTER_GUI = False
+try:
+    from router_gui import (
+        find_router_candidates,
+        git_status_summary,
+        detect_ticket_ids,
+        extract_claude_ready_block_from_output,
+        recover_ticket_chunk_from_output,
+        recover_change_log_stub_from_output,
+        slice_single_ticket_from_block,
+        extract_tickets_from_claude_block,
+        rewrite_tickets_to_english_via_groq,
+        apply_english_tickets_to_claude_block,
+        translate_output_via_groq,
+        translate_non_code_to_english,
+        _groq_chat,
+        _contains_korean,
+        IMPL_RULES_SUFFIX,
+    )
+    _HAS_ROUTER_GUI = True
+except (ImportError, ModuleNotFoundError):
+    # tkinter not available (e.g. Vercel) — provide fallbacks
+    import glob as _glob
+
+    def find_router_candidates():
+        script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        found = _glob.glob(os.path.join(script_dir, "llm_router*.py"))
+        return sorted(set(os.path.abspath(f) for f in found if os.path.isfile(f)))
+
+    def git_status_summary(cwd):
+        return "unavailable (serverless)"
+
+    def detect_ticket_ids(text):
+        return re.findall(r"\bTicket ([A-Z])\b", text)
+
+    def _contains_korean(text):
+        return bool(re.search(r"[\uac00-\ud7a3]", text))
+
+    def translate_non_code_to_english(text):
+        return text
+
+    def translate_output_via_groq(text, api_key):
+        return text
+
+    def _groq_chat(messages, api_key="", **kw):
+        return ""
+
+    def extract_claude_ready_block_from_output(text, ticket_id=""):
+        return ""
+
+    def recover_ticket_chunk_from_output(text, ticket_id):
+        return ""
+
+    def recover_change_log_stub_from_output(text, ticket_id):
+        return ""
+
+    def slice_single_ticket_from_block(block, ticket_id):
+        return block
+
+    def extract_tickets_from_claude_block(block):
+        return {}, ""
+
+    def rewrite_tickets_to_english_via_groq(tickets, original_kr, api_key):
+        return tickets
+
+    def apply_english_tickets_to_claude_block(block, en_map):
+        return block
+
+    IMPL_RULES_SUFFIX = ""
+
+# Import llm_router for direct function calls (no subprocess needed)
+try:
+    from llm_router import (
+        route_text as _llm_route_text,
+        print_friendly as _print_friendly,
+        print_human as _print_human,
+        filter_one_task as _filter_one_task,
+        render_tickets_md as _render_tickets_md,
+    )
+    _HAS_LLM_ROUTER = True
+except ImportError:
+    _HAS_LLM_ROUTER = False
 
 from config import (
-    BASE_DIR, HISTORY_FILE, PROMPTS_FILE, FEEDBACK_FILE,
+    IS_VERCEL, BASE_DIR, HISTORY_FILE, PROMPTS_FILE, FEEDBACK_FILE,
     ROUTE_COST_PER_1K, ROUTE_TOKENS_PER_TASK,
     DEFAULT_COST_PER_1K, DEFAULT_TOKENS_PER_TASK,
 )
@@ -206,85 +276,113 @@ def api_feedback_get():
 @v1_bp.route("/api/route", methods=["POST"])
 def api_route():
     body = request.get_json(silent=True) or {}
-
-    router = body.get("router", "").strip()
     request_text = body.get("request", "").strip()
 
-    candidates = find_router_candidates()
-    candidate_paths = [os.path.abspath(c) for c in candidates]
-    if not router or os.path.abspath(router) not in candidate_paths:
-        return jsonify({"error": "Router not allowed", "output": "", "tickets": []}), 400
     if not request_text:
         return jsonify({"error": "Empty request", "output": "", "tickets": []}), 400
 
-    cmd = [sys.executable, router]
-
-    if body.get("friendly", False):
-        cmd.append("--friendly")
-    if body.get("desktop_edit", False):
-        cmd.append("--desktop-edit")
-    if body.get("force_split", False):
-        cmd.append("--force-split")
-    if body.get("opus_only", False):
-        cmd.append("--opus-only")
-
+    # Parse options from request body
+    friendly = body.get("friendly", False)
+    desktop_edit = body.get("desktop_edit", False)
+    force_split = body.get("force_split", False)
+    opus_only = body.get("opus_only", False)
     tickets_md = body.get("tickets_md", False)
-    save_tickets = (body.get("save_tickets") or "").strip()
-    if save_tickets:
-        cmd.extend(["--save-tickets", save_tickets])
-    elif tickets_md:
-        cmd.append("--tickets-md")
-
-    economy = (body.get("economy") or "strict").strip()
-    cmd.extend(["--economy", economy])
-
-    phase = (body.get("phase") or "implement").strip()
-    cmd.extend(["--phase", phase])
-
+    economy = (body.get("economy") or "strict").strip().lower()
+    if economy not in ("strict", "balanced"):
+        economy = "strict"
+    phase = (body.get("phase") or "implement").strip().lower()
+    if phase not in ("analyze", "implement"):
+        phase = "implement"
     one_task = (body.get("one_task") or "").strip()
-    if one_task:
-        cmd.extend(["--one-task", one_task])
-
-    max_tickets = (body.get("max_tickets") or "0").strip()
-    if max_tickets and max_tickets != "0":
-        cmd.extend(["--max-tickets", max_tickets])
-
-    min_tickets = (body.get("min_tickets") or "1").strip()
-    if min_tickets and min_tickets != "0":
-        cmd.extend(["--min-tickets", min_tickets])
-
     merge = (body.get("merge") or "").strip()
-    if merge:
-        cmd.extend(["--merge", merge])
 
-    if body.get("v5_enabled", False):
-        cmd.append("--v5")
-        if body.get("compress", True):
-            cmd.append("--compress")
-        cl = str(body.get("compression_level", 2)).strip()
-        if cl in ("1", "2", "3"):
-            cmd.extend(["--compression-level", cl])
-        if body.get("intent_detect", True):
-            cmd.append("--intent-detect")
-        if body.get("smart_priority", True):
-            cmd.append("--smart-priority")
-        if body.get("show_stats", False):
-            cmd.append("--show-stats")
-
-    cmd.append(request_text)
-
+    max_tickets_str = (body.get("max_tickets") or "0").strip()
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, cwd=os.getcwd(), timeout=120)
-    except subprocess.TimeoutExpired:
-        return jsonify({"error": "Router timed out (120s)", "output": "", "tickets": []})
-    except Exception as e:
-        return jsonify({"error": str(e), "output": "", "tickets": []})
+        max_tickets_n = int(max_tickets_str) if max_tickets_str != "0" else 0
+    except (ValueError, TypeError):
+        max_tickets_n = 0
 
-    out = (result.stdout or "").strip()
-    err = (result.stderr or "").strip()
-    combined = out
-    if err:
-        combined += "\n\n--- STDERR ---\n" + err
+    min_tickets_str = (body.get("min_tickets") or "1").strip()
+    try:
+        min_tickets_n = int(min_tickets_str) if min_tickets_str != "0" else 0
+    except (ValueError, TypeError):
+        min_tickets_n = 0
+
+    # Direct function call (no subprocess) — works on both local and Vercel
+    if _HAS_LLM_ROUTER:
+        try:
+            router_out = _llm_route_text(
+                request_text,
+                desktop_edit=desktop_edit,
+                economy=economy,
+                phase=phase,
+                opus_only=opus_only,
+                max_tickets=max_tickets_n,
+                merge_spec=merge,
+                force_split=force_split,
+                min_tickets=min_tickets_n,
+            )
+
+            if one_task:
+                router_out = _filter_one_task(router_out, one_task)
+
+            # Capture printed output
+            buf = io.StringIO()
+            with redirect_stdout(buf):
+                if tickets_md:
+                    print(_render_tickets_md(router_out, economy=economy, phase=phase))
+                elif friendly:
+                    _print_friendly(router_out, desktop_edit=desktop_edit,
+                                    economy=economy, phase=phase, opus_only=opus_only)
+                else:
+                    _print_human(router_out, desktop_edit=desktop_edit,
+                                 economy=economy, phase=phase, opus_only=opus_only)
+
+            combined = buf.getvalue().strip()
+        except Exception as e:
+            return jsonify({"error": str(e), "output": "", "tickets": []})
+    else:
+        # Fallback: subprocess (local only, not Vercel-compatible)
+        router = body.get("router", "").strip()
+        candidates = find_router_candidates()
+        candidate_paths = [os.path.abspath(c) for c in candidates]
+        if not router or os.path.abspath(router) not in candidate_paths:
+            return jsonify({"error": "Router not allowed", "output": "", "tickets": []}), 400
+
+        cmd = [sys.executable, router]
+        if friendly:
+            cmd.append("--friendly")
+        if desktop_edit:
+            cmd.append("--desktop-edit")
+        if force_split:
+            cmd.append("--force-split")
+        if opus_only:
+            cmd.append("--opus-only")
+        if tickets_md:
+            cmd.append("--tickets-md")
+        cmd.extend(["--economy", economy, "--phase", phase])
+        if one_task:
+            cmd.extend(["--one-task", one_task])
+        if max_tickets_n:
+            cmd.extend(["--max-tickets", str(max_tickets_n)])
+        if min_tickets_n:
+            cmd.extend(["--min-tickets", str(min_tickets_n)])
+        if merge:
+            cmd.extend(["--merge", merge])
+        cmd.append(request_text)
+
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, cwd=os.getcwd(), timeout=120)
+        except subprocess.TimeoutExpired:
+            return jsonify({"error": "Router timed out (120s)", "output": "", "tickets": []})
+        except Exception as e:
+            return jsonify({"error": str(e), "output": "", "tickets": []})
+
+        out = (result.stdout or "").strip()
+        err = (result.stderr or "").strip()
+        combined = out
+        if err:
+            combined += "\n\n--- STDERR ---\n" + err
 
     translate_status = ""
     if body.get("translate_en", False):
@@ -307,46 +405,6 @@ def api_route():
         "error": "",
         "translate_status": translate_status,
     }
-
-    if body.get("v5_enabled", False):
-        token_reduction_rate = 0.0
-        original_tokens = 0
-        compressed_tokens = 0
-        processing_time_ms = 0.0
-        intent_accuracy = 0.0
-        priority_confidence = 0.0
-
-        try:
-            if combined.strip().startswith("{"):
-                data = json.loads(combined)
-                token_reduction_rate = data.get("token_reduction_rate", 0.0)
-                processing_time_ms = data.get("total_processing_time_ms", 0.0)
-                tasks = data.get("tasks", [])
-                if tasks:
-                    original_tokens = sum(t.get("compression_result", {}).get("original_tokens", 0) for t in tasks)
-                    compressed_tokens = sum(t.get("compression_result", {}).get("compressed_tokens", 0) for t in tasks)
-                    intent_scores = [t.get("intent_analysis", {}).get("confidence", 0) for t in tasks if t.get("intent_analysis")]
-                    if intent_scores:
-                        intent_accuracy = sum(intent_scores) / len(intent_scores)
-                    priority_scores = [t.get("priority_score", {}).get("ml_confidence", 0) for t in tasks if t.get("priority_score")]
-                    if priority_scores:
-                        priority_confidence = sum(priority_scores) / len(priority_scores)
-        except (json.JSONDecodeError, KeyError):
-            pass
-
-        resp["v5_stats"] = {
-            "enabled": True,
-            "compress": body.get("compress", True),
-            "compression_level": int(body.get("compression_level", 2)),
-            "intent_detect": body.get("intent_detect", True),
-            "smart_priority": body.get("smart_priority", True),
-            "token_reduction_rate": token_reduction_rate,
-            "original_tokens": original_tokens,
-            "compressed_tokens": compressed_tokens,
-            "processing_time_ms": processing_time_ms,
-            "intent_accuracy": intent_accuracy,
-            "priority_confidence": priority_confidence,
-        }
 
     return jsonify(resp)
 
