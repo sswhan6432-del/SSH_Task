@@ -60,6 +60,7 @@ img {
   display: flex;
   align-items: center;
   gap: 2px;
+  margin-left: auto;
   margin-right: 12px;
 }
 
@@ -122,7 +123,7 @@ img {
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  position: relative;
 }
 
 .nav-logo {
@@ -135,6 +136,9 @@ img {
 .nav-links {
   display: flex;
   gap: 16px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav-links a {
