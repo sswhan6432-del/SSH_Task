@@ -69,7 +69,7 @@ def create_app():
     # Serve index
     @app.route("/")
     def serve_index():
-        return send_from_directory(WEBSITE_DIR, "router.html")
+        return send_from_directory(WEBSITE_DIR, "index.html")
 
     # Serve static HTML files
     @app.route("/<path:filename>")

@@ -5,7 +5,7 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index.py" },
-    { "src": "/", "dest": "/website/router.html" },
+    { "src": "/", "dest": "/website/index.html" },
     { "src": "/(.*\\.(html|css|js|png|jpg|svg|ico|woff2?))", "dest": "/website/$1" }
   ]
 }
