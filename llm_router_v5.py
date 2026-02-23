@@ -516,6 +516,10 @@ class EnhancedRouter:
         if intent_analysis:
             enhanced.intent_analysis = intent_analysis
 
+            # Log secondary intent for multi-intent requests
+            if hasattr(intent_analysis, 'secondary_intent') and intent_analysis.secondary_intent:
+                logger.info("Task %s: secondary_intent=%s", v4_task.id, intent_analysis.secondary_intent)
+
             # Update route based on intent if confidence is high
             if intent_analysis.confidence > 0.8:
                 enhanced.route = intent_analysis.intent

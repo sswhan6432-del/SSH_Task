@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "model": "paraphrase-multilingual-MiniLM-L12-v2",
+  "intents": {
+    "analyze": {
+      "exemplars": [
+        "Review the code quality in auth.py",
+        "Check if the design matches the implementation",
+        "Verify the test coverage for this module",
+        "Analyze the performance bottleneck in the API",
+        "Audit the security of the login flow",
+        "Inspect the error handling patterns",
+        "Compare the current code with the spec",
+        "Validate the database schema changes",
+        "What's wrong with this function?",
+        "Is there a bug in this code?",
+        "Can you spot any issues here?",
+        "Look at this code and tell me what's off",
+        "이 코드 좀 봐줘",
+        "auth.py 에서 뭔가 이상해",
+        "코드 리뷰 해주세요",
+        "코드 분석해줘",
+        "테스트 검증해주세요",
+        "품질 검토 부탁합니다",
+        "이 함수에 버그가 있는 것 같아",
+        "성능 문제 확인해줘"
+      ]
+    },
+    "implement": {
+      "exemplars": [
+        "Build a new user login feature",
+        "Fix the bug in the router module",
+        "Add authentication to the API endpoint",
+        "Create a dashboard component",
+        "Implement the payment processing logic",
+        "Write a utility function for date formatting",
+        "Update the navbar to include a logout button",
+        "Refactor the database connection pooling",
+        "Add error handling to the file upload",
+        "Modify the CSS to fix the layout issue",
+        "Set up the CI/CD pipeline configuration",
+        "Write the migration script for the new schema",
+        "로그인 기능 만들어줘",
+        "버그 수정해주세요",
+        "새 기능 추가해줘",
+        "이 모듈 리팩토링해줘",
+        "API 엔드포인트 구현해주세요",
+        "CSS 레이아웃 고쳐줘",
+        "에러 핸들링 추가해줘",
+        "결제 로직 구현해줘"
+      ]
+    },
+    "research": {
+      "exemplars": [
+        "Find all files related to authentication",
+        "Search for the login component in the codebase",
+        "Explore the database schema and relationships",
+        "Understand how the routing system works",
+        "What does this module do?",
+        "Explain the architecture of this project",
+        "How is the caching layer structured?",
+        "Where is the configuration for the API keys?",
+        "Show me how the middleware chain works",
+        "What libraries are used for testing?",
+        "Help me understand the deployment process",
+        "What's the difference between v4 and v5 router?",
+        "이 모듈이 뭐하는 건지 알려줘",
+        "문서 찾아줘",
+        "API 설명해주세요",
+        "구조 이해하고 싶어",
+        "이 프로젝트 아키텍처 설명해줘",
+        "인증 관련 파일 어디 있어?",
+        "캐싱 시스템 어떻게 동작해?",
+        "배포 프로세스 알려줘"
+      ]
+    }
+  }
+}
