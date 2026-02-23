@@ -57,6 +57,11 @@
   {"text": "결제 처리 관련 파일 어디에 있어?", "intent": "research"},
   {"text": "에러 로깅 방식 설명해줘", "intent": "research"},
   {"text": "의존성 패키지 뭐가 있어?", "intent": "research"},
+  {"text": "이 함수가 뭐하는 거야?", "intent": "research"},
+  {"text": "이거 어떻게 동작해?", "intent": "research"},
+  {"text": "이 클래스 역할 알려줘", "intent": "research"},
+  {"text": "이 모듈 설명해줘", "intent": "research"},
+  {"text": "이게 뭐하는 코드인지 알려줘", "intent": "research"},
 
   {"text": "How does this work and can we improve it?", "intent": "research"},
   {"text": "이거 동작 원리 설명하고 개선 방안도 알려줘", "intent": "research"},
