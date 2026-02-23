@@ -8,15 +8,18 @@ Uses RandomForest to classify urgency and importance:
 - Priority: urgency * importance / 10
 
 Author: AI Development Team
-Version: 5.0.0
-Date: 2026-02-13
+Version: 5.1.0
+Date: 2026-02-23
 """
 
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional
 import json
+import logging
 from pathlib import Path
 import re
+
+logger = logging.getLogger(__name__)
 
 try:
     from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
@@ -34,12 +37,12 @@ class PriorityScore:
     """Result of priority ranking."""
     task_id: str                      # "A", "B", "C", ...
     task_text: str                    # Original task description
-    urgency: int                      # 1-10 (긴급도)
-    importance: int                   # 1-10 (중요도)
+    urgency: int                      # 1-10
+    importance: int                   # 1-10
     priority: int                     # urgency * importance / 10
-    dependencies: List[str]           # 의존 task IDs ["B", "C"]
-    parallel_safe: bool               # 병렬 처리 가능 여부
-    ml_confidence: float              # ML 모델 신뢰도
+    dependencies: List[str]           # dependent task IDs ["B", "C"]
+    parallel_safe: bool               # can run in parallel
+    ml_confidence: float              # ML model confidence
 
 
 class PriorityRanker:
@@ -61,7 +64,7 @@ class PriorityRanker:
             print(f"{score.task_id}: Priority {score.priority}")
     """
 
-    # Urgency keywords (높은 긴급도 = 빠르게 처리 필요)
+    # Urgency keywords
     URGENCY_HIGH = [
         "urgent", "asap", "immediately", "critical", "emergency", "bug", "fix",
         "broken", "crash", "down", "error", "failing", "blocker",
@@ -74,7 +77,7 @@ class PriorityRanker:
         "나중에", "여유", "선택", "고려", "미래"
     ]
 
-    # Importance keywords (높은 중요도 = 비즈니스 가치 큼)
+    # Importance keywords
     IMPORTANCE_HIGH = [
         "security", "authentication", "payment", "data", "database",
         "critical", "core", "essential", "must", "required",
@@ -97,15 +100,18 @@ class PriorityRanker:
         r"의존\s+([A-Z])"
     ]
 
-    def __init__(self, model_path: str = "ml/priority_model.pkl"):
+    def __init__(self, model_path: str = None):
         """
         Initialize priority ranker.
 
         Args:
-            model_path: Path to saved ML model (if exists)
+            model_path: Path to saved ML model. If None, uses __file__-based resolution.
         """
+        if model_path is None:
+            project_root = Path(__file__).parent.parent
+            model_path = str(project_root / "ml" / "priority_model.pkl")
+
         self.model_path = Path(model_path)
-        # Simple but effective: keep it minimal for small dataset
         self.vectorizer = TfidfVectorizer(max_features=100)
 
         # Try to load existing model
@@ -114,6 +120,8 @@ class PriorityRanker:
 
         if self.model_path.exists():
             self._load_model()
+        else:
+            logger.info("No ML model found at %s, using keyword fallback", self.model_path)
 
     def rank(self, tasks: List[str]) -> List[PriorityScore]:
         """
@@ -130,16 +138,12 @@ class PriorityRanker:
         for i, task in enumerate(tasks):
             task_id = chr(65 + i)  # A, B, C, ...
 
-            # Analyze task
             urgency, urgency_conf = self._classify_urgency(task)
             importance, importance_conf = self._classify_importance(task)
             dependencies = self._extract_dependencies(task)
             parallel_safe = self._check_parallel_safety(task, dependencies)
 
-            # Calculate priority
             priority = int(urgency * importance / 10)
-
-            # Average confidence
             confidence = (urgency_conf + importance_conf) / 2
 
             scores.append(PriorityScore(
@@ -153,7 +157,6 @@ class PriorityRanker:
                 ml_confidence=confidence
             ))
 
-        # Sort by priority (high to low)
         scores.sort(key=lambda x: x.priority, reverse=True)
 
         return scores
@@ -168,29 +171,23 @@ class PriorityRanker:
         Returns:
             (urgency_score, confidence)
         """
-        # Try ML model first
         if self._urgency_model is not None:
             try:
                 features = self.vectorizer.transform([text])
                 urgency_raw = self._urgency_model.predict(features)[0]
 
-                # Clip to valid range [1, 10] and round
                 urgency = int(np.clip(np.round(urgency_raw), 1, 10))
 
-                # Calculate confidence based on how well prediction fits in range
-                # Raw prediction closer to valid range = higher confidence
                 if 1 <= urgency_raw <= 10:
-                    confidence = 0.8  # Good prediction within range
+                    confidence = 0.8
                 else:
-                    # Penalize out-of-range predictions
                     distance = min(abs(urgency_raw - 1), abs(urgency_raw - 10))
                     confidence = max(0.3, 0.8 - distance * 0.1)
 
                 return urgency, confidence
             except Exception as e:
-                print(f"⚠️ ML urgency classification failed: {e}")
+                logger.warning("ML urgency classification failed: %s", e)
 
-        # Fallback to keyword-based
         return self._classify_urgency_keywords(text)
 
     def _classify_urgency_keywords(self, text: str) -> Tuple[int, float]:
@@ -207,7 +204,6 @@ class PriorityRanker:
             urgency = max(1, 4 - low_matches)
             confidence = min(1.0, 0.6 + low_matches * 0.2)
         else:
-            # Default: medium urgency
             urgency = 5
             confidence = 0.4
 
@@ -223,28 +219,23 @@ class PriorityRanker:
         Returns:
             (importance_score, confidence)
         """
-        # Try ML model first
         if self._importance_model is not None:
             try:
                 features = self.vectorizer.transform([text])
                 importance_raw = self._importance_model.predict(features)[0]
 
-                # Clip to valid range [1, 10] and round
                 importance = int(np.clip(np.round(importance_raw), 1, 10))
 
-                # Calculate confidence based on how well prediction fits in range
                 if 1 <= importance_raw <= 10:
-                    confidence = 0.8  # Good prediction within range
+                    confidence = 0.8
                 else:
-                    # Penalize out-of-range predictions
                     distance = min(abs(importance_raw - 1), abs(importance_raw - 10))
                     confidence = max(0.3, 0.8 - distance * 0.1)
 
                 return importance, confidence
             except Exception as e:
-                print(f"⚠️ ML importance classification failed: {e}")
+                logger.warning("ML importance classification failed: %s", e)
 
-        # Fallback to keyword-based
         return self._classify_importance_keywords(text)
 
     def _classify_importance_keywords(self, text: str) -> Tuple[int, float]:
@@ -261,7 +252,6 @@ class PriorityRanker:
             importance = max(1, 4 - low_matches)
             confidence = min(1.0, 0.6 + low_matches * 0.2)
         else:
-            # Default: medium importance
             importance = 5
             confidence = 0.4
 
@@ -283,7 +273,7 @@ class PriorityRanker:
             matches = re.findall(pattern, text, re.IGNORECASE)
             dependencies.extend(matches)
 
-        return list(set(dependencies))  # Remove duplicates
+        return list(set(dependencies))
 
     def _check_parallel_safety(self, text: str, dependencies: List[str]) -> bool:
         """
@@ -296,11 +286,9 @@ class PriorityRanker:
         Returns:
             True if parallel-safe
         """
-        # Not safe if has dependencies
         if dependencies:
             return False
 
-        # Check for sequential keywords
         sequential_keywords = [
             "sequential", "order", "first", "then", "after",
             "순차", "순서", "먼저", "다음"
@@ -322,30 +310,27 @@ class PriorityRanker:
                 - "importance": 1-10
         """
         if not training_data:
-            print("⚠️ No training data provided")
+            logger.warning("No training data provided")
             return
 
         texts = [item["text"] for item in training_data]
         urgency_labels = [item["urgency"] for item in training_data]
         importance_labels = [item["importance"] for item in training_data]
 
-        # Vectorize texts
         features = self.vectorizer.fit_transform(texts)
 
-        # Train urgency model (REGRESSION) - Simple works best for small datasets
         self._urgency_model = RandomForestRegressor(n_estimators=100, random_state=42)
         self._urgency_model.fit(features, urgency_labels)
 
-        # Train importance model (REGRESSION) - Simple works best for small datasets
         self._importance_model = RandomForestRegressor(n_estimators=100, random_state=42)
         self._importance_model.fit(features, importance_labels)
 
-        print(f"✅ Regression models trained on {len(training_data)} samples")
+        logger.info("Regression models trained on %d samples", len(training_data))
 
     def save_model(self) -> None:
         """Save trained models to disk."""
         if self._urgency_model is None or self._importance_model is None:
-            print("⚠️ No models to save (train first)")
+            logger.warning("No models to save (train first)")
             return
 
         self.model_path.parent.mkdir(parents=True, exist_ok=True)
@@ -359,7 +344,7 @@ class PriorityRanker:
         with open(self.model_path, "wb") as f:
             pickle.dump(model_data, f)
 
-        print(f"✅ Models saved to {self.model_path}")
+        logger.info("Models saved to %s", self.model_path)
 
     def _load_model(self) -> None:
         """Load trained models from disk."""
@@ -371,9 +356,9 @@ class PriorityRanker:
             self._importance_model = model_data["importance_model"]
             self.vectorizer = model_data["vectorizer"]
 
-            print(f"✅ Models loaded from {self.model_path}")
+            logger.info("Priority ML model loaded from %s", self.model_path)
         except Exception as e:
-            print(f"⚠️ Failed to load models: {e}")
+            logger.warning("Failed to load models from %s: %s", self.model_path, e)
 
 
 # Module-level convenience function
@@ -392,7 +377,8 @@ def rank_tasks(tasks: List[str]) -> List[PriorityScore]:
 
 
 if __name__ == "__main__":
-    # Quick test
+    logging.basicConfig(level=logging.DEBUG)
+
     print("Testing Priority Ranker...")
 
     test_tasks = [

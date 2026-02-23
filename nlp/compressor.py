@@ -7,14 +7,19 @@ Compression Levels:
 - Level 2 (Balanced): Aggressive cleanup (30-50% reduction)
 - Level 3 (Aggressive): Maximum compression (50-70% reduction)
 
+Code blocks (fenced ``` and indented 4-space) are protected from compression.
+
 Author: AI Development Team
-Version: 5.0.0
-Date: 2026-02-13
+Version: 5.1.0
+Date: 2026-02-23
 """
 
 from dataclasses import dataclass
-from typing import List
+from typing import List, Tuple
+import logging
 import re
+
+logger = logging.getLogger(__name__)
 
 try:
     import tiktoken
@@ -46,6 +51,9 @@ class Compressor:
     - Stop word elimination
     - Abbreviation
     - Sentence reconstruction
+
+    Code blocks (fenced and indented) are extracted before compression
+    and restored after, preventing stop-word removal inside code.
 
     Usage:
         compressor = Compressor()
@@ -104,6 +112,8 @@ class Compressor:
         """
         Compress text at specified level.
 
+        Code blocks are protected from compression at all levels.
+
         Args:
             text: Input text
             level: Compression level (1-3)
@@ -125,8 +135,13 @@ class Compressor:
         original_tokens = self.count_tokens(text)
         lost_info = []
 
-        # Apply compression based on level
-        compressed = text
+        # Extract code blocks before compression
+        text_without_code, code_blocks = self._extract_code_blocks(text)
+        if code_blocks:
+            logger.debug("Protected %d code blocks from compression", len(code_blocks))
+
+        # Apply compression to prose only
+        compressed = text_without_code
 
         # Level 1: Basic cleanup
         compressed = self._normalize_whitespace(compressed)
@@ -153,12 +168,18 @@ class Compressor:
         # Final cleanup
         compressed = self._normalize_whitespace(compressed)
 
+        # Restore code blocks
+        compressed = self._restore_code_blocks(compressed, code_blocks)
+
         # Calculate metrics
         compressed_tokens = self.count_tokens(compressed)
         reduction_rate = (
             (original_tokens - compressed_tokens) / original_tokens
             if original_tokens > 0 else 0.0
         )
+
+        logger.info("Compressed level=%d: %d -> %d tokens (%.1f%% reduction)",
+                     level, original_tokens, compressed_tokens, reduction_rate * 100)
 
         return CompressionResult(
             original=text,
@@ -169,6 +190,71 @@ class Compressor:
             compression_level=level,
             lost_info=lost_info
         )
+
+    def _extract_code_blocks(self, text: str) -> Tuple[str, List[str]]:
+        """
+        Extract code blocks from text and replace with placeholders.
+
+        Detects:
+        1. Fenced code blocks (``` ... ```)
+        2. Indented code blocks (4+ spaces at line start)
+
+        Args:
+            text: Input text
+
+        Returns:
+            (text_with_placeholders, list_of_code_blocks)
+        """
+        code_blocks = []
+
+        # 1. Extract fenced code blocks (```...```)
+        def replace_fenced(match):
+            idx = len(code_blocks)
+            code_blocks.append(match.group(0))
+            return f"__CODE_BLOCK_{idx}__"
+
+        text = re.sub(r'```[\s\S]*?```', replace_fenced, text)
+
+        # 2. Extract indented code blocks (lines starting with 4+ spaces)
+        lines = text.split('\n')
+        result_lines = []
+        indent_block = []
+
+        for line in lines:
+            if re.match(r'^(    |\t)', line) and line.strip():
+                indent_block.append(line)
+            else:
+                if indent_block:
+                    idx = len(code_blocks)
+                    code_blocks.append('\n'.join(indent_block))
+                    result_lines.append(f"__CODE_BLOCK_{idx}__")
+                    indent_block = []
+                result_lines.append(line)
+
+        # Handle trailing indented block
+        if indent_block:
+            idx = len(code_blocks)
+            code_blocks.append('\n'.join(indent_block))
+            result_lines.append(f"__CODE_BLOCK_{idx}__")
+
+        text = '\n'.join(result_lines)
+
+        return text, code_blocks
+
+    def _restore_code_blocks(self, text: str, code_blocks: List[str]) -> str:
+        """
+        Restore code blocks from placeholders.
+
+        Args:
+            text: Text with __CODE_BLOCK_N__ placeholders
+            code_blocks: List of original code blocks
+
+        Returns:
+            Text with code blocks restored
+        """
+        for i, block in enumerate(code_blocks):
+            text = text.replace(f"__CODE_BLOCK_{i}__", block)
+        return text
 
     def count_tokens(self, text: str) -> int:
         """
@@ -188,17 +274,13 @@ class Compressor:
 
     def _normalize_whitespace(self, text: str) -> str:
         """Remove extra whitespace."""
-        # Replace multiple spaces with single space
         text = re.sub(r'\s+', ' ', text)
-        # Remove leading/trailing whitespace
         text = text.strip()
-        # Remove space before punctuation
         text = re.sub(r'\s+([.,!?;:])', r'\1', text)
         return text
 
     def _remove_redundancy(self, text: str) -> str:
         """Remove redundant phrases."""
-        # Remove duplicate words
         words = text.split()
         seen = set()
         result = []
@@ -214,9 +296,8 @@ class Compressor:
     def _apply_replacements(self, text: str, level: int) -> str:
         """Apply abbreviations and replacements."""
         for phrase, replacement in self.REPLACEMENTS.items():
-            # Only apply if replacement matches level
             if level == 1 and len(replacement) == 0:
-                continue  # Skip removals at level 1
+                continue
 
             text = re.sub(
                 r'\b' + re.escape(phrase) + r'\b',
@@ -240,11 +321,10 @@ class Compressor:
             else:
                 result.append(word)
 
-        return ' '.join(result), list(set(removed))[:5]  # Max 5 examples
+        return ' '.join(result), list(set(removed))[:5]
 
     def _remove_articles(self, text: str) -> str:
         """Remove articles (a, an, the)."""
-        # Remove standalone articles
         text = re.sub(r'\b(a|an|the)\b\s+', '', text, flags=re.IGNORECASE)
         return text
 
@@ -252,25 +332,19 @@ class Compressor:
         """
         Remove Korean particles (regex-based).
 
-        Targets common Korean postpositions that can be safely removed
-        while preserving core meaning.
-
         Args:
             text: Input text
 
         Returns:
             Tuple of (processed text, list of removed particles)
         """
-        particles = ['은', '는', '이', '가', '을', '를', '의', '에서', '에', '으로', '로', '와', '과', '도', '만', '까지', '부터']
         removed = []
 
-        # Match particles followed by whitespace or end of string
         pattern = r'(에서|으로|까지|부터|은|는|이|가|을|를|의|에|로|와|과|도|만)(?=\s|$|[.,!?])'
         matches = re.findall(pattern, text)
         if matches:
             removed = list(set(matches))
             text = re.sub(pattern, '', text)
-            # Clean up extra spaces
             text = re.sub(r'\s+', ' ', text).strip()
 
         return text, removed
@@ -278,9 +352,6 @@ class Compressor:
     def _extract_keywords_only(self, text: str) -> str:
         """
         Extract nouns/verbs/key terms only, drop filler.
-
-        Keeps words longer than 2 characters that aren't stop words.
-        Removes duplicates while preserving order.
 
         Args:
             text: Input text
@@ -294,7 +365,6 @@ class Compressor:
 
         for word in words:
             word_clean = word.lower().strip('.,!?;:')
-            # Keep words > 2 chars that aren't stop words
             if len(word_clean) > 2 and word_clean not in self.STOP_WORDS:
                 if word_clean not in seen:
                     keywords.append(word)
@@ -306,18 +376,12 @@ class Compressor:
         """
         Convert to imperative form.
 
-        Removes hedging phrases and converts common patterns:
-        - "you should X" -> "X"
-        - "we need to X" -> "X"
-        - "I think", "maybe", "perhaps" -> removed
-
         Args:
             text: Input text
 
         Returns:
             Text in imperative form
         """
-        # Remove hedging phrases
         hedges = [
             r'\bi think\b\s*',
             r'\bmaybe\b\s*',
@@ -329,7 +393,6 @@ class Compressor:
         for hedge in hedges:
             text = re.sub(hedge, '', text, flags=re.IGNORECASE)
 
-        # Convert to imperative
         conversions = [
             (r'\byou should\b\s*', ''),
             (r'\bwe need to\b\s*', ''),
@@ -342,7 +405,6 @@ class Compressor:
         for pattern, replacement in conversions:
             text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
 
-        # Clean up
         text = re.sub(r'\s+', ' ', text).strip()
         return text
 
@@ -379,7 +441,8 @@ def compress_text(text: str, level: int = 2) -> CompressionResult:
 
 
 if __name__ == "__main__":
-    # Quick test
+    logging.basicConfig(level=logging.DEBUG)
+
     print("Testing Compressor...")
 
     test_text = """
@@ -411,4 +474,26 @@ if __name__ == "__main__":
         if result.lost_info:
             print(f"Lost info: {', '.join(result.lost_info[:3])}")
 
-    print("\n✅ Compressor tests completed!")
+    # Test code block protection
+    print("\n" + "="*70)
+    print("CODE BLOCK PROTECTION TEST")
+    print("="*70)
+
+    code_test = """Please review this function for errors:
+
+```python
+for item in items:
+    if item.is_valid:
+        result = process(item)
+```
+
+The function should handle all edge cases."""
+
+    result = compressor.compress(code_test, level=3)
+    print(f"Original:\n{code_test}")
+    print(f"\nCompressed:\n{result.compressed}")
+
+    # Verify code is preserved
+    assert "for item in items:" in result.compressed, "Code block was corrupted!"
+    assert "if item.is_valid:" in result.compressed, "Code block was corrupted!"
+    print("\nCode block preserved successfully!")
