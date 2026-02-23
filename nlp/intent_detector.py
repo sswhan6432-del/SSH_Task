@@ -253,8 +253,8 @@ class IntentDetector:
       4. Score fusion with weighted combination
 
     Fusion weights:
-      - Full hybrid: 0.3 * cosine + 0.5 * classifier + 0.2 * keyword
-      - No classifier: 0.6 * cosine + 0.4 * keyword
+      - Full hybrid: 0.1 * cosine + 0.5 * classifier + 0.4 * keyword
+      - No classifier: 0.3 * cosine + 0.7 * keyword
       - No model: keyword-only (100%)
 
     Usage:
@@ -504,31 +504,31 @@ class IntentDetector:
         Fuse scores from all three layers with weighted combination.
 
         Weights:
-          - Full hybrid: 0.3 * cosine + 0.5 * classifier + 0.2 * keyword
-          - No classifier: 0.6 * cosine + 0.4 * keyword
+          - Full hybrid: 0.1 * cosine + 0.5 * classifier + 0.4 * keyword
+          - No classifier: 0.3 * cosine + 0.7 * keyword
           - No model: keyword-only with calibration
         """
         intents = ["analyze", "implement", "research"]
 
         if cosine_scores and classifier_scores:
-            # Full hybrid: cosine(0.3) + classifier(0.5) + keyword(0.2)
+            # Full hybrid: cosine(0.1) + classifier(0.5) + keyword(0.4)
             fused = {}
             for intent in intents:
                 score = (
-                    0.3 * cosine_scores.get(intent, 0.0) +
+                    0.1 * cosine_scores.get(intent, 0.0) +
                     0.5 * classifier_scores.get(intent, 0.0) +
-                    0.2 * keyword_scores.get(intent, 0.0)
+                    0.4 * keyword_scores.get(intent, 0.0)
                 )
                 fused[intent] = score
             return fused
 
         elif cosine_scores:
-            # Cosine + keyword: cosine(0.6) + keyword(0.4)
+            # Cosine + keyword: cosine(0.3) + keyword(0.7)
             fused = {}
             for intent in intents:
                 score = (
-                    0.6 * cosine_scores.get(intent, 0.0) +
-                    0.4 * keyword_scores.get(intent, 0.0)
+                    0.3 * cosine_scores.get(intent, 0.0) +
+                    0.7 * keyword_scores.get(intent, 0.0)
                 )
                 fused[intent] = score
             return fused

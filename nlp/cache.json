@@ -1,8 +1,8 @@
 {
   "7889516f2c14ff1cae6a2448f5206379": {
     "original_text": "Review the authentication module",
-    "intent": "research",
-    "confidence": 0.4647,
+    "intent": "analyze",
+    "confidence": 0.4644,
     "keywords": [
       "review",
       "authentication",
@@ -12,7 +12,7 @@
   "4ec24b282c416d38e83ce031b59970cc": {
     "original_text": "Review the code quality in auth.py",
     "intent": "analyze",
-    "confidence": 0.7536,
+    "confidence": 0.7581,
     "keywords": [
       "review",
       "code",
@@ -23,7 +23,7 @@
   "8851eabe9cd5bf84d2ca4f05ca5bedac": {
     "original_text": "hmm okay sure",
     "intent": "analyze",
-    "confidence": 0.6782,
+    "confidence": 0.6667,
     "keywords": [
       "okay",
       "sure"
@@ -32,7 +32,7 @@
   "481f592fdbf7b1e7f8977384a751db5a": {
     "original_text": "Check the code for bugs",
     "intent": "analyze",
-    "confidence": 0.7434,
+    "confidence": 0.7294,
     "keywords": [
       "check",
       "code",
