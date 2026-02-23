@@ -126,6 +126,43 @@
     return div.innerHTML;
   }
 
+  // --- Social login ---
+
+  async function socialLogin(provider) {
+    var client = getClient();
+    if (!client) {
+      showAuthError("Supabase not configured");
+      return;
+    }
+
+    try {
+      var { error } = await client.auth.signInWithOAuth({
+        provider: provider,
+        options: {
+          redirectTo: window.location.origin + "/dashboard.html",
+        },
+      });
+      if (error) throw error;
+    } catch (err) {
+      showAuthError(err.message || "Social login failed");
+    }
+  }
+
+  function showAuthError(msg) {
+    var errEl = document.getElementById("login-error") || document.getElementById("signup-error");
+    if (errEl) {
+      errEl.textContent = msg;
+      errEl.classList.add("visible");
+    }
+  }
+
+  // Bind social buttons
+  document.querySelectorAll(".auth-social-btn[data-provider]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      socialLogin(btn.getAttribute("data-provider"));
+    });
+  });
+
   // --- Login form handler ---
 
   var loginForm = document.getElementById("login-form");

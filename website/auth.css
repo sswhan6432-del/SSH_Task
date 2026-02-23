@@ -297,6 +297,81 @@
   font-family: var(--font);
 }
 
+/* --- Social login divider --- */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  gap: 16px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.auth-divider span {
+  font-size: 13px;
+  color: var(--gray);
+  white-space: nowrap;
+}
+
+/* --- Social buttons --- */
+.auth-social {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: background 0.4s var(--ease-spring),
+              border-color 0.4s var(--ease-spring),
+              transform 0.4s var(--ease-spring);
+}
+
+.auth-social-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.auth-social-btn:hover {
+  background: var(--light-bg);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.auth-social-btn:active {
+  transform: scale(0.96);
+  transition-duration: 0.1s;
+}
+
+.auth-social-btn.google:hover {
+  border-color: #4285f4;
+  background: rgba(66, 133, 244, 0.04);
+}
+
+.auth-social-btn.github:hover {
+  border-color: #333;
+  background: rgba(0, 0, 0, 0.04);
+}
+
 /* --- Responsive --- */
 @media (max-width: 734px) {
   .auth-card {

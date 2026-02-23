@@ -314,6 +314,9 @@
       'login.password': 'Password',
       'login.passwordPlaceholder': 'Your password',
       'login.submit': 'Sign In',
+      'login.or': 'or',
+      'login.google': 'Continue with Google',
+      'login.github': 'Continue with GitHub',
       'login.switch': "Don't have an account?",
       'login.switchLink': 'Create one',
 
@@ -327,6 +330,9 @@
       'signup.password': 'Password',
       'signup.passwordPlaceholder': 'Min 6 characters',
       'signup.submit': 'Create Account',
+      'signup.or': 'or',
+      'signup.google': 'Continue with Google',
+      'signup.github': 'Continue with GitHub',
       'signup.switch': 'Already have an account?',
       'signup.switchLink': 'Sign in'
     },
@@ -643,6 +649,9 @@
       'login.password': '\ube44\ubc00\ubc88\ud638',
       'login.passwordPlaceholder': '\ube44\ubc00\ubc88\ud638 \uc785\ub825',
       'login.submit': '\ub85c\uadf8\uc778',
+      'login.or': '\ub610\ub294',
+      'login.google': 'Google\ub85c \uacc4\uc18d\ud558\uae30',
+      'login.github': 'GitHub\uc73c\ub85c \uacc4\uc18d\ud558\uae30',
       'login.switch': '\uacc4\uc815\uc774 \uc5c6\uc73c\uc2e0\uac00\uc694?',
       'login.switchLink': '\uacc4\uc815 \ub9cc\ub4e4\uae30',
 
@@ -656,6 +665,9 @@
       'signup.password': '\ube44\ubc00\ubc88\ud638',
       'signup.passwordPlaceholder': '\ucd5c\uc18c 6\uc790',
       'signup.submit': '\uacc4\uc815 \ub9cc\ub4e4\uae30',
+      'signup.or': '\ub610\ub294',
+      'signup.google': 'Google\ub85c \uacc4\uc18d\ud558\uae30',
+      'signup.github': 'GitHub\uc73c\ub85c \uacc4\uc18d\ud558\uae30',
       'signup.switch': '\uc774\ubbf8 \uacc4\uc815\uc774 \uc788\uc73c\uc2e0\uac00\uc694?',
       'signup.switchLink': '\ub85c\uadf8\uc778'
     }
