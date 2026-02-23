@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Intent Classifier Training Script - LLM Router v5.0
-Trains LogisticRegression on sentence embeddings for intent classification.
+Trains SVM (RBF kernel) on sentence embeddings for intent classification.
 
 Usage:
     python ml/train_intent_model.py
@@ -10,7 +10,7 @@ Input:
     ml/intent_training_data.json (labeled text-intent pairs)
 
 Output:
-    ml/intent_classifier.pkl (trained LogisticRegression model)
+    ml/intent_classifier.pkl (trained SVM classifier)
 
 Author: AI Development Team
 Version: 5.2.0
@@ -28,7 +28,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 try:
     from sentence_transformers import SentenceTransformer
-    from sklearn.linear_model import LogisticRegression
+    from sklearn.svm import SVC
     from sklearn.model_selection import StratifiedKFold, cross_val_predict
     from sklearn.metrics import classification_report, accuracy_score
 except ImportError as e:
@@ -76,7 +76,7 @@ def check_distribution(data: list):
     max_count = max(dist.values())
     if max_count > min_count * 2:
         print(f"\n  Warning: Imbalanced data (min={min_count}, max={max_count})")
-        print("  LogisticRegression(class_weight='balanced') will compensate.")
+        print("  SVC(class_weight='balanced') will compensate.")
 
 
 def encode_texts(texts: list, model_name: str = MODEL_NAME) -> np.ndarray:
@@ -102,15 +102,15 @@ def encode_texts(texts: list, model_name: str = MODEL_NAME) -> np.ndarray:
     return embeddings
 
 
-def train_and_evaluate(embeddings: np.ndarray, labels: list) -> LogisticRegression:
-    """Train LogisticRegression with stratified 5-fold cross-validation."""
-    print("\nTraining LogisticRegression...")
+def train_and_evaluate(embeddings: np.ndarray, labels: list):
+    """Train SVM (RBF) with calibrated probabilities and stratified 5-fold CV."""
+    print("\nTraining SVM (RBF kernel) with probability calibration...")
 
-    clf = LogisticRegression(
-        C=1.0,
-        max_iter=1000,
+    clf = SVC(
+        C=10.0,
+        kernel='rbf',
         class_weight='balanced',
-        solver='lbfgs',
+        probability=True,
         random_state=42
     )
 
@@ -139,7 +139,7 @@ def train_and_evaluate(embeddings: np.ndarray, labels: list) -> LogisticRegressi
     return clf
 
 
-def test_predictions(clf: LogisticRegression, model_name: str = MODEL_NAME):
+def test_predictions(clf, model_name: str = MODEL_NAME):
     """Test with sample inputs to verify model behavior."""
     test_cases = [
         ("Review the code quality in auth.py", "analyze"),

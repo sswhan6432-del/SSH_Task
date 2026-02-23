@@ -1,8 +1,18 @@
 {
+  "7889516f2c14ff1cae6a2448f5206379": {
+    "original_text": "Review the authentication module",
+    "intent": "research",
+    "confidence": 0.4647,
+    "keywords": [
+      "review",
+      "authentication",
+      "module"
+    ]
+  },
   "4ec24b282c416d38e83ce031b59970cc": {
     "original_text": "Review the code quality in auth.py",
     "intent": "analyze",
-    "confidence": 0.9,
+    "confidence": 0.7536,
     "keywords": [
       "review",
       "code",
@@ -10,193 +20,23 @@
       "auth.py"
     ]
   },
-  "0ed87c276e2ebe3096510f2ad8087c24": {
-    "original_text": "Check if the design matches implementation",
+  "8851eabe9cd5bf84d2ca4f05ca5bedac": {
+    "original_text": "hmm okay sure",
     "intent": "analyze",
-    "confidence": 0.9167,
+    "confidence": 0.6782,
+    "keywords": [
+      "okay",
+      "sure"
+    ]
+  },
+  "481f592fdbf7b1e7f8977384a751db5a": {
+    "original_text": "Check the code for bugs",
+    "intent": "analyze",
+    "confidence": 0.7434,
     "keywords": [
       "check",
-      "design",
-      "matches",
-      "implementation"
-    ]
-  },
-  "26e4cc15fa95a888a00800a48b7345fa": {
-    "original_text": "Verify the test coverage",
-    "intent": "analyze",
-    "confidence": 1.0,
-    "keywords": [
-      "verify",
-      "test",
-      "coverage"
-    ]
-  },
-  "56bb4715b0ac54bb6137d5d09016908d": {
-    "original_text": "Analyze the performance bottleneck",
-    "intent": "analyze",
-    "confidence": 1.0,
-    "keywords": [
-      "analyze",
-      "performance",
-      "bottleneck"
-    ]
-  },
-  "29f0180e1d8bd48dd875f2b47b0079de": {
-    "original_text": "Build a new user login feature",
-    "intent": "implement",
-    "confidence": 1.0,
-    "keywords": [
-      "build",
-      "user",
-      "login",
-      "feature"
-    ]
-  },
-  "71767e35cb027417c276e0827d46a56a": {
-    "original_text": "Fix the bug in the router",
-    "intent": "implement",
-    "confidence": 1.0,
-    "keywords": [
-      "router"
-    ]
-  },
-  "37803cda230083ebc6c1248049210b19": {
-    "original_text": "Add authentication to the API",
-    "intent": "implement",
-    "confidence": 1.0,
-    "keywords": [
-      "authentication"
-    ]
-  },
-  "f5cf56a2df318c6a73e167247e70f650": {
-    "original_text": "Create a dashboard component",
-    "intent": "implement",
-    "confidence": 1.0,
-    "keywords": [
-      "create",
-      "dashboard",
-      "component"
-    ]
-  },
-  "d28190e0c1c905cf9b6026c98a5f8b2a": {
-    "original_text": "Find all files related to authentication",
-    "intent": "research",
-    "confidence": 1.0,
-    "keywords": [
-      "find",
-      "files",
-      "related",
-      "authentication"
-    ]
-  },
-  "25bc23380e164527026cd11372e95c1c": {
-    "original_text": "Search for the login component",
-    "intent": "research",
-    "confidence": 1.0,
-    "keywords": [
-      "search",
-      "login",
-      "component"
-    ]
-  },
-  "88b382c345aa82a8211db3a0af246daa": {
-    "original_text": "Explore the database schema",
-    "intent": "research",
-    "confidence": 1.0,
-    "keywords": [
-      "explore",
-      "database",
-      "schema"
-    ]
-  },
-  "242a1ada743391f7c21a55bd1e67fbe9": {
-    "original_text": "Understand how routing works",
-    "intent": "research",
-    "confidence": 1.0,
-    "keywords": [
-      "understand",
-      "routing",
-      "works"
-    ]
-  },
-  "9a8efb13c32befaabe48e91844907cbd": {
-    "original_text": "Review the authentication code",
-    "intent": "analyze",
-    "confidence": 0.8333,
-    "keywords": [
-      "review",
-      "authentication",
-      "code"
-    ]
-  },
-  "202c7a3c476bfd40a9cc9f431d99bcaf": {
-    "original_text": "코드 분석해줘",
-    "intent": "analyze",
-    "confidence": 0.8333,
-    "keywords": [
-      "분석해줘"
-    ]
-  },
-  "887263b611c44ff0023c421c1d6e777a": {
-    "original_text": "테스트 검증해주세요",
-    "intent": "analyze",
-    "confidence": 1.0,
-    "keywords": [
-      "검증해주세요"
-    ]
-  },
-  "b0ff497dabaa1a4112e7839017c6d1be": {
-    "original_text": "품질 검토 부탁합니다",
-    "intent": "analyze",
-    "confidence": 1.0,
-    "keywords": [
-      "부탁합니다"
-    ]
-  },
-  "dbd1eb90981f94de75ed28e288faf397": {
-    "original_text": "로그인 기능 구현해줘",
-    "intent": "implement",
-    "confidence": 1.0,
-    "keywords": [
-      "구현해줘"
-    ]
-  },
-  "00c21f024fdd3d727b4c70227705fe08": {
-    "original_text": "버그 수정해주세요",
-    "intent": "implement",
-    "confidence": 1.0,
-    "keywords": [
-      "수정해주세요"
-    ]
-  },
-  "c2ccf97e660cfe1d755c4e3b89732676": {
-    "original_text": "새 기능 추가해줘",
-    "intent": "implement",
-    "confidence": 1.0,
-    "keywords": [
-      "추가해줘"
-    ]
-  },
-  "eb6a1053e61222b762883e803b627979": {
-    "original_text": "문서 찾아줘",
-    "intent": "research",
-    "confidence": 1.0,
-    "keywords": []
-  },
-  "442e8e5e534f97697561f3a855773c75": {
-    "original_text": "API 설명해주세요",
-    "intent": "research",
-    "confidence": 1.0,
-    "keywords": [
-      "설명해주세요"
-    ]
-  },
-  "df45dd06c82128a5a1593aa60cb15b4e": {
-    "original_text": "구조 이해하고 싶어",
-    "intent": "research",
-    "confidence": 1.0,
-    "keywords": [
-      "이해하고"
+      "code",
+      "bugs"
     ]
   }
 }
