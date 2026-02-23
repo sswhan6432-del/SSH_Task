@@ -33,7 +33,8 @@
     initNav();
     initPeriodSelector();
     fetchDashboardData();
-    connectSSE();
+    // SSE only works with local Python backend
+    if (!window.supabaseClient) connectSSE();
   });
 
   // ─── Cleanup on page exit (prevent SSE memory leak) ───
@@ -83,6 +84,16 @@
 
   // ─── Fetch Dashboard Data with AbortController ───
   async function fetchDashboardData() {
+    // If Supabase is available, aggregate from DB
+    if (window.supabaseData) {
+      try {
+        await fetchFromSupabase();
+      } catch (err) {
+        renderEmptyCharts();
+      }
+      return;
+    }
+
     // Cancel any in-flight request
     if (fetchController) fetchController.abort();
     fetchController = new AbortController();
@@ -115,9 +126,102 @@
       }
     } catch (err) {
       if (err.name !== 'AbortError') {
-        // Dashboard fetch error logged silently
         renderEmptyCharts();
       }
+    }
+  }
+
+  // ─── Supabase-based dashboard data ───
+  async function fetchFromSupabase() {
+    const COST_PER_1K = { claude: 0.015, cheap_llm: 0.0005, split: 0.008 };
+    const TOKENS_PER_TASK = { claude: 2000, cheap_llm: 500, split: 1200 };
+
+    const historyRows = await window.supabaseData.history.list();
+    const feedbackRows = await window.supabaseData.feedback.list();
+
+    // Period filter
+    const now = new Date();
+    let cutoff;
+    if (currentPeriod === '24h') cutoff = new Date(now - 24 * 60 * 60 * 1000);
+    else if (currentPeriod === '7d') cutoff = new Date(now - 7 * 24 * 60 * 60 * 1000);
+    else cutoff = new Date(now - 30 * 24 * 60 * 60 * 1000);
+
+    const filtered = historyRows.filter(function (r) {
+      return new Date(r.created_at) >= cutoff;
+    });
+
+    // Compute stats
+    let totalTokens = 0, totalCost = 0, routeCounts = {};
+    filtered.forEach(function (entry) {
+      const tasks = entry.tasks || [];
+      if (tasks.length) {
+        tasks.forEach(function (t) {
+          const r = t.route || entry.route || 'claude';
+          const tk = TOKENS_PER_TASK[r] || 1000;
+          totalTokens += tk;
+          totalCost += (tk / 1000) * (COST_PER_1K[r] || 0.01);
+          routeCounts[r] = (routeCounts[r] || 0) + 1;
+        });
+      } else {
+        const r = entry.route || 'claude';
+        const tk = TOKENS_PER_TASK[r] || 1000;
+        totalTokens += tk;
+        totalCost += (tk / 1000) * (COST_PER_1K[r] || 0.01);
+        routeCounts[r] = (routeCounts[r] || 0) + 1;
+      }
+    });
+
+    const days = currentPeriod === '24h' ? 1 : currentPeriod === '7d' ? 7 : 30;
+    const dailyRate = Math.round(totalTokens / days);
+
+    safeText('#stat-tokens', formatNumber(totalTokens));
+    safeText('#stat-cost', '$' + totalCost.toFixed(2));
+    safeText('#stat-requests', formatNumber(filtered.length));
+    safeText('#stat-burn-rate', formatNumber(dailyRate));
+
+    safeText('#burn-daily', formatNumber(dailyRate) + ' tokens');
+    safeText('#burn-monthly', formatNumber(dailyRate * 30) + ' tokens');
+    safeText('#burn-cost', '$' + (totalCost / days * 30).toFixed(2));
+
+    renderDonut(routeCounts);
+
+    // Cost trends by date
+    const dateMap = {};
+    filtered.forEach(function (entry) {
+      const d = (entry.created_at || '').slice(0, 10);
+      if (!d) return;
+      if (!dateMap[d]) dateMap[d] = 0;
+      const tasks = entry.tasks || [{ route: entry.route || 'claude' }];
+      tasks.forEach(function (t) {
+        const r = t.route || entry.route || 'claude';
+        const tk = TOKENS_PER_TASK[r] || 1000;
+        dateMap[d] += (tk / 1000) * (COST_PER_1K[r] || 0.01);
+      });
+    });
+    const trends = Object.keys(dateMap).sort().map(function (date) {
+      return { date: date, cost: dateMap[date] };
+    });
+    renderCostChart(trends);
+
+    // Heatmap
+    const heatmap = [];
+    for (let i = 0; i < 7; i++) heatmap.push(new Array(24).fill(0));
+    filtered.forEach(function (entry) {
+      var d = new Date(entry.created_at);
+      var day = (d.getDay() + 6) % 7; // Mon=0
+      var hour = d.getHours();
+      heatmap[day][hour]++;
+    });
+    renderHeatmap(heatmap);
+    renderLatency({});
+    renderBudget([]);
+
+    // Connection status
+    const dot = $('#connection-dot');
+    const text = $('#connection-text');
+    if (dot && text) {
+      dot.classList.add('connected');
+      text.textContent = 'Supabase (Live)';
     }
   }
 

@@ -33,13 +33,24 @@
 
   async function loadPrompts() {
     try {
-      const res = await fetch("/api/prompts");
-      const data = await res.json();
-      prompts = data.prompts || [];
+      if (window.supabaseData) {
+        var rows = await window.supabaseData.prompts.list();
+        if (rows.length) {
+          prompts = rows.map(function (r) {
+            return { id: r.id, name: r.name, category: r.category, content: r.template };
+          });
+        } else {
+          prompts = getDefaults();
+        }
+      } else {
+        var res = await fetch("/api/prompts");
+        var data = await res.json();
+        prompts = data.prompts || [];
+      }
       renderGrid();
     } catch (e) {
       // If API not available, use localStorage fallback
-      const stored = localStorage.getItem("ssh_prompts");
+      var stored = localStorage.getItem("ssh_prompts");
       prompts = stored ? JSON.parse(stored) : getDefaults();
       renderGrid();
     }
@@ -57,6 +68,10 @@
 
   async function savePrompts() {
     try {
+      if (window.supabaseData) {
+        // Supabase saves are done per-prompt in action handlers
+        return;
+      }
       await fetch("/api/prompts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -121,10 +136,18 @@
         } else if (action === "edit") {
           openModal(prompt);
         } else if (action === "delete") {
-          prompts = prompts.filter((p) => p.id !== id);
-          savePrompts();
-          renderGrid();
-          showToast("Deleted");
+          if (window.supabaseData) {
+            window.supabaseData.prompts.delete(id).then(function () {
+              prompts = prompts.filter(function (p) { return p.id !== id; });
+              renderGrid();
+              showToast("Deleted");
+            });
+          } else {
+            prompts = prompts.filter(function (p) { return p.id !== id; });
+            savePrompts();
+            renderGrid();
+            showToast("Deleted");
+          }
         }
       });
     });
@@ -144,30 +167,37 @@
     document.getElementById("modal-overlay").classList.remove("open");
   }
 
-  function saveFromModal() {
-    const name = document.getElementById("prompt-name").value.trim();
-    const category = document.getElementById("prompt-category").value;
-    const content = document.getElementById("prompt-content").value.trim();
-    const editId = document.getElementById("prompt-edit-id").value;
+  async function saveFromModal() {
+    var name = document.getElementById("prompt-name").value.trim();
+    var category = document.getElementById("prompt-category").value;
+    var content = document.getElementById("prompt-content").value.trim();
+    var editId = document.getElementById("prompt-edit-id").value;
 
     if (!name || !content) { showToast("Name and content are required"); return; }
 
-    if (editId) {
-      const idx = prompts.findIndex((p) => p.id === editId);
-      if (idx >= 0) {
-        prompts[idx] = { ...prompts[idx], name, category, content };
+    if (window.supabaseData) {
+      var promptObj = { name: name, category: category, content: content };
+      if (editId) promptObj.id = editId;
+      var saved = await window.supabaseData.prompts.save(promptObj);
+      if (saved) {
+        await loadPrompts();
+      } else {
+        showToast("Save failed");
+        return;
       }
     } else {
-      prompts.push({
-        id: Date.now().toString(),
-        name,
-        category,
-        content,
-      });
+      if (editId) {
+        var idx = prompts.findIndex(function (p) { return p.id === editId; });
+        if (idx >= 0) {
+          prompts[idx] = Object.assign({}, prompts[idx], { name: name, category: category, content: content });
+        }
+      } else {
+        prompts.push({ id: Date.now().toString(), name: name, category: category, content: content });
+      }
+      savePrompts();
+      renderGrid();
     }
 
-    savePrompts();
-    renderGrid();
     closeModal();
     showToast(editId ? "Updated" : "Created");
   }

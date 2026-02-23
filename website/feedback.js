@@ -33,15 +33,35 @@
 
   async function loadData() {
     try {
-      const [fbRes, histRes] = await Promise.all([
-        fetch("/api/feedback"),
-        fetch("/api/history"),
-      ]);
-      if (!fbRes.ok || !histRes.ok) throw new Error("API error");
-      const fbData = await fbRes.json();
-      const histData = await histRes.json();
-      feedbackData = fbData.feedback || {};
-      historyEntries = (histData.entries || []).reverse();
+      if (window.supabaseData) {
+        var fbRows = await window.supabaseData.feedback.list();
+        feedbackData = {};
+        fbRows.forEach(function (r) {
+          var key = r.session_id || r.id;
+          feedbackData[key] = { vote: r.vote, comment: r.comment || "", timestamp: r.created_at, _dbId: r.id };
+        });
+        var histRows = await window.supabaseData.history.list();
+        historyEntries = histRows.map(function (r) {
+          return {
+            id: r.id,
+            request: r.request,
+            route: r.route,
+            tasks: r.tasks || [],
+            output: r.output,
+            timestamp: r.created_at,
+          };
+        });
+      } else {
+        var [fbRes, histRes] = await Promise.all([
+          fetch("/api/feedback"),
+          fetch("/api/history"),
+        ]);
+        if (!fbRes.ok || !histRes.ok) throw new Error("API error");
+        var fbData = await fbRes.json();
+        var histData = await histRes.json();
+        feedbackData = fbData.feedback || {};
+        historyEntries = (histData.entries || []).reverse();
+      }
       render();
     } catch (e) {
       feedbackData = JSON.parse(localStorage.getItem("ssh_feedback") || "{}");
@@ -51,13 +71,21 @@
   }
 
   async function saveFeedback(entryId, vote, comment) {
-    feedbackData[entryId] = { vote, comment: comment || "", timestamp: new Date().toISOString() };
+    feedbackData[entryId] = { vote: vote, comment: comment || "", timestamp: new Date().toISOString() };
     try {
-      await fetch("/api/feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ feedback: feedbackData }),
-      });
+      if (window.supabaseData) {
+        await window.supabaseData.feedback.add({
+          session_id: entryId,
+          vote: vote,
+          comment: comment || "",
+        });
+      } else {
+        await fetch("/api/feedback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ feedback: feedbackData }),
+        });
+      }
     } catch (e) {
       localStorage.setItem("ssh_feedback", JSON.stringify(feedbackData));
     }

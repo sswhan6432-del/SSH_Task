@@ -47,10 +47,24 @@
   // --- Load data ---
   async function loadData() {
     try {
-      const res = await fetch("/api/history");
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-      allEntries = (data.entries || []).reverse();
+      if (window.supabaseData) {
+        var rows = await window.supabaseData.history.list();
+        allEntries = rows.map(function (r) {
+          return {
+            id: r.id,
+            request: r.request,
+            route: r.route,
+            tasks: r.tasks || [],
+            output: r.output,
+            timestamp: r.created_at,
+          };
+        });
+      } else {
+        var res = await fetch("/api/history");
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        var data = await res.json();
+        allEntries = (data.entries || []).reverse();
+      }
       applyFilters();
     } catch (e) {
       document.getElementById("history-list").innerHTML =
@@ -140,8 +154,8 @@
       const request = entry.request || tasks.map((t) => t.summary || "").join(", ") || "(no request)";
       const entryNum = allEntries.length - (start + i);
 
-      // The original index in the non-reversed array (for delete API)
-      const originalIndex = allEntries.length - 1 - (start + i);
+      // Entry ID for deletion (Supabase UUID or array index fallback)
+      const entryId = entry.id !== undefined ? entry.id : (allEntries.length - 1 - (start + i));
 
       let tasksHTML = "";
       tasks.forEach((t) => {
@@ -158,7 +172,7 @@
             '</div>' +
             '<div class="history-card-header-right">' +
               '<span class="history-time">' + ts + '</span>' +
-              '<button class="history-delete-btn" data-idx="' + originalIndex + '" type="button" title="Delete this entry">' + TRASH_SVG + '</button>' +
+              '<button class="history-delete-btn" data-id="' + entryId + '" type="button" title="Delete this entry">' + TRASH_SVG + '</button>' +
             '</div>' +
           '</div>' +
           '<div class="history-card-body">' +
@@ -181,7 +195,7 @@
       // Delete single entry
       card.querySelector(".history-delete-btn").addEventListener("click", function (e) {
         e.stopPropagation();
-        deleteEntry(card, parseInt(this.getAttribute("data-idx"), 10));
+        deleteEntry(card, this.getAttribute("data-id"));
       });
 
       container.appendChild(card);
@@ -196,7 +210,7 @@
   }
 
   // --- Delete single entry ---
-  async function deleteEntry(cardEl, originalIndex) {
+  async function deleteEntry(cardEl, entryId) {
     // Set initial height for collapse animation
     cardEl.style.maxHeight = cardEl.offsetHeight + "px";
     cardEl.style.overflow = "hidden";
@@ -208,8 +222,13 @@
     cardEl.classList.add("removing");
 
     try {
-      const res = await fetch("/api/history/" + originalIndex, { method: "DELETE" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      if (window.supabaseData) {
+        var ok = await window.supabaseData.history.delete(entryId);
+        if (!ok) throw new Error("Delete failed");
+      } else {
+        var res = await fetch("/api/history/" + entryId, { method: "DELETE" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+      }
 
       // Wait for animation to finish, then reload data
       setTimeout(function () {
@@ -263,8 +282,13 @@
     });
 
     try {
-      const res = await fetch("/api/history", { method: "DELETE" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      if (window.supabaseData) {
+        var ok = await window.supabaseData.history.deleteAll();
+        if (!ok) throw new Error("Delete failed");
+      } else {
+        var res = await fetch("/api/history", { method: "DELETE" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+      }
 
       setTimeout(function () {
         allEntries = [];

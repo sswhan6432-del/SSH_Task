@@ -37,10 +37,24 @@
 
   async function loadData() {
     try {
-      const res = await fetch("/api/history");
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-      historyData = data.entries || [];
+      if (window.supabaseData) {
+        var rows = await window.supabaseData.history.list();
+        historyData = rows.map(function (r) {
+          return {
+            id: r.id,
+            request: r.request,
+            route: r.route,
+            tasks: r.tasks || [],
+            output: r.output,
+            timestamp: r.created_at,
+          };
+        });
+      } else {
+        var res = await fetch("/api/history");
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        var data = await res.json();
+        historyData = data.entries || [];
+      }
       render();
     } catch (e) {
       showToast("Failed to load data: " + e.message, 3000);

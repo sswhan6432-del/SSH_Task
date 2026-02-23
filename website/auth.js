@@ -1,83 +1,51 @@
 /* ============================================
-   Auth — Client-side authentication logic
+   Auth — Supabase Auth integration
    Loaded on every page for nav state + protection
+   Requires supabase-config.js to be loaded first
    ============================================ */
 
 (function () {
   "use strict";
 
-  var TOKEN_KEY = "ssh_auth_token";
-  var USER_KEY = "ssh_auth_user";
   var REDIRECT_KEY = "ssh_auth_redirect";
 
-  // --- Helpers ---
-
-  function getToken() {
-    try { return localStorage.getItem(TOKEN_KEY); } catch (e) { return null; }
+  function getClient() {
+    return window.supabaseClient;
   }
 
-  function getUser() {
+  // --- Public API helpers ---
+
+  async function getUser() {
+    var client = getClient();
+    if (!client) return null;
     try {
-      var raw = localStorage.getItem(USER_KEY);
-      return raw ? JSON.parse(raw) : null;
+      var { data } = await client.auth.getUser();
+      if (!data.user) return null;
+      return {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.user_metadata ? data.user.user_metadata.name : (data.user.email || ""),
+      };
     } catch (e) { return null; }
   }
 
-  function saveAuth(token, user) {
-    try {
-      localStorage.setItem(TOKEN_KEY, token);
-      localStorage.setItem(USER_KEY, JSON.stringify(user));
-    } catch (e) { /* ignore */ }
-  }
-
-  function clearAuth() {
-    try {
-      localStorage.removeItem(TOKEN_KEY);
-      localStorage.removeItem(USER_KEY);
-    } catch (e) { /* ignore */ }
-  }
-
-  // --- API ---
-
-  async function apiAuthPost(url, body) {
-    var res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    return { status: res.status, data: await res.json() };
+  function getSession() {
+    var client = getClient();
+    if (!client) return Promise.resolve(null);
+    return client.auth.getSession().then(function (res) {
+      return res.data.session;
+    }).catch(function () { return null; });
   }
 
   async function checkAuth() {
-    var token = getToken();
-    if (!token) return null;
-
-    try {
-      var res = await fetch("/api/auth/me", {
-        headers: { Authorization: "Bearer " + token },
-      });
-      if (res.ok) {
-        var d = await res.json();
-        saveAuth(token, d.user);
-        return d.user;
-      }
-    } catch (e) { /* network error */ }
-
-    clearAuth();
-    return null;
+    return await getUser();
   }
 
   async function logout() {
-    var token = getToken();
-    if (token) {
-      try {
-        await fetch("/api/auth/logout", {
-          method: "POST",
-          headers: { Authorization: "Bearer " + token },
-        });
-      } catch (e) { /* ignore */ }
+    var client = getClient();
+    if (client) {
+      try { await client.auth.signOut(); } catch (e) { /* ignore */ }
     }
-    clearAuth();
     renderNavLoggedOut();
     renderMobileLoggedOut();
   }
@@ -175,18 +143,26 @@
       btn.textContent = "Signing in...";
 
       try {
-        var resp = await apiAuthPost("/api/auth/login", { email: email, password: password });
-        if (resp.data.ok) {
-          saveAuth(resp.data.token, resp.data.user);
+        var client = getClient();
+        if (!client) throw new Error("Supabase not configured");
+
+        var { data, error } = await client.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
+
+        if (error) throw error;
+
+        if (data.user) {
           var redirect = sessionStorage.getItem(REDIRECT_KEY) || "/dashboard.html";
           sessionStorage.removeItem(REDIRECT_KEY);
           window.location.href = redirect;
         } else {
-          errEl.textContent = resp.data.error || "Login failed";
+          errEl.textContent = "Login failed";
           errEl.classList.add("visible");
         }
       } catch (err) {
-        errEl.textContent = "Network error. Is the server running?";
+        errEl.textContent = err.message || "Login failed";
         errEl.classList.add("visible");
       } finally {
         btn.disabled = false;
@@ -213,18 +189,38 @@
       btn.textContent = "Creating account...";
 
       try {
-        var resp = await apiAuthPost("/api/auth/signup", { name: name, email: email, password: password });
-        if (resp.data.ok) {
-          saveAuth(resp.data.token, resp.data.user);
-          var redirect = sessionStorage.getItem(REDIRECT_KEY) || "/dashboard.html";
-          sessionStorage.removeItem(REDIRECT_KEY);
-          window.location.href = redirect;
-        } else {
-          errEl.textContent = resp.data.error || "Signup failed";
-          errEl.classList.add("visible");
+        var client = getClient();
+        if (!client) throw new Error("Supabase not configured");
+
+        var { data, error } = await client.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: { name: name },
+          },
+        });
+
+        if (error) throw error;
+
+        if (data.user) {
+          // Check if email confirmation is required
+          if (data.user.identities && data.user.identities.length === 0) {
+            errEl.textContent = "This email is already registered";
+            errEl.classList.add("visible");
+          } else if (data.session) {
+            // Auto-confirmed, redirect
+            var redirect = sessionStorage.getItem(REDIRECT_KEY) || "/dashboard.html";
+            sessionStorage.removeItem(REDIRECT_KEY);
+            window.location.href = redirect;
+          } else {
+            // Email confirmation required
+            errEl.textContent = "Check your email to confirm your account";
+            errEl.classList.add("visible");
+            errEl.style.color = "#22c55e";
+          }
         }
       } catch (err) {
-        errEl.textContent = "Network error. Is the server running?";
+        errEl.textContent = err.message || "Signup failed";
         errEl.classList.add("visible");
       } finally {
         btn.disabled = false;
@@ -233,10 +229,45 @@
     });
   }
 
+  // --- Auth state change listener ---
+  function setupAuthListener() {
+    var client = getClient();
+    if (!client) return;
+
+    client.auth.onAuthStateChange(function (event, session) {
+      if (event === "SIGNED_IN" && session) {
+        var user = session.user;
+        var profile = {
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata ? user.user_metadata.name : (user.email || ""),
+        };
+        renderNavLoggedIn(profile);
+        renderMobileLoggedIn(profile);
+      } else if (event === "SIGNED_OUT") {
+        renderNavLoggedOut();
+        renderMobileLoggedOut();
+        if (document.body.dataset.authRequired === "true") {
+          sessionStorage.setItem(REDIRECT_KEY, window.location.pathname);
+          window.location.href = "/login.html";
+        }
+      }
+    });
+  }
+
   // --- Init: check auth and update nav ---
 
   async function init() {
-    var user = await checkAuth();
+    var client = getClient();
+    if (!client) {
+      renderNavLoggedOut();
+      renderMobileLoggedOut();
+      return;
+    }
+
+    setupAuthListener();
+
+    var user = await getUser();
 
     if (user) {
       renderNavLoggedIn(user);
@@ -270,8 +301,8 @@
 
   // Expose for external use
   window.sshAuth = {
-    getToken: getToken,
     getUser: getUser,
+    getSession: getSession,
     checkAuth: checkAuth,
     logout: logout,
   };
