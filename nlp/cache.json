@@ -45,85 +45,204 @@
       "정의한다"
     ]
   },
-  "e22dee181ad1a02e806b194977a6d98d": {
-    "original_text": "중고차 플랫폼 웹사이트를 만들기 위해 필요한 기술 스택과 기능을 정의합니다.",
-    "intent": "implement",
-    "confidence": 0.33371663093566895,
-    "keywords": [
-      "웹사이트를",
-      "정의합니다"
-    ]
-  },
-  "2fafa1b9cb6b7450944cb83aaf34849c": {
-    "original_text": "웹사이트의 디자인과 레이아웃을 결정합니다.",
-    "intent": "implement",
-    "confidence": 0.33390894532203674,
-    "keywords": [
-      "웹사이트의",
-      "디자인과",
-      "레이아웃을",
-      "결정합니다"
-    ]
-  },
-  "621e268b450f32337714c4eea05bab33": {
-    "original_text": "웹사이트의 프론트엔드 개발을 시작합니다.",
+  "4ec24b282c416d38e83ce031b59970cc": {
+    "original_text": "Review the code quality in auth.py",
     "intent": "analyze",
-    "confidence": 0.3337593376636505,
+    "confidence": 0.3339741826057434,
     "keywords": [
-      "웹사이트의",
-      "프론트엔드",
-      "시작합니다"
+      "review",
+      "code",
+      "quality",
+      "auth.py"
     ]
   },
-  "0c5e540a3146c7186edf34289dc601b4": {
-    "original_text": "웹사이트의 백엔드 개발을 시작합니다.",
-    "intent": "implement",
-    "confidence": 0.33341261744499207,
-    "keywords": [
-      "웹사이트의",
-      "시작합니다"
-    ]
-  },
-  "2d822d251810de47cc33d6c50e49b7ac": {
-    "original_text": "데이터베이스를 설계하고 구현합니다.",
+  "0ed87c276e2ebe3096510f2ad8087c24": {
+    "original_text": "Check if the design matches implementation",
     "intent": "research",
-    "confidence": 0.333828866481781,
+    "confidence": 0.3339671790599823,
     "keywords": [
-      "데이터베이스를",
-      "설계하고",
-      "구현합니다"
+      "check",
+      "design",
+      "matches",
+      "implementation"
     ]
   },
-  "fbec80ee331db7d21ae03b30833bca29": {
-    "original_text": "중고차 플랫폼의 기능을 구현합니다 (예: 차량 등록, 검색, 구매).",
+  "26e4cc15fa95a888a00800a48b7345fa": {
+    "original_text": "Verify the test coverage",
     "intent": "analyze",
-    "confidence": 0.3345031142234802,
+    "confidence": 0.3337359130382538,
     "keywords": [
-      "플랫폼의",
-      "구현합니다",
-      "구매)"
+      "verify",
+      "test",
+      "coverage"
     ]
   },
-  "25cac3105ba8c311b58e77a84e1d512c": {
-    "original_text": "웹사이트의 테스트와 디버깅을 수행합니다.",
+  "56bb4715b0ac54bb6137d5d09016908d": {
+    "original_text": "Analyze the performance bottleneck",
     "intent": "implement",
-    "confidence": 0.3336957097053528,
+    "confidence": 0.33474209904670715,
     "keywords": [
-      "웹사이트의",
-      "테스트와",
-      "디버깅을",
-      "수행합니다"
+      "analyze",
+      "performance",
+      "bottleneck"
     ]
   },
-  "eff037ed7237e5d01f235ffbeb9475f3": {
-    "original_text": "웹사이트를 배포하고 유지보수를 시작합니다.",
-    "intent": "implement",
-    "confidence": 0.33374902606010437,
+  "29f0180e1d8bd48dd875f2b47b0079de": {
+    "original_text": "Build a new user login feature",
+    "intent": "research",
+    "confidence": 0.33399176597595215,
     "keywords": [
-      "웹사이트를",
-      "배포하고",
-      "유지보수를",
-      "시작합니다"
+      "build",
+      "user",
+      "login",
+      "feature"
+    ]
+  },
+  "71767e35cb027417c276e0827d46a56a": {
+    "original_text": "Fix the bug in the router",
+    "intent": "research",
+    "confidence": 0.3341607451438904,
+    "keywords": [
+      "router"
+    ]
+  },
+  "37803cda230083ebc6c1248049210b19": {
+    "original_text": "Add authentication to the API",
+    "intent": "research",
+    "confidence": 0.33553895354270935,
+    "keywords": [
+      "authentication"
+    ]
+  },
+  "f5cf56a2df318c6a73e167247e70f650": {
+    "original_text": "Create a dashboard component",
+    "intent": "research",
+    "confidence": 0.3365577757358551,
+    "keywords": [
+      "create",
+      "dashboard",
+      "component"
+    ]
+  },
+  "d28190e0c1c905cf9b6026c98a5f8b2a": {
+    "original_text": "Find all files related to authentication",
+    "intent": "implement",
+    "confidence": 0.33448269963264465,
+    "keywords": [
+      "find",
+      "files",
+      "related",
+      "authentication"
+    ]
+  },
+  "25bc23380e164527026cd11372e95c1c": {
+    "original_text": "Search for the login component",
+    "intent": "analyze",
+    "confidence": 0.33461281657218933,
+    "keywords": [
+      "search",
+      "login",
+      "component"
+    ]
+  },
+  "88b382c345aa82a8211db3a0af246daa": {
+    "original_text": "Explore the database schema",
+    "intent": "research",
+    "confidence": 0.33463412523269653,
+    "keywords": [
+      "explore",
+      "database",
+      "schema"
+    ]
+  },
+  "242a1ada743391f7c21a55bd1e67fbe9": {
+    "original_text": "Understand how routing works",
+    "intent": "research",
+    "confidence": 0.33454233407974243,
+    "keywords": [
+      "understand",
+      "routing",
+      "works"
+    ]
+  },
+  "9a8efb13c32befaabe48e91844907cbd": {
+    "original_text": "Review the authentication code",
+    "intent": "analyze",
+    "confidence": 0.33624279499053955,
+    "keywords": [
+      "review",
+      "authentication",
+      "code"
+    ]
+  },
+  "202c7a3c476bfd40a9cc9f431d99bcaf": {
+    "original_text": "코드 분석해줘",
+    "intent": "implement",
+    "confidence": 0.3363599479198456,
+    "keywords": [
+      "분석해줘"
+    ]
+  },
+  "887263b611c44ff0023c421c1d6e777a": {
+    "original_text": "테스트 검증해주세요",
+    "intent": "implement",
+    "confidence": 0.3370180130004883,
+    "keywords": [
+      "검증해주세요"
+    ]
+  },
+  "b0ff497dabaa1a4112e7839017c6d1be": {
+    "original_text": "품질 검토 부탁합니다",
+    "intent": "implement",
+    "confidence": 0.33795517683029175,
+    "keywords": [
+      "부탁합니다"
+    ]
+  },
+  "dbd1eb90981f94de75ed28e288faf397": {
+    "original_text": "로그인 기능 구현해줘",
+    "intent": "implement",
+    "confidence": 0.338252991437912,
+    "keywords": [
+      "구현해줘"
+    ]
+  },
+  "00c21f024fdd3d727b4c70227705fe08": {
+    "original_text": "버그 수정해주세요",
+    "intent": "implement",
+    "confidence": 0.3384692370891571,
+    "keywords": [
+      "수정해주세요"
+    ]
+  },
+  "c2ccf97e660cfe1d755c4e3b89732676": {
+    "original_text": "새 기능 추가해줘",
+    "intent": "implement",
+    "confidence": 0.3381845951080322,
+    "keywords": [
+      "추가해줘"
+    ]
+  },
+  "eb6a1053e61222b762883e803b627979": {
+    "original_text": "문서 찾아줘",
+    "intent": "implement",
+    "confidence": 0.33473843336105347,
+    "keywords": []
+  },
+  "442e8e5e534f97697561f3a855773c75": {
+    "original_text": "API 설명해주세요",
+    "intent": "implement",
+    "confidence": 0.3350730240345001,
+    "keywords": [
+      "설명해주세요"
+    ]
+  },
+  "df45dd06c82128a5a1593aa60cb15b4e": {
+    "original_text": "구조 이해하고 싶어",
+    "intent": "implement",
+    "confidence": 0.3364795446395874,
+    "keywords": [
+      "이해하고"
     ]
   }
 }

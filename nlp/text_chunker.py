@@ -12,8 +12,9 @@ Version: 5.0.0
 Date: 2026-02-13
 """
 
-from typing import List
+from typing import List, Dict
 import re
+from collections import Counter
 
 try:
     import tiktoken
@@ -83,6 +84,10 @@ class TextChunker:
 
         # Group sentences into chunks
         chunks = self._group_sentences(sentences, max_tokens)
+
+        # Post-process: deduplicate and merge small chunks
+        chunks = self._deduplicate(chunks)
+        chunks = self.merge(chunks, max_tokens)
 
         return chunks
 
@@ -243,6 +248,153 @@ class TextChunker:
             chunks.append(' '.join(current_chunk))
 
         return chunks
+
+    def _cluster_by_similarity(
+        self, sentences: List[str], embeddings: List[List[float]] = None
+    ) -> List[List[str]]:
+        """
+        Cluster sentences by similarity using token overlap.
+
+        Groups sentences with high word overlap into the same cluster.
+        Uses simple cosine similarity via word sets (no spaCy/embeddings needed).
+
+        Args:
+            sentences: List of sentences
+            embeddings: Optional pre-computed embeddings (unused, for API compat)
+
+        Returns:
+            List of sentence clusters
+        """
+        if not sentences:
+            return []
+
+        threshold = 0.3  # Minimum word overlap ratio to cluster together
+        clusters: List[List[str]] = []
+        assigned = [False] * len(sentences)
+
+        # Build word sets for each sentence
+        word_sets = [
+            set(s.lower().split()) for s in sentences
+        ]
+
+        for i, sentence in enumerate(sentences):
+            if assigned[i]:
+                continue
+
+            cluster = [sentence]
+            assigned[i] = True
+
+            for j in range(i + 1, len(sentences)):
+                if assigned[j]:
+                    continue
+
+                # Compute Jaccard similarity (token overlap)
+                intersection = word_sets[i] & word_sets[j]
+                union = word_sets[i] | word_sets[j]
+                similarity = len(intersection) / len(union) if union else 0.0
+
+                if similarity >= threshold:
+                    cluster.append(sentences[j])
+                    assigned[j] = True
+
+            clusters.append(cluster)
+
+        return clusters
+
+    def _deduplicate(self, chunks: List[str]) -> List[str]:
+        """
+        Remove near-duplicate chunks.
+
+        Compares normalized text; removes if >90% word overlap.
+
+        Args:
+            chunks: List of text chunks
+
+        Returns:
+            Deduplicated list of chunks
+        """
+        if len(chunks) <= 1:
+            return chunks
+
+        result = []
+        for chunk in chunks:
+            chunk_words = set(chunk.lower().split())
+            is_duplicate = False
+
+            for existing in result:
+                existing_words = set(existing.lower().split())
+                if not chunk_words or not existing_words:
+                    continue
+
+                intersection = chunk_words & existing_words
+                smaller = min(len(chunk_words), len(existing_words))
+                overlap = len(intersection) / smaller if smaller > 0 else 0.0
+
+                if overlap > 0.9:
+                    is_duplicate = True
+                    break
+
+            if not is_duplicate:
+                result.append(chunk)
+
+        return result
+
+    def merge(self, chunks: List[str], max_tokens: int = 500) -> List[str]:
+        """
+        Merge small adjacent chunks when possible.
+
+        Iterates chunks pairwise; merges when _should_merge() returns True.
+
+        Args:
+            chunks: List of text chunks
+            max_tokens: Maximum tokens per merged chunk
+
+        Returns:
+            Merged list of chunks
+        """
+        if len(chunks) <= 1:
+            return chunks
+
+        merged = [chunks[0]]
+
+        for i in range(1, len(chunks)):
+            if self._should_merge(merged[-1], chunks[i], max_tokens):
+                merged[-1] = merged[-1] + ' ' + chunks[i]
+            else:
+                merged.append(chunks[i])
+
+        return merged
+
+    def _should_merge(self, chunk_a: str, chunk_b: str, max_tokens: int = 500) -> bool:
+        """
+        Determine if two chunks should be merged.
+
+        Returns True if combined tokens < max_tokens and chunks share words.
+
+        Args:
+            chunk_a: First chunk
+            chunk_b: Second chunk
+            max_tokens: Maximum token limit
+
+        Returns:
+            True if chunks should be merged
+        """
+        combined_tokens = self.count_tokens(chunk_a + ' ' + chunk_b)
+        if combined_tokens > max_tokens:
+            return False
+
+        # Check if chunks share any content words (related)
+        words_a = set(chunk_a.lower().split())
+        words_b = set(chunk_b.lower().split())
+        shared = words_a & words_b
+
+        # Merge if they share words or either chunk is very small
+        small_chunk = (
+            self.count_tokens(chunk_a) < max_tokens * 0.2
+            or self.count_tokens(chunk_b) < max_tokens * 0.2
+        )
+
+        return len(shared) > 0 or small_chunk
 
 
 # Module-level convenience function

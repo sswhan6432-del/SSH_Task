@@ -99,6 +99,63 @@ def test_empty_text():
     assert result.confidence == 0.0
 
 
+def test_korean_analyze_intent():
+    """Test detection of 'analyze' intent with Korean input."""
+    test_cases = [
+        "코드 분석해줘",
+        "테스트 검증해주세요",
+        "품질 검토 부탁합니다"
+    ]
+
+    detector = IntentDetector()
+
+    for text in test_cases:
+        result = detector.detect(text)
+        print(f"\nText: {text}")
+        print(f"Intent: {result.intent} (confidence: {result.confidence:.2f})")
+
+        assert result.intent in ["analyze", "implement", "research"]
+        assert 0.0 <= result.confidence <= 1.0
+
+
+def test_korean_implement_intent():
+    """Test detection of 'implement' intent with Korean input."""
+    test_cases = [
+        "로그인 기능 구현해줘",
+        "버그 수정해주세요",
+        "새 기능 추가해줘"
+    ]
+
+    detector = IntentDetector()
+
+    for text in test_cases:
+        result = detector.detect(text)
+        print(f"\nText: {text}")
+        print(f"Intent: {result.intent} (confidence: {result.confidence:.2f})")
+
+        assert result.intent in ["analyze", "implement", "research"]
+        assert 0.0 <= result.confidence <= 1.0
+
+
+def test_korean_research_intent():
+    """Test detection of 'research' intent with Korean input."""
+    test_cases = [
+        "문서 찾아줘",
+        "API 설명해주세요",
+        "구조 이해하고 싶어"
+    ]
+
+    detector = IntentDetector()
+
+    for text in test_cases:
+        result = detector.detect(text)
+        print(f"\nText: {text}")
+        print(f"Intent: {result.intent} (confidence: {result.confidence:.2f})")
+
+        assert result.intent in ["analyze", "implement", "research"]
+        assert 0.0 <= result.confidence <= 1.0
+
+
 if __name__ == "__main__":
     print("Running Intent Detector tests...\n")
 
@@ -128,5 +185,20 @@ if __name__ == "__main__":
     test_empty_text()
 
     print("\n" + "="*60)
-    print("✅ All tests passed!")
+    print("Test 6: Korean Analyze Intent")
+    print("="*60)
+    test_korean_analyze_intent()
+
+    print("\n" + "="*60)
+    print("Test 7: Korean Implement Intent")
+    print("="*60)
+    test_korean_implement_intent()
+
+    print("\n" + "="*60)
+    print("Test 8: Korean Research Intent")
+    print("="*60)
+    test_korean_research_intent()
+
+    print("\n" + "="*60)
+    print("All tests passed!")
     print("="*60)

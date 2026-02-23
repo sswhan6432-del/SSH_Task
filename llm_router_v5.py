@@ -23,6 +23,7 @@ All v4.0 flags are 100% compatible.
 
 from __future__ import annotations
 import re, json, sys, os, time
+import asyncio
 import datetime
 import logging
 from dataclasses import dataclass, asdict
@@ -219,7 +220,9 @@ class EnhancedRouter:
         compression_level: int = 2,
         fallback_to_v4: bool = True,
         model_dir: str = "./models",
-        use_cache: bool = True
+        use_cache: bool = True,
+        enable_intent_detect: bool = True,
+        enable_smart_priority: bool = True
     ):
         """
         Initialize Enhanced Router
@@ -231,12 +234,16 @@ class EnhancedRouter:
             fallback_to_v4: Fallback to v4.0 on error
             model_dir: Directory for model files
             use_cache: Enable result caching
+            enable_intent_detect: Enable intent detection module
+            enable_smart_priority: Enable ML priority ranking module
         """
         self.enable_nlp = enable_nlp and NLP_AVAILABLE
         self.enable_compression = enable_compression and NLP_AVAILABLE
         self.compression_level = compression_level
         self.fallback_to_v4 = fallback_to_v4
         self.use_cache = use_cache
+        self.enable_intent_detect = enable_intent_detect and NLP_AVAILABLE
+        self.enable_smart_priority = enable_smart_priority and NLP_AVAILABLE
 
         # Lazy load models
         self.loader = LazyModelLoader(model_dir) if NLP_AVAILABLE else None
@@ -320,34 +327,70 @@ class EnhancedRouter:
             min_tickets=kwargs.get("min_tickets", 0)
         )
 
+        # M9: Module activation tracking
+        modules_active = {
+            "intent_detection": False,
+            "priority_ranking": False,
+            "compression": False,
+            "text_chunking": False
+        }
+
         # Step 2: Apply batch NLP processing with PARALLEL EXECUTION (ThreadPoolExecutor)
         intent_analyses = []
         priority_scores = []
+        chunk_results = {}
 
         if self.enable_nlp and self.loader:
             parallel_start = time.time()
 
             # Parallel processing with ThreadPoolExecutor (max_workers=3)
             with ThreadPoolExecutor(max_workers=3) as executor:
-                # Submit parallel tasks
-                future_intents = executor.submit(self._batch_detect_intents, v4_result.tasks)
-                future_priorities = executor.submit(self._batch_rank_priorities, v4_result.tasks)
+                # Submit parallel tasks (conditionally based on M10/M11 flags)
+                future_intents = None
+                future_priorities = None
+                future_chunks = None
+
+                if self.enable_intent_detect:
+                    future_intents = executor.submit(self._batch_detect_intents, v4_result.tasks)
+
+                if self.enable_smart_priority:
+                    future_priorities = executor.submit(self._batch_rank_priorities, v4_result.tasks)
+
+                # M13: TextChunker in ThreadPoolExecutor
+                future_chunks = executor.submit(self._batch_chunk_texts, v4_result.tasks)
 
                 # Wait for results (blocking)
-                try:
-                    intent_analyses = future_intents.result(timeout=30)
-                except Exception as e:
-                    logger.warning(f"Parallel intent detection failed: {e}")
-                    intent_analyses = [None] * len(v4_result.tasks)
+                if future_intents:
+                    try:
+                        intent_analyses = future_intents.result(timeout=30)
+                        modules_active["intent_detection"] = True
+                    except Exception as e:
+                        logger.warning(f"Parallel intent detection failed: {e}")
+                        intent_analyses = [None] * len(v4_result.tasks)
+
+                if future_priorities:
+                    try:
+                        priority_scores = future_priorities.result(timeout=30)
+                        modules_active["priority_ranking"] = True
+                    except Exception as e:
+                        logger.warning(f"Parallel priority ranking failed: {e}")
+                        priority_scores = [None] * len(v4_result.tasks)
 
                 try:
-                    priority_scores = future_priorities.result(timeout=30)
+                    chunk_results = future_chunks.result(timeout=30)
+                    modules_active["text_chunking"] = True
                 except Exception as e:
-                    logger.warning(f"Parallel priority ranking failed: {e}")
-                    priority_scores = [None] * len(v4_result.tasks)
+                    logger.warning(f"Parallel text chunking failed: {e}")
+                    chunk_results = {}
 
             parallel_time = (time.time() - parallel_start) * 1000
             logger.info(f"Parallel NLP processing completed in {parallel_time:.2f}ms")
+
+        # Fill defaults if modules were disabled
+        if not intent_analyses:
+            intent_analyses = [None] * len(v4_result.tasks)
+        if not priority_scores:
+            priority_scores = [None] * len(v4_result.tasks)
 
         # Step 3: Convert v4 tasks to v5 format with enhancements
         enhanced_tasks = []
@@ -374,6 +417,14 @@ class EnhancedRouter:
         avg_token_reduction = (
             total_token_reduction / len(enhanced_tasks) if enhanced_tasks else 0.0
         )
+
+        # Track compression module activation
+        if self.enable_compression:
+            modules_active["compression"] = True
+
+        # Include modules_active in features used
+        active_modules = [k for k, v in modules_active.items() if v]
+        v5_features_used.extend(active_modules)
 
         # Step 3: Build enhanced output
         return EnhancedRouterOutput(
@@ -497,6 +548,49 @@ class EnhancedRouter:
         enhanced.processing_time_ms = (time.time() - task_start) * 1000
 
         return enhanced
+
+    async def route_async(self, request: str, **kwargs) -> EnhancedRouterOutput:
+        """
+        Async version of route().
+
+        Wraps synchronous route() in an executor for async compatibility.
+
+        Args:
+            request: User request text (Korean or English)
+            **kwargs: Additional v4.0 compatible flags
+
+        Returns:
+            EnhancedRouterOutput with tasks and metadata
+        """
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(None, lambda: self.route(request, **kwargs))
+
+    def _batch_chunk_texts(self, v4_tasks: List[v4.TaskDecision]) -> Dict[str, List[str]]:
+        """
+        Batch chunk task prompts using TextChunker.
+
+        Runs in ThreadPoolExecutor alongside intent detection and priority ranking.
+
+        Args:
+            v4_tasks: List of v4.0 TaskDecisions
+
+        Returns:
+            Dict mapping task ID to list of chunked text segments
+        """
+        results = {}
+        if not self.loader:
+            return results
+
+        chunker = self.loader.text_chunker
+        for task in v4_tasks:
+            try:
+                chunks = chunker.chunk(task.claude_prompt, max_tokens=500)
+                results[task.id] = chunks
+            except Exception as e:
+                logger.warning(f"Chunking failed for task {task.id}: {e}")
+                results[task.id] = [task.claude_prompt]
+
+        return results
 
     def _fallback_v4(self, request: str, **kwargs) -> EnhancedRouterOutput:
         """
@@ -635,9 +729,12 @@ def main():
     fallback_v4 = "--no-fallback" not in args
     no_cache = "--no-cache" in args
 
+    # M10/M11: Individual module toggle flags
+    intent_detect = "--intent-detect" in args or v5_enabled
+    smart_priority = "--smart-priority" in args or v5_enabled
+
     # Parse compression level (flag with value)
     for i, arg in enumerate(args):
-        if arg == "--compression-level" and i + 1 < len(args):
             try:
                 compression_level = int(args[i + 1])
                 compression_level = max(1, min(3, compression_level))  # Clamp to 1-3
@@ -685,7 +782,9 @@ def main():
         enable_compression=enable_compression,
         compression_level=compression_level,
         fallback_to_v4=fallback_v4,
-        use_cache=not no_cache
+        use_cache=not no_cache,
+        enable_intent_detect=intent_detect,
+        enable_smart_priority=smart_priority
     )
 
     # Get request from remaining args (after stripping v5 flags)

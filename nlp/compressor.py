@@ -130,6 +130,9 @@ class Compressor:
 
         # Level 1: Basic cleanup
         compressed = self._normalize_whitespace(compressed)
+        compressed, removed_particles = self._remove_particles(compressed)
+        if removed_particles:
+            lost_info.append(f"Korean particles: {', '.join(removed_particles[:3])}")
         compressed = self._remove_redundancy(compressed)
         compressed = self._apply_replacements(compressed, level=1)
 
@@ -144,6 +147,8 @@ class Compressor:
             compressed = self._apply_replacements(compressed, level=3)
             compressed = self._remove_articles(compressed)
             lost_info.append("articles (a, an, the)")
+            compressed = self._extract_keywords_only(compressed)
+            compressed = self._to_imperative(compressed)
 
         # Final cleanup
         compressed = self._normalize_whitespace(compressed)
@@ -241,6 +246,104 @@ class Compressor:
         """Remove articles (a, an, the)."""
         # Remove standalone articles
         text = re.sub(r'\b(a|an|the)\b\s+', '', text, flags=re.IGNORECASE)
+        return text
+
+    def _remove_particles(self, text: str) -> tuple[str, list[str]]:
+        """
+        Remove Korean particles (regex-based).
+
+        Targets common Korean postpositions that can be safely removed
+        while preserving core meaning.
+
+        Args:
+            text: Input text
+
+        Returns:
+            Tuple of (processed text, list of removed particles)
+        """
+        particles = ['은', '는', '이', '가', '을', '를', '의', '에서', '에', '으로', '로', '와', '과', '도', '만', '까지', '부터']
+        removed = []
+
+        # Match particles followed by whitespace or end of string
+        pattern = r'(에서|으로|까지|부터|은|는|이|가|을|를|의|에|로|와|과|도|만)(?=\s|$|[.,!?])'
+        matches = re.findall(pattern, text)
+        if matches:
+            removed = list(set(matches))
+            text = re.sub(pattern, '', text)
+            # Clean up extra spaces
+            text = re.sub(r'\s+', ' ', text).strip()
+
+        return text, removed
+
+    def _extract_keywords_only(self, text: str) -> str:
+        """
+        Extract nouns/verbs/key terms only, drop filler.
+
+        Keeps words longer than 2 characters that aren't stop words.
+        Removes duplicates while preserving order.
+
+        Args:
+            text: Input text
+
+        Returns:
+            Text with only keywords
+        """
+        words = text.split()
+        seen = set()
+        keywords = []
+
+        for word in words:
+            word_clean = word.lower().strip('.,!?;:')
+            # Keep words > 2 chars that aren't stop words
+            if len(word_clean) > 2 and word_clean not in self.STOP_WORDS:
+                if word_clean not in seen:
+                    keywords.append(word)
+                    seen.add(word_clean)
+
+        return ' '.join(keywords) if keywords else text
+
+    def _to_imperative(self, text: str) -> str:
+        """
+        Convert to imperative form.
+
+        Removes hedging phrases and converts common patterns:
+        - "you should X" -> "X"
+        - "we need to X" -> "X"
+        - "I think", "maybe", "perhaps" -> removed
+
+        Args:
+            text: Input text
+
+        Returns:
+            Text in imperative form
+        """
+        # Remove hedging phrases
+        hedges = [
+            r'\bi think\b\s*',
+            r'\bmaybe\b\s*',
+            r'\bperhaps\b\s*',
+            r'\bprobably\b\s*',
+            r'\bit seems like\b\s*',
+            r'\bin my opinion\b\s*',
+        ]
+        for hedge in hedges:
+            text = re.sub(hedge, '', text, flags=re.IGNORECASE)
+
+        # Convert to imperative
+        conversions = [
+            (r'\byou should\b\s*', ''),
+            (r'\bwe need to\b\s*', ''),
+            (r'\bwe should\b\s*', ''),
+            (r'\byou need to\b\s*', ''),
+            (r'\bit is necessary to\b\s*', ''),
+            (r'\byou have to\b\s*', ''),
+            (r'\bwe have to\b\s*', ''),
+        ]
+        for pattern, replacement in conversions:
+            text = re.sub(pattern, replacement, text, flags=re.IGNORECASE)
+
+        # Clean up
+        text = re.sub(r'\s+', ' ', text).strip()
         return text
 
     def batch_compress(

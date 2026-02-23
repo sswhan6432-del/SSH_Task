@@ -1,1 +1,3038 @@
-[]
+[
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "A",
+    "summary": "Create a new HTML file for the login page.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "B",
+    "summary": "Write the HTML header with the title and meta tags.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "C",
+    "summary": "Create a container element for the login form.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "D",
+    "summary": "Add a form element to the container.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "E",
+    "summary": "Add a label and input field for the username.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "F",
+    "summary": "Add a label and input field for the password.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "G",
+    "summary": "Add a submit button to the form.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "H",
+    "summary": "Style the login form with CSS.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "I",
+    "summary": "Add JavaScript to handle form submission.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "J",
+    "summary": "Validate user input for username and password.",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "K",
+    "summary": "Send a request to the server to authenticate the user.",
+    "priority": 11,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "L",
+    "summary": "Handle server response and redirect to dashboard or display error message.",
+    "priority": 12,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "M",
+    "summary": "Implement password hashing and salting for secure storage.",
+    "priority": 13,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "N",
+    "summary": "Implement user registration functionality.",
+    "priority": 14,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "O",
+    "summary": "Implement forgot password functionality.",
+    "priority": 15,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "P",
+    "summary": "Implement two-factor authentication.",
+    "priority": 16,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "Q",
+    "summary": "Implement accessibility features for the login page.",
+    "priority": 17,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "R",
+    "summary": "Test the login page for cross-browser compatibility.",
+    "priority": 18,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "S",
+    "summary": "Optimize the login page for performance.",
+    "priority": 19,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:05:05.200854",
+    "id": "T",
+    "summary": "Deploy the login page to a production environment.",
+    "priority": 20,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:10.500242",
+    "id": "A",
+    "summary": "Test",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:10.500242",
+    "id": "B",
+    "summary": "Request",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "A",
+    "summary": "ㄴ",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "B",
+    "summary": "ㅁ",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "C",
+    "summary": "ㅇ",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "D",
+    "summary": "ㄹ",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "E",
+    "summary": "ㅁ",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "F",
+    "summary": "ㄴ",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "G",
+    "summary": "ㄹ",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:08:24.758804",
+    "id": "H",
+    "summary": "ㄴ",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "A",
+    "summary": "Create a new HTML file for the login page.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "B",
+    "summary": "Write the HTML header with the title and meta tags.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "C",
+    "summary": "Create a container element for the login form.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "D",
+    "summary": "Add a form element to the container.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "E",
+    "summary": "Add a label and input field for the username.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "F",
+    "summary": "Add a label and input field for the password.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "G",
+    "summary": "Add a submit button to the form.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "H",
+    "summary": "Style the login form with CSS.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "I",
+    "summary": "Add JavaScript to handle form submission.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "J",
+    "summary": "Validate user input for username and password.",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "K",
+    "summary": "Send a request to the server to authenticate the user.",
+    "priority": 11,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "L",
+    "summary": "Handle server response and redirect to dashboard or display error message.",
+    "priority": 12,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "M",
+    "summary": "Implement password hashing and salting for secure storage.",
+    "priority": 13,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "N",
+    "summary": "Implement user registration functionality.",
+    "priority": 14,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "O",
+    "summary": "Implement forgot password functionality.",
+    "priority": 15,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "P",
+    "summary": "Implement two-factor authentication.",
+    "priority": 16,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "Q",
+    "summary": "Implement accessibility features for the login page.",
+    "priority": 17,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "R",
+    "summary": "Test the login page for cross-browser compatibility.",
+    "priority": 18,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "S",
+    "summary": "Optimize the login page for performance.",
+    "priority": 19,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:29:20.072435",
+    "id": "T",
+    "summary": "Deploy the login page to a production environment.",
+    "priority": 20,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:30:07.132475",
+    "id": "A",
+    "summary": "aslkdfjl",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:34:53.304938",
+    "id": "A",
+    "summary": "Type the string \"slkfjlasjl\".",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "A",
+    "summary": "구현 시작",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "B",
+    "summary": "코드 작성",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "C",
+    "summary": "기능 테스트",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "D",
+    "summary": "버그 수정",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "E",
+    "summary": "코드 리뷰",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "F",
+    "summary": "코드 최적화",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "G",
+    "summary": "테스트 케이스 작성",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "H",
+    "summary": "문서화",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "I",
+    "summary": "빌드 및 배포",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:36:53.383727",
+    "id": "J",
+    "summary": "유지보수",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "A",
+    "summary": "인도 중고차 시장을 겨냥한 중고차 판매 웹사이트를 만들고 싶어",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "B",
+    "summary": "웹사이트를 만들기 위한 계획을 세우기",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "C",
+    "summary": "웹사이트의 목적과 기능을 정의하기",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "D",
+    "summary": "인도 중고차 시장을 연구하고 분석하기",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "E",
+    "summary": "웹사이트의 디자인과 레이아웃을 결정하기",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "F",
+    "summary": "웹사이트의 개발을 시작하기",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "G",
+    "summary": "웹사이트의 백엔드 시스템을 구축하기",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "H",
+    "summary": "웹사이트의 프론트엔드 시스템을 구축하기",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "I",
+    "summary": "웹사이트의 테스트와 디버깅을 수행하기",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "J",
+    "summary": "웹사이트를 인도 중고차 시장에 출시하기",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "K",
+    "summary": "웹사이트의 마케팅과 홍보를 시작하기",
+    "priority": 11,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T15:39:00.888971",
+    "id": "L",
+    "summary": "웹사이트의 유지보수와 업데이트를 수행하기",
+    "priority": 12,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:34:09.501499",
+    "id": "A",
+    "summary": "Help.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:34.593485",
+    "id": "A",
+    "summary": "Identify the source of the login bug.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:34.593485",
+    "id": "B",
+    "summary": "Review login code for any errors or inconsistencies.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:34.593485",
+    "id": "C",
+    "summary": "Test login functionality to reproduce the bug.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:34.593485",
+    "id": "D",
+    "summary": "Debug and resolve the login bug.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:34.593485",
+    "id": "E",
+    "summary": "Verify that the login bug has been fixed.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.095383",
+    "id": "A",
+    "summary": "Identify the source of the login bug.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.095383",
+    "id": "B",
+    "summary": "Review login code for any errors or inconsistencies.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.095383",
+    "id": "C",
+    "summary": "Test login functionality to reproduce the bug.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.095383",
+    "id": "D",
+    "summary": "Debug and resolve the login bug.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.095383",
+    "id": "E",
+    "summary": "Verify that the login bug has been fixed.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "A",
+    "summary": "Implement user authentication using a suitable framework or library.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "B",
+    "summary": "Create a new route for the login page.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "C",
+    "summary": "Design and create the login page template.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "D",
+    "summary": "Add form handling to process user login credentials.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "E",
+    "summary": "Verify user credentials against the database or authentication system.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "F",
+    "summary": "Handle successful login by redirecting to the dashboard or main application.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "G",
+    "summary": "Handle failed login attempts by displaying an error message.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "H",
+    "summary": "Implement password hashing and salting for secure password storage.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T16:35:50.644392",
+    "id": "I",
+    "summary": "Test the login functionality to ensure it works as expected.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:40:41.230501",
+    "id": "A",
+    "summary": "로그인 버그를 수정하라.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:08.151072",
+    "id": "A",
+    "summary": "사용자 인증 시스템을 구현해주세요.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:08.151072",
+    "id": "B",
+    "summary": "로그인 페이지를 추가해주세요.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:08.151072",
+    "id": "C",
+    "summary": "회원가입 기능을 만들어주세요.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:08.151072",
+    "id": "D",
+    "summary": "비밀번호를 해시화해서 저장해주세요.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:24.310395",
+    "id": "A",
+    "summary": "Implement a secure login page with email validation.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:24.310395",
+    "id": "B",
+    "summary": "Develop a password strength checker to ensure users create strong passwords.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:24.310395",
+    "id": "C",
+    "summary": "Create a forgot password functionality with email recovery.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:24.310395",
+    "id": "D",
+    "summary": "Integrate two-factor authentication support using a library like Google Authent…",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:24.310395",
+    "id": "E",
+    "summary": "Implement session management using JSON Web Tokens (JWT) for secure user authen…",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:24.310395",
+    "id": "F",
+    "summary": "Design a beautiful responsive UI for the login and forgot password pages that w…",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:41:24.310395",
+    "id": "G",
+    "summary": "Note: The above tasks are high-level and will require further breakdown into sm…",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:50:25.447055",
+    "id": "A",
+    "summary": "사용자 인증 구현",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:50:25.447055",
+    "id": "B",
+    "summary": "로그인 페이지 추가",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:52:54.206413",
+    "id": "A",
+    "summary": "사용자 인증 로직을 설계하고 구현한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:52:54.206413",
+    "id": "B",
+    "summary": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:52:54.206413",
+    "id": "C",
+    "summary": "사용자 인증을 위한 API를 개발한다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:52:54.206413",
+    "id": "D",
+    "summary": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:52:54.206413",
+    "id": "E",
+    "summary": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:53:17.306213",
+    "id": "A",
+    "summary": "사용자 인증 로직을 설계하고 구현한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:53:17.306213",
+    "id": "B",
+    "summary": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:53:17.306213",
+    "id": "C",
+    "summary": "사용자 인증을 위한 API를 개발한다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:53:17.306213",
+    "id": "D",
+    "summary": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:53:17.306213",
+    "id": "E",
+    "summary": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:08.885961",
+    "id": "A",
+    "summary": "사용자 인증 로직을 설계하고 구현한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:08.885961",
+    "id": "B",
+    "summary": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:08.885961",
+    "id": "C",
+    "summary": "사용자 인증을 위한 API를 개발한다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:08.885961",
+    "id": "D",
+    "summary": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:08.885961",
+    "id": "E",
+    "summary": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:19.204451",
+    "id": "A",
+    "summary": "사용자 인증 로직을 설계하고 구현한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:19.204451",
+    "id": "B",
+    "summary": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:19.204451",
+    "id": "C",
+    "summary": "사용자 인증을 위한 API를 개발한다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:19.204451",
+    "id": "D",
+    "summary": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:19.204451",
+    "id": "E",
+    "summary": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:26.416359",
+    "id": "A",
+    "summary": "사용자 인증 로직을 설계하고 구현한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:26.416359",
+    "id": "B",
+    "summary": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:26.416359",
+    "id": "C",
+    "summary": "사용자 인증을 위한 API를 개발한다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:26.416359",
+    "id": "D",
+    "summary": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:26.416359",
+    "id": "E",
+    "summary": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:36.343919",
+    "id": "A",
+    "summary": "사용자 인증 로직을 설계하고 구현한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:36.343919",
+    "id": "B",
+    "summary": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:36.343919",
+    "id": "C",
+    "summary": "사용자 인증을 위한 API를 개발한다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:36.343919",
+    "id": "D",
+    "summary": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:36.343919",
+    "id": "E",
+    "summary": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:45.394485",
+    "id": "A",
+    "summary": "사용자 인증 로직을 설계하고 구현한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:45.394485",
+    "id": "B",
+    "summary": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:45.394485",
+    "id": "C",
+    "summary": "사용자 인증을 위한 API를 개발한다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:45.394485",
+    "id": "D",
+    "summary": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:45.394485",
+    "id": "E",
+    "summary": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:56.944500",
+    "id": "A",
+    "summary": "사용자 인증 로직을 설계하고 구현한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:56.944500",
+    "id": "B",
+    "summary": "사용자 인증을 위한 데이터베이스 테이블을 생성한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:56.944500",
+    "id": "C",
+    "summary": "사용자 인증을 위한 API를 개발한다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:56.944500",
+    "id": "D",
+    "summary": "사용자 인증을 위한 클라이언트 측 라이브러리를 개발한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T18:55:56.944500",
+    "id": "E",
+    "summary": "사용자 인증을 위한 보안 정책을 정의한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "A",
+    "summary": "이메일 주소를 입력하라.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "B",
+    "summary": "이메일 주소의 형식이 맞는지 확인하라.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "C",
+    "summary": "이메일 주소의 @ 기호가 있는지 확인하라.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "D",
+    "summary": "이메일 주소의 도메인 이름이 있는지 확인하라.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "E",
+    "summary": "이메일 주소의 도메인 이름이 유효한지 확인하라.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "F",
+    "summary": "이메일 주소의 도메인 이름이 로컬 파트가 있는지 확인하라.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "G",
+    "summary": "이메일 주소의 로컬 파트가 있는지 확인하라.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "H",
+    "summary": "이메일 주소의 로컬 파트가 유효한지 확인하라.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.145977",
+    "id": "I",
+    "summary": "이메일 주소의 형식이 맞는지 다시 확인하라.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.746769",
+    "id": "A",
+    "summary": "데이터베이스 구축을 시작한다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.746769",
+    "id": "B",
+    "summary": "데이터베이스 설계를 한다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.746769",
+    "id": "C",
+    "summary": "데이터베이스 스키마를 만든다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.746769",
+    "id": "D",
+    "summary": "데이터베이스 테이블을 생성한다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.746769",
+    "id": "E",
+    "summary": "데이터베이스 인덱스를 생성한다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.746769",
+    "id": "F",
+    "summary": "데이터베이스 보안을 설정한다.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.746769",
+    "id": "G",
+    "summary": "데이터베이스 백업을 한다.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:37:34.746769",
+    "id": "H",
+    "summary": "데이터베이스 테스트를 한다.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "A",
+    "summary": "Create a new HTML file for the login page.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "B",
+    "summary": "Write the HTML structure for the login page.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "C",
+    "summary": "Add a CSS file to style the login page.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "D",
+    "summary": "Create a JavaScript file to handle form submission.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "E",
+    "summary": "Write JavaScript code to validate the email input.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "F",
+    "summary": "Add a function to check if the email is valid.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "G",
+    "summary": "Use a regular expression to validate the email format.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "H",
+    "summary": "Implement the email validation logic in the JavaScript code.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "I",
+    "summary": "Add a function to handle form submission.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "J",
+    "summary": "Use the email validation function to check the input email.",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "K",
+    "summary": "Display an error message if the email is invalid.",
+    "priority": 11,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "L",
+    "summary": "Create a backend API to handle login requests.",
+    "priority": 12,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "M",
+    "summary": "Write API code to validate the email and password.",
+    "priority": 13,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "N",
+    "summary": "Implement email validation logic in the API code.",
+    "priority": 14,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "O",
+    "summary": "Use the same regular expression to validate the email format.",
+    "priority": 15,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "P",
+    "summary": "Create a database to store user credentials.",
+    "priority": 16,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "Q",
+    "summary": "Write database code to store and retrieve user data.",
+    "priority": 17,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "R",
+    "summary": "Implement user authentication logic in the API code.",
+    "priority": 18,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "S",
+    "summary": "Use the email and password to authenticate the user.",
+    "priority": 19,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "T",
+    "summary": "Return a success response if the user is authenticated.",
+    "priority": 20,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "U",
+    "summary": "Return an error response if the user is not authenticated.",
+    "priority": 21,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "V",
+    "summary": "Test the login page with valid and invalid email inputs.",
+    "priority": 22,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "W",
+    "summary": "Test the login page with valid and invalid password inputs.",
+    "priority": 23,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:04.688342",
+    "id": "X",
+    "summary": "Test the login page with valid and invalid email and password combinations.",
+    "priority": 24,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "A",
+    "summary": "Open the settings page.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "B",
+    "summary": "Locate the page elements that need to be updated.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "C",
+    "summary": "Identify the current theme toggle button.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "D",
+    "summary": "Duplicate the theme toggle button to create a new button.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "E",
+    "summary": "Update the new button's label to \"Dark Mode\".",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "F",
+    "summary": "Update the new button's functionality to toggle dark mode.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "G",
+    "summary": "Add an event listener to the new button to handle the dark mode toggle.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "H",
+    "summary": "Update the CSS to apply dark mode styles when the new button is clicked.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "I",
+    "summary": "Test the dark mode toggle to ensure it works correctly.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:05.370164",
+    "id": "J",
+    "summary": "Save the changes to the settings page.",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "A",
+    "summary": "Identify the navigation menu on the website.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "B",
+    "summary": "Check if the navigation menu is currently visible on mobile devices.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "C",
+    "summary": "Determine the current layout and design of the navigation menu.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "D",
+    "summary": "Research and gather information on best practices for mobile navigation menus.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "E",
+    "summary": "Decide on the desired layout and design for the mobile navigation menu.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "F",
+    "summary": "Update the CSS or HTML code to change the layout and design of the navigation m…",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "G",
+    "summary": "Test the updated navigation menu on various mobile devices to ensure it is func…",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "H",
+    "summary": "Make any necessary adjustments to the navigation menu based on testing results.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.044787",
+    "id": "I",
+    "summary": "Verify that the navigation menu is now fixed and working as intended on mobile…",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "A",
+    "summary": "Create a new HTML file for the contact form.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "B",
+    "summary": "Design the contact form layout and fields (name, email, subject, message).",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "C",
+    "summary": "Create a new JavaScript file to handle form submission and validation.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "D",
+    "summary": "Write JavaScript code to validate form fields (name, email, subject, message).",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "E",
+    "summary": "Implement SMTP integration using a library (e.g., nodemailer).",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "F",
+    "summary": "Set up SMTP server credentials (host, port, username, password).",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "G",
+    "summary": "Create a new Node.js file to handle form submission and send emails.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "H",
+    "summary": "Import required libraries (e.g., express, nodemailer).",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "I",
+    "summary": "Set up Express.js server to handle form submission.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "J",
+    "summary": "Write Node.js code to send email using SMTP integration.",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "K",
+    "summary": "Implement error handling for email sending.",
+    "priority": 11,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "L",
+    "summary": "Test the contact form and SMTP integration.",
+    "priority": 12,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "M",
+    "summary": "Deploy the contact form and SMTP integration to a production environment.",
+    "priority": 13,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "N",
+    "summary": "Configure email sending settings (e.g., from address, reply-to address).",
+    "priority": 14,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "O",
+    "summary": "Test email sending with different email clients and devices.",
+    "priority": 15,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "P",
+    "summary": "Optimize email sending performance and reliability.",
+    "priority": 16,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "Q",
+    "summary": "Implement email logging and analytics.",
+    "priority": 17,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "R",
+    "summary": "Secure email sending with encryption and authentication.",
+    "priority": 18,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "S",
+    "summary": "Test email sending with different SMTP servers and configurations.",
+    "priority": 19,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:06.960041",
+    "id": "T",
+    "summary": "Document the contact form and SMTP integration for future maintenance.",
+    "priority": 20,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "A",
+    "summary": "Identify database queries currently used for user dashboard.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "B",
+    "summary": "Analyze query performance metrics (e.g., execution time, CPU usage).",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "C",
+    "summary": "Optimize database indexing for frequently used queries.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "D",
+    "summary": "Review query syntax for potential improvements (e.g., using JOINs instead of su…",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "E",
+    "summary": "Consider implementing query caching mechanisms.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "F",
+    "summary": "Evaluate the use of stored procedures or views to simplify complex queries.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "G",
+    "summary": "Optimize database schema for efficient data retrieval.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "H",
+    "summary": "Test optimized queries to ensure performance improvements.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "I",
+    "summary": "Monitor query performance after deployment to identify any regressions.",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "J",
+    "summary": "Refactor database queries to adhere to coding standards and best practices.",
+    "priority": 10,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "K",
+    "summary": "Document optimized queries for future reference and maintenance.",
+    "priority": 11,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "L",
+    "summary": "Consider implementing database partitioning for large datasets.",
+    "priority": 12,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "M",
+    "summary": "Evaluate the use of materialized views for frequently queried data.",
+    "priority": 13,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "N",
+    "summary": "Optimize database connection pooling for improved resource utilization.",
+    "priority": 14,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-13T22:38:07.805755",
+    "id": "O",
+    "summary": "Review database configuration settings for optimal performance.",
+    "priority": 15,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:02:44.860320",
+    "id": "A",
+    "summary": "확인하고 싶은 작업이 이전에 작업했던 캐릭터별 이미지 생성시입니다.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:02:44.860320",
+    "id": "B",
+    "summary": "사용된 프롬프트에 표정 다양화가 적용된건지 확인하고 싶습니다.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:02:44.860320",
+    "id": "C",
+    "summary": "v5 명령어를 실행합니다.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:02:44.860320",
+    "id": "D",
+    "summary": "compress 옵션을 사용합니다.",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:02:44.860320",
+    "id": "E",
+    "summary": "compression-level 2 옵션을 사용합니다.",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:02:44.860320",
+    "id": "F",
+    "summary": "intent-detect 옵션을 사용합니다.",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:02:44.860320",
+    "id": "G",
+    "summary": "smart-priority 옵션을 사용합니다.",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:02:44.860320",
+    "id": "H",
+    "summary": "show-stats 옵션을 사용합니다.",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:05:43.067662",
+    "id": "A",
+    "summary": "Run v5 with the following options: --compress --compression-level 2 --intent-de…",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:05:43.067662",
+    "id": "B",
+    "summary": "Generate images",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:05:43.067662",
+    "id": "C",
+    "summary": "Create character-specific expressions",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:05:43.067662",
+    "id": "D",
+    "summary": "Create more than 5 custom prompts for each character",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:05:43.067662",
+    "id": "E",
+    "summary": "Add the generated prompts to the image generation process",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:17.477602",
+    "id": "A",
+    "summary": "Run v5 with the following options: --compress --compression-level 2 --intent-de…",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:17.477602",
+    "id": "B",
+    "summary": "Generate images",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:17.477602",
+    "id": "C",
+    "summary": "Create character-specific expressions",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:17.477602",
+    "id": "D",
+    "summary": "Create more than 5 custom prompts for each character",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:17.477602",
+    "id": "E",
+    "summary": "Add the generated prompts to the image generation process",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "A",
+    "summary": "v5",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "B",
+    "summary": "compress",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "C",
+    "summary": "compression-level 2",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "D",
+    "summary": "intent-detect",
+    "priority": 4,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "E",
+    "summary": "smart-priority",
+    "priority": 5,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "F",
+    "summary": "show-stats",
+    "priority": 6,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "G",
+    "summary": "캐릭터별 맞춤 표정",
+    "priority": 7,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "H",
+    "summary": "5개 이상의 프롬프트를 생성해서",
+    "priority": 8,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T13:07:46.116519",
+    "id": "I",
+    "summary": "추가해",
+    "priority": 9,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T22:03:28.338085",
+    "id": "A",
+    "summary": "A 데이터베이스에서 데이터를 출력하라.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T22:03:28.338085",
+    "id": "B",
+    "summary": "출력된 데이터를 C 코드에 입력하라.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T22:03:28.338085",
+    "id": "C",
+    "summary": "C 코드에 데이터를 입력한 후 D 이미지를 추가하라.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T22:46:00.563827",
+    "id": "A",
+    "summary": "A 데이터베이스에서 데이터를 출력하라.",
+    "priority": 1,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T22:46:00.563827",
+    "id": "B",
+    "summary": "출력된 데이터를 C 코드에 입력하라.",
+    "priority": 2,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  },
+  {
+    "timestamp": "2026-02-14T22:46:00.563827",
+    "id": "C",
+    "summary": "C 코드에 데이터를 입력한 후 D 이미지를 추가하라.",
+    "priority": 3,
+    "route": "claude",
+    "confidence": 0.85,
+    "reasons": [
+      "Primary route"
+    ]
+  }
+]
