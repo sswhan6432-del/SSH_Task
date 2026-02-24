@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TokenRouter Dashboard</title>
+    <link rel="stylesheet" href="/dashboard/dashboard.css">
+</head>
+<body>
+    <header>
+        <h1>TokenRouter</h1>
+        <p class="subtitle">Multi-Model AI Token Optimization</p>
+    </header>
+
+    <main>
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Total Requests</span>
+                <span class="stat-value" id="total-requests">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Total Tokens</span>
+                <span class="stat-value" id="total-tokens">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Total Cost</span>
+                <span class="stat-value" id="total-cost">$0.00</span>
+            </div>
+            <div class="stat-card highlight">
+                <span class="stat-label">Savings</span>
+                <span class="stat-value" id="total-savings">$0.00</span>
+            </div>
+        </section>
+
+        <section class="charts-row">
+            <div class="chart-card">
+                <h2>Requests by Provider</h2>
+                <div class="bar-chart" id="provider-chart"></div>
+            </div>
+            <div class="chart-card">
+                <h2>Requests by Model</h2>
+                <div class="bar-chart" id="model-chart"></div>
+            </div>
+        </section>
+
+        <section class="info-row">
+            <div class="info-card">
+                <h2>Performance</h2>
+                <div class="info-item">
+                    <span>Avg Latency</span>
+                    <span id="avg-latency">0ms</span>
+                </div>
+                <div class="info-item">
+                    <span>Cache Hit Rate</span>
+                    <span id="cache-rate">0%</span>
+                </div>
+            </div>
+            <div class="info-card">
+                <h2>Available Models</h2>
+                <div id="models-list" class="models-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>TokenRouter v1.0.0 &middot; Auto-refresh every 5s</p>
+    </footer>
+
+    <script src="/dashboard/dashboard.js"></script>
+</body>
+</html>
