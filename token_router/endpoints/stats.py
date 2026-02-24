@@ -6,16 +6,15 @@ from fastapi import APIRouter
 from fastapi.responses import FileResponse
 
 from token_router.models import StatsResponse
+from token_router import stats_store
 
 router = APIRouter()
 
 
 @router.get("/v1/stats", response_model=StatsResponse)
 async def get_stats():
-    """Return usage statistics."""
-    from token_router.endpoints.chat import get_stats as _get_stats
-
-    data = _get_stats()
+    """Return usage statistics (persisted across restarts)."""
+    data = stats_store.get()
     total_req = data["total_requests"] or 1
 
     return StatsResponse(

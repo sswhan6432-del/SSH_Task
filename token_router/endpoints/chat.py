@@ -18,25 +18,11 @@ from token_router.models import (
 )
 from token_router.providers.registry import registry, MODELS
 from token_router.router import route
+from token_router import stats_store
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-
-# In-memory stats accumulator
-_stats = {
-    "total_requests": 0,
-    "total_tokens": 0,
-    "total_cost_usd": 0.0,
-    "total_savings_usd": 0.0,
-    "requests_by_provider": {},
-    "requests_by_model": {},
-    "latency_sum_ms": 0.0,
-}
-
-
-def get_stats() -> dict:
-    return _stats.copy()
 
 
 @router.post("/v1/chat/completions")
@@ -50,7 +36,6 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
       X-OpenAI-Key, X-Anthropic-Key, X-Groq-Key, X-Google-Key, X-DeepSeek-Key
     """
     start = time.time()
-    _stats["total_requests"] += 1
 
     # Extract user's provider API keys from headers
     from token_router.main import extract_user_provider_keys
@@ -81,10 +66,6 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
     # Resolve API key: user header > server default
     user_key = user_keys.get(provider_name)
 
-    # Track by provider/model
-    _stats["requests_by_provider"][provider_name] = _stats["requests_by_provider"].get(provider_name, 0) + 1
-    _stats["requests_by_model"][model_id] = _stats["requests_by_model"].get(model_id, 0) + 1
-
     try:
         if req.stream:
             return await _handle_stream(provider, model_name, req, api_key=user_key)
@@ -102,7 +83,8 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
             stop=req.stop,
         )
 
-        # Calculate cost
+        # Calculate cost and record stats
+        cost = 0.0
         model_info = MODELS.get(model_id)
         if model_info and response.usage:
             cost = model_info.pricing.estimate(
@@ -110,12 +92,10 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
                 response.usage.completion_tokens,
             )
             response.cost_usd = round(cost, 8)
-            _stats["total_cost_usd"] += cost
-
-        _stats["total_tokens"] += response.usage.total_tokens if response.usage else 0
 
         elapsed_ms = (time.time() - start) * 1000
-        _stats["latency_sum_ms"] += elapsed_ms
+        tokens = response.usage.total_tokens if response.usage else 0
+        stats_store.record_request(provider_name, model_id, tokens, cost, elapsed_ms)
 
         return response
 

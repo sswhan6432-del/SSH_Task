@@ -82,7 +82,9 @@ async def lifespan(app: FastAPI):
     _register_providers()
     logger.info("TokenRouter started - 5 providers, 11 models (BYOK enabled)")
     yield
-    logger.info("TokenRouter shutting down")
+    from token_router import stats_store
+    stats_store.force_flush()
+    logger.info("TokenRouter shutting down (stats saved)")
 
 
 # ── App ─────────────────────────────────────────────────────────
