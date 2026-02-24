@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TokenRouter</title>
+    <link rel="stylesheet" href="/dashboard/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <h1>TokenRouter</h1>
+                <p class="tagline">Multi-Model AI Token Optimization</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <h2>Sign In</h2>
+                <div class="field">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+                </div>
+                <div class="field">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter password" required autocomplete="current-password">
+                </div>
+                <div class="error-msg" id="login-error"></div>
+                <button type="submit" class="btn-primary" id="login-btn">Sign In</button>
+                <p class="switch-text">
+                    Don't have an account?
+                    <a href="#" id="show-signup">Create one</a>
+                </p>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="auth-form">
+                <h2>Create Account</h2>
+                <div class="field">
+                    <label for="signup-name">Display Name</label>
+                    <input type="text" id="signup-name" placeholder="Your name (optional)" autocomplete="name">
+                </div>
+                <div class="field">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+                </div>
+                <div class="field">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="Min 8 characters" required autocomplete="new-password">
+                </div>
+                <div class="error-msg" id="signup-error"></div>
+                <button type="submit" class="btn-primary" id="signup-btn">Create Account</button>
+                <p class="switch-text">
+                    Already have an account?
+                    <a href="#" id="show-login">Sign in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API = window.location.origin;
+
+        // If already logged in, redirect to dashboard
+        if (localStorage.getItem("tr_jwt")) {
+            window.location.href = "/dashboard";
+        }
+
+        // Form switching
+        document.getElementById("show-signup").addEventListener("click", (e) => {
+            e.preventDefault();
+            document.getElementById("login-form").classList.remove("active");
+            document.getElementById("signup-form").classList.add("active");
+        });
+        document.getElementById("show-login").addEventListener("click", (e) => {
+            e.preventDefault();
+            document.getElementById("signup-form").classList.remove("active");
+            document.getElementById("login-form").classList.add("active");
+        });
+
+        // Login handler
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const errEl = document.getElementById("login-error");
+            const btn = document.getElementById("login-btn");
+            errEl.textContent = "";
+            btn.disabled = true;
+            btn.textContent = "Signing in...";
+
+            try {
+                const res = await fetch(API + "/v1/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: document.getElementById("login-email").value,
+                        password: document.getElementById("login-password").value,
+                    }),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    errEl.textContent = data.detail?.error?.message || "Login failed";
+                    return;
+                }
+                localStorage.setItem("tr_jwt", data.token);
+                localStorage.setItem("tr_user", JSON.stringify(data.user));
+                window.location.href = "/dashboard";
+            } catch (err) {
+                errEl.textContent = "Network error";
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Sign In";
+            }
+        });
+
+        // Signup handler
+        document.getElementById("signup-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const errEl = document.getElementById("signup-error");
+            const btn = document.getElementById("signup-btn");
+            errEl.textContent = "";
+            btn.disabled = true;
+            btn.textContent = "Creating account...";
+
+            try {
+                const res = await fetch(API + "/v1/auth/signup", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: document.getElementById("signup-email").value,
+                        password: document.getElementById("signup-password").value,
+                        display_name: document.getElementById("signup-name").value,
+                    }),
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    errEl.textContent = data.detail?.error?.message || "Signup failed";
+                    return;
+                }
+                localStorage.setItem("tr_jwt", data.token);
+                localStorage.setItem("tr_user", JSON.stringify(data.user));
+                window.location.href = "/dashboard";
+            } catch (err) {
+                errEl.textContent = "Network error";
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Create Account";
+            }
+        });
+    </script>
+</body>
+</html>

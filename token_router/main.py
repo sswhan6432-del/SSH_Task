@@ -79,12 +79,15 @@ def _register_providers() -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    from token_router import db
+    db.init_db()
     _register_providers()
-    logger.info("TokenRouter started - 5 providers, 11 models (BYOK enabled)")
+    logger.info("TokenRouter started - 5 providers, 11 models (BYOK + Auth enabled)")
     yield
     from token_router import stats_store
     stats_store.force_flush()
-    logger.info("TokenRouter shutting down (stats saved)")
+    db.close_db()
+    logger.info("TokenRouter shutting down (stats saved, DB closed)")
 
 
 # ── App ─────────────────────────────────────────────────────────
@@ -118,34 +121,66 @@ async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
     )
 
 
-# ── API Key Authentication Middleware ───────────────────────────
+# ── Authentication Middleware (JWT + API Key + Legacy) ─────────
 
 @app.middleware("http")
 async def authenticate(request: Request, call_next):
     path = request.url.path
-    if path in ("/health", "/docs", "/openapi.json", "/redoc") or path.startswith("/dashboard"):
+
+    # Public paths - no auth required
+    if path in ("/health", "/docs", "/openapi.json", "/redoc"):
+        return await call_next(request)
+    if path.startswith("/dashboard"):
+        return await call_next(request)
+    # Auth endpoints are public
+    if path.startswith("/v1/auth/") and path != "/v1/auth/me":
         return await call_next(request)
 
-    # If no TokenRouter API keys configured, allow all (dev mode)
-    if not settings.api_keys:
-        return await call_next(request)
-
-    auth = request.headers.get("authorization", "")
-    api_key = request.headers.get("x-api-key", "")
+    # Extract token from headers
+    auth_header = request.headers.get("authorization", "")
+    api_key_header = request.headers.get("x-api-key", "")
 
     token = ""
-    if auth.startswith("Bearer "):
-        token = auth[7:]
-    elif api_key:
-        token = api_key
+    if auth_header.startswith("Bearer "):
+        token = auth_header[7:]
+    elif api_key_header:
+        token = api_key_header
 
-    if token not in settings.api_keys:
+    # 1) Try JWT authentication
+    if token and not token.startswith("tr-"):
+        from token_router.auth import decode_token
+        payload = decode_token(token)
+        if payload and payload.get("sub"):
+            request.state.user_id = payload["sub"]
+            return await call_next(request)
+
+    # 2) Try per-user API key (tr-xxx prefix)
+    if token and token.startswith("tr-"):
+        from token_router import db
+        user = db.get_user_by_api_key(token)
+        if user:
+            request.state.user_id = user["id"]
+            return await call_next(request)
         return JSONResponse(
             status_code=401,
             content={"error": {"message": "Invalid API key", "type": "authentication_error"}},
         )
 
-    return await call_next(request)
+    # 3) Try legacy admin API key
+    if token and settings.api_keys and token in settings.api_keys:
+        request.state.user_id = "__admin__"
+        return await call_next(request)
+
+    # 4) Dev mode: no api_keys configured = anonymous access
+    if not settings.api_keys:
+        request.state.user_id = "__anonymous__"
+        return await call_next(request)
+
+    # 5) Fail: api_keys configured but no valid token
+    return JSONResponse(
+        status_code=401,
+        content={"error": {"message": "Authentication required", "type": "authentication_error"}},
+    )
 
 
 # ── User Provider Key Extraction ────────────────────────────────
@@ -175,7 +210,9 @@ from token_router.endpoints.optimize import router as optimize_router
 from token_router.endpoints.route import router as route_router
 from token_router.endpoints.stats import router as stats_router
 from token_router.endpoints.claude_analytics import router as claude_router
+from token_router.endpoints.auth_endpoints import router as auth_router
 
+app.include_router(auth_router)
 app.include_router(chat_router, tags=["Chat"])
 app.include_router(optimize_router, tags=["Optimize"])
 app.include_router(route_router, tags=["Route"])

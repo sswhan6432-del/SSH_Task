@@ -8,8 +8,13 @@
 </head>
 <body>
     <header>
-        <h1>TokenRouter</h1>
-        <p class="subtitle">Multi-Model AI Token Optimization</p>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+                <h1>TokenRouter</h1>
+                <p class="subtitle">Multi-Model AI Token Optimization</p>
+            </div>
+            <div id="user-badge"></div>
+        </div>
     </header>
 
     <main>
@@ -66,6 +71,8 @@
         <p>TokenRouter v1.1.0 &middot; Auto-refresh every 5s &middot; <a href="/dashboard/claude.html" style="color:var(--blue,#007aff);text-decoration:none">Claude Analytics</a></p>
     </footer>
 
+    <script src="/dashboard/auth.js"></script>
+    <script>checkAuth().then(ok => { if (ok) renderUserBadge("user-badge"); });</script>
     <script src="/dashboard/dashboard.js"></script>
 </body>
 </html>

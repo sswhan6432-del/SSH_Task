@@ -60,9 +60,10 @@ function renderModels(models) {
 
 async function refresh() {
     try {
+        const hdrs = typeof authHeaders === "function" ? authHeaders() : {};
         const [statsRes, modelsRes] = await Promise.all([
-            fetch(API_BASE + "/v1/stats"),
-            fetch(API_BASE + "/v1/models"),
+            fetch(API_BASE + "/v1/stats", { headers: hdrs }),
+            fetch(API_BASE + "/v1/models", { headers: hdrs }),
         ]);
 
         if (statsRes.ok) {

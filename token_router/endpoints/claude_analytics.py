@@ -5,7 +5,7 @@ from __future__ import annotations
 import time
 from collections import defaultdict
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from token_router import stats_store
 from token_router.providers.registry import MODELS
@@ -20,10 +20,11 @@ OPUS_PRICING = MODELS["anthropic/claude-opus"].pricing
 
 
 @router.get("/v1/stats/claude")
-async def claude_analytics():
-    """Claude-specific analytics with model comparison and cost optimization insights."""
-    all_log = stats_store.get_request_log(limit=2000)
-    overall = stats_store.get()
+async def claude_analytics(request: Request):
+    """Claude-specific analytics filtered by authenticated user."""
+    user_id = getattr(request.state, "user_id", None)
+    all_log = stats_store.get_request_log(limit=2000, user_id=user_id)
+    overall = stats_store.get(user_id=user_id)
 
     # Filter Claude requests
     claude_log = [e for e in all_log if e.get("provider") == "anthropic"]

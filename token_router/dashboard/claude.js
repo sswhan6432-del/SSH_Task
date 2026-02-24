@@ -117,7 +117,8 @@ function renderTimeline(id, data) {
 
 async function refresh() {
     try {
-        const res = await fetch(API + "/v1/stats/claude");
+        const hdrs = typeof authHeaders === "function" ? authHeaders() : {};
+        const res = await fetch(API + "/v1/stats/claude", { headers: hdrs });
         if (!res.ok) return;
         const d = await res.json();
 

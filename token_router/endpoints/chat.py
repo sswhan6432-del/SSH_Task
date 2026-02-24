@@ -99,6 +99,7 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
 
         elapsed_ms = (time.time() - start) * 1000
         usage = response.usage
+        user_id = getattr(request.state, "user_id", "__anonymous__")
         stats_store.record_request(
             provider_name, model_id,
             tokens=usage.total_tokens if usage else 0,
@@ -108,6 +109,7 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
             output_tokens=usage.completion_tokens if usage else 0,
             intent=route_intent,
             difficulty=route_difficulty,
+            user_id=user_id,
         )
 
         return response

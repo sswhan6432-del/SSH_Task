@@ -144,3 +144,29 @@ class ErrorDetail(BaseModel):
 
 class ErrorResponse(BaseModel):
     error: ErrorDetail
+
+
+# ── Auth Models ───────────────────────────────────────────────
+
+class SignupRequest(BaseModel):
+    email: str
+    password: str
+    display_name: Optional[str] = ""
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class AuthResponse(BaseModel):
+    token: str
+    user: dict
+
+
+class UserProfile(BaseModel):
+    id: str
+    email: str
+    display_name: str
+    api_key: str
+    created_at: float

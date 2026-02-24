@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from fastapi.responses import FileResponse
 
 from token_router.models import StatsResponse
@@ -12,9 +12,10 @@ router = APIRouter()
 
 
 @router.get("/v1/stats", response_model=StatsResponse)
-async def get_stats():
-    """Return usage statistics (persisted across restarts)."""
-    data = stats_store.get()
+async def get_stats(request: Request):
+    """Return usage statistics filtered by authenticated user."""
+    user_id = getattr(request.state, "user_id", None)
+    data = stats_store.get(user_id=user_id)
     total_req = data["total_requests"] or 1
 
     return StatsResponse(

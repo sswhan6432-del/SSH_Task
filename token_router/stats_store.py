@@ -79,16 +79,44 @@ def _append_log(entry: dict) -> None:
         logger.warning("Failed to append request log: %s", e)
 
 
-def get() -> dict:
-    """Return a copy of current stats."""
+def get(user_id: str | None = None) -> dict:
+    """Return a copy of current stats, optionally filtered by user_id.
+
+    Admin/anonymous users see global stats. Regular users see only their own.
+    """
+    if user_id and user_id not in ("__admin__", "__anonymous__"):
+        return _compute_user_stats(user_id)
     with _lock:
         return _stats.copy()
 
 
-def get_request_log(limit: int = 500, provider: str = None) -> list[dict]:
-    """Return recent request log entries, optionally filtered by provider."""
+def _compute_user_stats(user_id: str) -> dict:
+    """Compute stats from request log for a specific user."""
+    with _lock:
+        entries = [e for e in _request_log if e.get("user_id") == user_id]
+    stats = {
+        "total_requests": len(entries),
+        "total_tokens": sum(e.get("total_tokens", 0) for e in entries),
+        "total_cost_usd": sum(e.get("cost_usd", 0) for e in entries),
+        "total_savings_usd": 0.0,
+        "requests_by_provider": {},
+        "requests_by_model": {},
+        "latency_sum_ms": sum(e.get("latency_ms", 0) for e in entries),
+    }
+    for e in entries:
+        p = e.get("provider", "unknown")
+        m = e.get("model", "unknown")
+        stats["requests_by_provider"][p] = stats["requests_by_provider"].get(p, 0) + 1
+        stats["requests_by_model"][m] = stats["requests_by_model"].get(m, 0) + 1
+    return stats
+
+
+def get_request_log(limit: int = 500, provider: str = None, user_id: str | None = None) -> list[dict]:
+    """Return recent request log entries, optionally filtered by provider and/or user_id."""
     with _lock:
         log = _request_log
+        if user_id and user_id not in ("__admin__", "__anonymous__"):
+            log = [e for e in log if e.get("user_id") == user_id]
         if provider:
             log = [e for e in log if e.get("provider") == provider]
         return log[-limit:]
@@ -105,8 +133,9 @@ def record_request(
     output_tokens: int = 0,
     intent: str = "",
     difficulty: str = "",
+    user_id: str = "__anonymous__",
 ) -> None:
-    """Record a completed request with full details."""
+    """Record a completed request with full details including user_id."""
     global _since_last_flush
     entry = {
         "ts": time.time(),
@@ -119,6 +148,7 @@ def record_request(
         "latency_ms": round(latency_ms, 1),
         "intent": intent,
         "difficulty": difficulty,
+        "user_id": user_id,
     }
 
     with _lock:

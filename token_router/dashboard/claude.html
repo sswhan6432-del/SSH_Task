@@ -13,7 +13,10 @@
                 <h1>Claude Analytics</h1>
                 <p class="subtitle">Deep insights into your AI model usage</p>
             </div>
-            <a href="/dashboard" class="back-link">Overview Dashboard</a>
+            <div style="display:flex;align-items:center;gap:16px">
+                <div id="user-badge"></div>
+                <a href="/dashboard" class="back-link">Overview Dashboard</a>
+            </div>
         </div>
     </header>
 
@@ -119,6 +122,8 @@
         <p>TokenRouter v1.1.0 &middot; Claude Analytics &middot; Auto-refresh 5s</p>
     </footer>
 
+    <script src="/dashboard/auth.js"></script>
+    <script>checkAuth().then(ok => { if (ok) renderUserBadge("user-badge"); });</script>
     <script src="/dashboard/claude.js"></script>
 </body>
 </html>
