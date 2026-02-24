@@ -21,6 +21,84 @@ function fmt(n) {
     return String(n);
 }
 
+function fmtK(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + "M";
+    if (n >= 1000) return (n / 1000).toFixed(1) + "K";
+    return String(n);
+}
+
+function fmtDate(dateStr) {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    return (d.getMonth() + 1) + "/" + d.getDate();
+}
+
+/**
+ * Render a daily bar chart from an array of { date, input, output } objects.
+ * Returns HTML string.
+ */
+function renderDailyChart(dailyData, colorClass) {
+    if (!dailyData || dailyData.length === 0) return "";
+    const maxVal = Math.max(...dailyData.map(d => d.input + d.output), 1);
+    const barWidth = Math.max(4, Math.floor(600 / dailyData.length) - 2);
+
+    let html = `<h3 class="sub-title">Daily Token Usage</h3>`;
+    html += `<div class="daily-chart-wrap">`;
+    html += `<div class="daily-y-axis">`;
+    html += `<span>${fmtK(maxVal)}</span><span>${fmtK(Math.round(maxVal / 2))}</span><span>0</span>`;
+    html += `</div>`;
+    html += `<div class="daily-chart">`;
+
+    for (const d of dailyData) {
+        const total = d.input + d.output;
+        const pct = (total / maxVal) * 100;
+        const inputPct = total > 0 ? (d.input / total) * pct : 0;
+        const outputPct = pct - inputPct;
+        const label = fmtDate(d.date);
+        html += `<div class="daily-bar-col" style="width:${barWidth}px">
+            <div class="daily-bar-stack" style="height:${pct}%" title="${label}: ${fmt(total)} tokens (in:${fmt(d.input)} out:${fmt(d.output)})">
+                <div class="daily-bar-seg output ${colorClass}" style="height:${outputPct > 0 ? (d.output/total*100) : 0}%"></div>
+                <div class="daily-bar-seg input ${colorClass}-light" style="height:${inputPct > 0 ? (d.input/total*100) : 0}%"></div>
+            </div>
+            <span class="daily-bar-label">${label}</span>
+        </div>`;
+    }
+
+    html += `</div></div>`;
+    html += `<div class="chart-legend"><span class="legend-item"><span class="legend-dot ${colorClass}-light"></span>Input</span><span class="legend-item"><span class="legend-dot ${colorClass}"></span>Output</span></div>`;
+    return html;
+}
+
+/**
+ * Extract daily buckets from provider API response.
+ * Handles various response formats from Anthropic and OpenAI.
+ */
+function extractDailyBuckets(usage) {
+    if (!usage || !usage.data || !Array.isArray(usage.data)) return [];
+
+    const dayMap = {};
+
+    for (const bucket of usage.data) {
+        // Try to get date from bucket-level fields
+        const date = bucket.date || bucket.start_time || bucket.timestamp || bucket.day || null;
+        const dateKey = date ? (typeof date === "number" ? new Date(date * 1000).toISOString().slice(0, 10) : String(date).slice(0, 10)) : null;
+
+        const items = bucket.results || [bucket];
+        for (const item of items) {
+            // Per-item date overrides bucket date
+            const itemDate = item.date || item.start_time || item.timestamp || dateKey;
+            const key = itemDate ? (typeof itemDate === "number" ? new Date(itemDate * 1000).toISOString().slice(0, 10) : String(itemDate).slice(0, 10)) : dateKey;
+            if (!key) continue;
+
+            if (!dayMap[key]) dayMap[key] = { date: key, input: 0, output: 0 };
+            dayMap[key].input += item.input_tokens || item.n_context_tokens_total || 0;
+            dayMap[key].output += item.output_tokens || item.n_generated_tokens_total || 0;
+        }
+    }
+
+    return Object.values(dayMap).sort((a, b) => a.date.localeCompare(b.date));
+}
+
 function fmtCost(n) {
     if (n == null) return "-";
     return "$" + Number(n).toFixed(4);
@@ -94,6 +172,12 @@ async function loadAnthropic() {
                     <div class="metric-item"><span class="metric-label">Total Tokens</span><span class="metric-value">${fmt(totalInput + totalOutput)}</span></div>
                     <div class="metric-item"><span class="metric-label">Period</span><span class="metric-value">${currentDays}d</span></div>
                 </div>`;
+
+                // Daily chart
+                const dailyBuckets = extractDailyBuckets(usage);
+                if (dailyBuckets.length > 1) {
+                    html += renderDailyChart(dailyBuckets, "bar-anthropic");
+                }
 
                 // Model breakdown
                 const models = Object.entries(modelMap).sort((a,b) => (b[1].input+b[1].output) - (a[1].input+a[1].output));
@@ -183,6 +267,12 @@ async function loadOpenAI() {
                     <div class="metric-item"><span class="metric-label">Total Tokens</span><span class="metric-value">${fmt(totalInput + totalOutput)}</span></div>
                     <div class="metric-item"><span class="metric-label">Requests</span><span class="metric-value">${fmt(totalRequests)}</span></div>
                 </div>`;
+
+                // Daily chart
+                const dailyBucketsOai = extractDailyBuckets(usage);
+                if (dailyBucketsOai.length > 1) {
+                    html += renderDailyChart(dailyBucketsOai, "bar-openai");
+                }
 
                 const models = Object.entries(modelMap).sort((a,b) => (b[1].input+b[1].output) - (a[1].input+a[1].output));
                 if (models.length > 0) {
