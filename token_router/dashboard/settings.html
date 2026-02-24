@@ -46,7 +46,14 @@
     </footer>
 
     <script src="/dashboard/auth.js"></script>
-    <script>checkAuth().then(ok => { if (ok) renderUserBadge("user-badge"); });</script>
     <script src="/dashboard/settings.js"></script>
+    <script>
+        checkAuth().then(ok => {
+            if (ok) {
+                renderUserBadge("user-badge");
+                loadKeys();
+            }
+        });
+    </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
  * Usage Monitor - Fetch and display provider usage data.
  */
 
-const API = window.location.origin;
+// API is defined in auth.js (loaded first)
 let currentDays = 30;
 
 // Period selector
@@ -370,5 +370,3 @@ function loadAll() {
     loadOpenAI();
     loadDeepSeek();
 }
-
-loadAll();

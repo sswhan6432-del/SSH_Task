@@ -2,7 +2,7 @@
  * Claude Analytics Dashboard - Deep AI usage insights.
  */
 
-const API = window.location.origin;
+// API is defined in auth.js (loaded first)
 const REFRESH = 5000;
 
 const PROVIDER_COLORS = {

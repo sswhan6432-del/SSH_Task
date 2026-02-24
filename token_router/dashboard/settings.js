@@ -2,7 +2,7 @@
  * Settings page - Provider API key management.
  */
 
-const API = window.location.origin;
+// API is defined in auth.js (loaded first)
 
 const PROVIDERS = [
     { id: "anthropic", name: "Anthropic", desc: "Claude models (Opus, Sonnet, Haiku)", keyHint: "sk-ant-admin-...", hasUsage: true },
@@ -117,5 +117,4 @@ async function deleteKey(provider) {
     }
 }
 
-// Init
-loadKeys();
+// Init: loadKeys() is called from settings.html after checkAuth()
