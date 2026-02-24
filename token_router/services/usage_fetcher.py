@@ -18,16 +18,22 @@ async def fetch_anthropic_usage(api_key: str, days: int = 30) -> dict[str, Any]:
 
     Requires an Admin API key (sk-ant-admin-*).
     Endpoints:
-        GET /v1/organizations/usage - Token usage by model
-        GET /v1/organizations/costs - Cost breakdown
+        GET /v1/organizations/usage_report/messages - Token usage by model
+        GET /v1/organizations/cost_report - Cost breakdown (USD)
+    Params: starting_at, ending_at (ISO 8601), bucket_width (1m|1h|1d)
     """
     now = datetime.now(timezone.utc)
     start = now - timedelta(days=days)
 
-    # Anthropic usage API uses page-based daily buckets
+    # Max 31 daily buckets per request
+    effective_days = min(days, 31)
+    effective_start = now - timedelta(days=effective_days)
+
     params = {
-        "start_date": start.strftime("%Y-%m-%d"),
-        "end_date": now.strftime("%Y-%m-%d"),
+        "starting_at": effective_start.strftime("%Y-%m-%dT00:00:00Z"),
+        "ending_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "bucket_width": "1d",
+        "group_by[]": "model",
     }
     headers = {
         "x-api-key": api_key,
@@ -44,50 +50,38 @@ async def fetch_anthropic_usage(api_key: str, days: int = 30) -> dict[str, Any]:
     }
 
     async with httpx.AsyncClient(timeout=TIMEOUT) as client:
-        # Fetch usage report
+        # Fetch usage report (token counts by model)
         try:
             resp = await client.get(
-                "https://api.anthropic.com/v1/organizations/usage",
+                "https://api.anthropic.com/v1/organizations/usage_report/messages",
                 params=params,
                 headers=headers,
             )
             if resp.status_code == 200:
                 result["usage"] = resp.json()
             else:
-                # Try the messages usage endpoint as fallback
-                resp2 = await client.get(
-                    "https://api.anthropic.com/v1/organizations/usage_report/messages",
-                    params=params,
-                    headers=headers,
-                )
-                if resp2.status_code == 200:
-                    result["usage"] = resp2.json()
-                else:
-                    result["error"] = f"Usage API returned {resp.status_code}: {resp.text[:200]}"
-                    result["status"] = "api_error"
+                result["error"] = f"Usage API returned {resp.status_code}: {resp.text[:200]}"
+                result["status"] = "api_error"
         except httpx.HTTPError as e:
             result["error"] = f"Usage request failed: {str(e)}"
             result["status"] = "connection_error"
             return result
 
-        # Fetch cost report
+        # Fetch cost report (USD breakdown)
         try:
+            cost_params = {
+                "starting_at": effective_start.strftime("%Y-%m-%dT00:00:00Z"),
+                "ending_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "bucket_width": "1d",
+                "group_by[]": "description",
+            }
             resp = await client.get(
-                "https://api.anthropic.com/v1/organizations/costs",
-                params=params,
+                "https://api.anthropic.com/v1/organizations/cost_report",
+                params=cost_params,
                 headers=headers,
             )
             if resp.status_code == 200:
                 result["costs"] = resp.json()
-            else:
-                # Try cost_report endpoint as fallback
-                resp2 = await client.get(
-                    "https://api.anthropic.com/v1/organizations/cost_report",
-                    params=params,
-                    headers=headers,
-                )
-                if resp2.status_code == 200:
-                    result["costs"] = resp2.json()
         except httpx.HTTPError:
             pass  # Cost data is optional
 

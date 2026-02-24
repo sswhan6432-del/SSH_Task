@@ -159,103 +159,6 @@ function renderError(provider, msg) {
     `;
 }
 
-// ── Anthropic ──────────────────────────────────────────────
-
-async function loadAnthropic() {
-    setStatus("anthropic", "Loading...", "loading");
-    try {
-        const key = await getDecryptedKey("anthropic");
-        const res = await authFetch(API + "/v1/usage/anthropic?days=" + currentDays, {
-            headers: key ? { "X-Provider-Key": key } : {},
-        });
-        const data = await res.json();
-
-        if (data.status === "no_key") return renderNoKey("anthropic");
-        if (data.status !== "ok") return renderError("anthropic", data.error);
-
-        setStatus("anthropic", "Active", "ok");
-        const body = document.getElementById("body-anthropic");
-
-        let html = "";
-
-        // Usage data
-        if (data.usage) {
-            const usage = data.usage;
-            // Try to extract summary metrics from various response formats
-            if (usage.data && Array.isArray(usage.data)) {
-                let totalInput = 0, totalOutput = 0;
-                const modelMap = {};
-                for (const bucket of usage.data) {
-                    const items = bucket.results || [bucket];
-                    for (const item of items) {
-                        const model = item.model || "unknown";
-                        const input = item.input_tokens || 0;
-                        const output = item.output_tokens || 0;
-                        totalInput += input;
-                        totalOutput += output;
-                        if (!modelMap[model]) modelMap[model] = { input: 0, output: 0 };
-                        modelMap[model].input += input;
-                        modelMap[model].output += output;
-                    }
-                }
-                html += `<div class="metric-grid">
-                    <div class="metric-item"><span class="metric-label">Input Tokens</span><span class="metric-value">${fmt(totalInput)}</span></div>
-                    <div class="metric-item"><span class="metric-label">Output Tokens</span><span class="metric-value">${fmt(totalOutput)}</span></div>
-                    <div class="metric-item"><span class="metric-label">Total Tokens</span><span class="metric-value">${fmt(totalInput + totalOutput)}</span></div>
-                    <div class="metric-item"><span class="metric-label">Period</span><span class="metric-value">${currentDays}d</span></div>
-                </div>`;
-
-                // Daily chart
-                const dailyBuckets = extractDailyBuckets(usage);
-                if (dailyBuckets.length > 1) {
-                    html += renderDailyChart(dailyBuckets, "bar-anthropic");
-                }
-
-                // Model breakdown
-                const models = Object.entries(modelMap).sort((a,b) => (b[1].input+b[1].output) - (a[1].input+a[1].output));
-                if (models.length > 0) {
-                    html += `<h3 class="sub-title">By Model</h3><div class="model-breakdown">`;
-                    const maxTokens = Math.max(...models.map(([,v]) => v.input + v.output));
-                    for (const [model, v] of models) {
-                        const total = v.input + v.output;
-                        const pct = maxTokens > 0 ? (total / maxTokens * 100) : 0;
-                        html += `<div class="breakdown-row">
-                            <span class="breakdown-label">${model}</span>
-                            <div class="breakdown-bar-track"><div class="breakdown-bar-fill fill-anthropic" style="width:${pct}%"></div></div>
-                            <span class="breakdown-value">${fmt(total)}</span>
-                        </div>`;
-                    }
-                    html += `</div>`;
-                }
-            } else {
-                html += `<div class="raw-data"><pre>${JSON.stringify(usage, null, 2)}</pre></div>`;
-            }
-        }
-
-        // Cost data
-        if (data.costs) {
-            html += `<h3 class="sub-title">Cost Report</h3>`;
-            if (data.costs.data && Array.isArray(data.costs.data)) {
-                let totalCost = 0;
-                for (const bucket of data.costs.data) {
-                    totalCost += bucket.cost_usd || bucket.total_cost || 0;
-                }
-                html += `<div class="cost-highlight">${fmtCost(totalCost)}<span class="cost-period"> / ${currentDays}d</span></div>`;
-            } else {
-                html += `<div class="raw-data"><pre>${JSON.stringify(data.costs, null, 2)}</pre></div>`;
-            }
-        }
-
-        if (!data.usage && !data.costs) {
-            html = `<div class="empty-state"><p>No usage data returned. Verify your Admin API key has the correct permissions.</p></div>`;
-        }
-
-        body.innerHTML = html;
-    } catch (e) {
-        renderError("anthropic", e.message);
-    }
-}
-
 // ── OpenAI ─────────────────────────────────────────────────
 
 async function loadOpenAI() {
@@ -405,7 +308,6 @@ async function loadDeepSeek() {
 
 async function loadAll() {
     await initUsageCrypto();
-    loadAnthropic();
     loadOpenAI();
     loadDeepSeek();
 }
