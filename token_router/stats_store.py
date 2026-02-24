@@ -6,12 +6,16 @@ import json
 import logging
 import os
 import threading
+import time
 
 logger = logging.getLogger(__name__)
 
 STATS_FILE = os.path.join(os.path.dirname(__file__), "stats.json")
+REQUEST_LOG_FILE = os.path.join(os.path.dirname(__file__), "request_log.jsonl")
 
 _lock = threading.Lock()
+
+MAX_LOG_ENTRIES = 2000  # Keep last N requests in memory
 
 _stats = {
     "total_requests": 0,
@@ -23,24 +27,38 @@ _stats = {
     "latency_sum_ms": 0.0,
 }
 
-# Save interval: flush to disk every N requests
+# Per-request detail log (for Claude analytics)
+_request_log: list[dict] = []
+
 _FLUSH_EVERY = 5
 _since_last_flush = 0
 
 
 def _load() -> None:
-    """Load stats from disk on startup."""
-    global _stats
-    if not os.path.exists(STATS_FILE):
-        return
-    try:
-        with open(STATS_FILE, "r") as f:
-            saved = json.load(f)
-        _stats.update(saved)
-        logger.info("Stats loaded: %d requests, $%.4f cost",
-                     _stats["total_requests"], _stats["total_cost_usd"])
-    except Exception as e:
-        logger.warning("Failed to load stats: %s", e)
+    """Load stats and request log from disk on startup."""
+    global _stats, _request_log
+    if os.path.exists(STATS_FILE):
+        try:
+            with open(STATS_FILE, "r") as f:
+                saved = json.load(f)
+            _stats.update(saved)
+            logger.info("Stats loaded: %d requests, $%.4f cost",
+                         _stats["total_requests"], _stats["total_cost_usd"])
+        except Exception as e:
+            logger.warning("Failed to load stats: %s", e)
+
+    if os.path.exists(REQUEST_LOG_FILE):
+        try:
+            entries = []
+            with open(REQUEST_LOG_FILE, "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line:
+                        entries.append(json.loads(line))
+            _request_log = entries[-MAX_LOG_ENTRIES:]
+            logger.info("Request log loaded: %d entries", len(_request_log))
+        except Exception as e:
+            logger.warning("Failed to load request log: %s", e)
 
 
 def _flush() -> None:
@@ -52,10 +70,28 @@ def _flush() -> None:
         logger.warning("Failed to save stats: %s", e)
 
 
+def _append_log(entry: dict) -> None:
+    """Append a request log entry to the JSONL file."""
+    try:
+        with open(REQUEST_LOG_FILE, "a") as f:
+            f.write(json.dumps(entry) + "\n")
+    except Exception as e:
+        logger.warning("Failed to append request log: %s", e)
+
+
 def get() -> dict:
     """Return a copy of current stats."""
     with _lock:
         return _stats.copy()
+
+
+def get_request_log(limit: int = 500, provider: str = None) -> list[dict]:
+    """Return recent request log entries, optionally filtered by provider."""
+    with _lock:
+        log = _request_log
+        if provider:
+            log = [e for e in log if e.get("provider") == provider]
+        return log[-limit:]
 
 
 def record_request(
@@ -64,9 +100,27 @@ def record_request(
     tokens: int,
     cost: float,
     latency_ms: float,
+    *,
+    input_tokens: int = 0,
+    output_tokens: int = 0,
+    intent: str = "",
+    difficulty: str = "",
 ) -> None:
-    """Record a completed request and periodically flush to disk."""
+    """Record a completed request with full details."""
     global _since_last_flush
+    entry = {
+        "ts": time.time(),
+        "provider": provider,
+        "model": model_id,
+        "input_tokens": input_tokens,
+        "output_tokens": output_tokens,
+        "total_tokens": tokens,
+        "cost_usd": cost,
+        "latency_ms": round(latency_ms, 1),
+        "intent": intent,
+        "difficulty": difficulty,
+    }
+
     with _lock:
         _stats["total_requests"] += 1
         _stats["total_tokens"] += tokens
@@ -74,6 +128,12 @@ def record_request(
         _stats["latency_sum_ms"] += latency_ms
         _stats["requests_by_provider"][provider] = _stats["requests_by_provider"].get(provider, 0) + 1
         _stats["requests_by_model"][model_id] = _stats["requests_by_model"].get(model_id, 0) + 1
+
+        _request_log.append(entry)
+        if len(_request_log) > MAX_LOG_ENTRIES:
+            _request_log.pop(0)
+
+        _append_log(entry)
 
         _since_last_flush += 1
         if _since_last_flush >= _FLUSH_EVERY:

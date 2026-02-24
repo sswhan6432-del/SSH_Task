@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Analytics - TokenRouter</title>
+    <link rel="stylesheet" href="/dashboard/claude.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>Claude Analytics</h1>
+                <p class="subtitle">Deep insights into your AI model usage</p>
+            </div>
+            <a href="/dashboard" class="back-link">Overview Dashboard</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Cost Optimization Hero -->
+        <section class="hero-card">
+            <div class="hero-left">
+                <span class="hero-label">Smart Routing Savings</span>
+                <span class="hero-value" id="savings-pct">0%</span>
+                <span class="hero-detail">
+                    vs all-Opus baseline:
+                    <span id="opus-cost">$0.00</span> &rarr; <span id="actual-cost">$0.00</span>
+                    (saved <strong id="savings-usd">$0.00</strong>)
+                </span>
+            </div>
+            <div class="hero-right">
+                <div class="hero-stat">
+                    <span class="hero-stat-value" id="total-all">0</span>
+                    <span class="hero-stat-label">Total Requests</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value" id="total-claude">0</span>
+                    <span class="hero-stat-label">Claude Requests</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Claude Model Comparison -->
+        <section class="section-title">Model Comparison</section>
+        <section class="model-grid">
+            <div class="model-card opus">
+                <div class="model-header">
+                    <span class="model-badge tier-1">Tier 1</span>
+                    <span class="model-name">Claude Opus 4</span>
+                </div>
+                <div class="model-metrics">
+                    <div class="metric"><span class="metric-label">Requests</span><span class="metric-value" id="opus-requests">0</span></div>
+                    <div class="metric"><span class="metric-label">Tokens</span><span class="metric-value" id="opus-tokens">0</span></div>
+                    <div class="metric"><span class="metric-label">Cost</span><span class="metric-value" id="opus-model-cost">$0.00</span></div>
+                    <div class="metric"><span class="metric-label">Latency</span><span class="metric-value" id="opus-latency">0ms</span></div>
+                </div>
+            </div>
+            <div class="model-card sonnet">
+                <div class="model-header">
+                    <span class="model-badge tier-1">Tier 1</span>
+                    <span class="model-name">Claude Sonnet 4</span>
+                </div>
+                <div class="model-metrics">
+                    <div class="metric"><span class="metric-label">Requests</span><span class="metric-value" id="sonnet-requests">0</span></div>
+                    <div class="metric"><span class="metric-label">Tokens</span><span class="metric-value" id="sonnet-tokens">0</span></div>
+                    <div class="metric"><span class="metric-label">Cost</span><span class="metric-value" id="sonnet-model-cost">$0.00</span></div>
+                    <div class="metric"><span class="metric-label">Latency</span><span class="metric-value" id="sonnet-latency">0ms</span></div>
+                </div>
+            </div>
+            <div class="model-card haiku">
+                <div class="model-header">
+                    <span class="model-badge tier-2">Tier 2</span>
+                    <span class="model-name">Claude Haiku 3.5</span>
+                </div>
+                <div class="model-metrics">
+                    <div class="metric"><span class="metric-label">Requests</span><span class="metric-value" id="haiku-requests">0</span></div>
+                    <div class="metric"><span class="metric-label">Tokens</span><span class="metric-value" id="haiku-tokens">0</span></div>
+                    <div class="metric"><span class="metric-label">Cost</span><span class="metric-value" id="haiku-model-cost">$0.00</span></div>
+                    <div class="metric"><span class="metric-label">Latency</span><span class="metric-value" id="haiku-latency">0ms</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Row -->
+        <section class="charts-row">
+            <div class="chart-card">
+                <h2>Provider Distribution</h2>
+                <div class="donut-chart" id="provider-donut"></div>
+            </div>
+            <div class="chart-card">
+                <h2>Top Models</h2>
+                <div class="bar-chart" id="top-models-chart"></div>
+            </div>
+        </section>
+
+        <!-- Intent & Difficulty -->
+        <section class="charts-row">
+            <div class="chart-card">
+                <h2>Intent Classification</h2>
+                <div class="tag-cloud" id="intent-cloud"></div>
+                <p class="chart-note">Auto-detected by NLP intent detector</p>
+            </div>
+            <div class="chart-card">
+                <h2>Difficulty Distribution</h2>
+                <div class="difficulty-bars" id="difficulty-chart"></div>
+                <p class="chart-note">Determines model routing tier</p>
+            </div>
+        </section>
+
+        <!-- Timeline -->
+        <section class="chart-card full-width">
+            <h2>Request Timeline (24h)</h2>
+            <div class="timeline-chart" id="timeline-chart"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>TokenRouter v1.1.0 &middot; Claude Analytics &middot; Auto-refresh 5s</p>
+    </footer>
+
+    <script src="/dashboard/claude.js"></script>
+</body>
+</html>

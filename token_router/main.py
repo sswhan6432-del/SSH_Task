@@ -174,11 +174,13 @@ from token_router.endpoints.chat import router as chat_router
 from token_router.endpoints.optimize import router as optimize_router
 from token_router.endpoints.route import router as route_router
 from token_router.endpoints.stats import router as stats_router
+from token_router.endpoints.claude_analytics import router as claude_router
 
 app.include_router(chat_router, tags=["Chat"])
 app.include_router(optimize_router, tags=["Optimize"])
 app.include_router(route_router, tags=["Route"])
 app.include_router(stats_router, tags=["Stats"])
+app.include_router(claude_router, tags=["Claude Analytics"])
 
 
 @app.get("/health")

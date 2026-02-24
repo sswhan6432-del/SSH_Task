@@ -43,9 +43,13 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
 
     # Smart routing if requested
     model_id = req.model
+    route_intent = ""
+    route_difficulty = ""
     if req.auto_route or model_id == "auto":
         decision = route(req.messages, budget_cap=req.budget_cap)
         model_id = decision.recommended_models[0] if decision.recommended_models else "groq/llama-3.3-70b"
+        route_intent = decision.intent
+        route_difficulty = decision.difficulty
 
     # Resolve provider
     provider_name, model_name = registry.resolve_model(model_id)
@@ -94,8 +98,17 @@ async def chat_completions(req: ChatCompletionRequest, request: Request):
             response.cost_usd = round(cost, 8)
 
         elapsed_ms = (time.time() - start) * 1000
-        tokens = response.usage.total_tokens if response.usage else 0
-        stats_store.record_request(provider_name, model_id, tokens, cost, elapsed_ms)
+        usage = response.usage
+        stats_store.record_request(
+            provider_name, model_id,
+            tokens=usage.total_tokens if usage else 0,
+            cost=cost,
+            latency_ms=elapsed_ms,
+            input_tokens=usage.prompt_tokens if usage else 0,
+            output_tokens=usage.completion_tokens if usage else 0,
+            intent=route_intent,
+            difficulty=route_difficulty,
+        )
 
         return response
 
