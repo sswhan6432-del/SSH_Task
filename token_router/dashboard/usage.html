@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usage Monitor - TokenRouter</title>
+    <link rel="stylesheet" href="/dashboard/usage.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>Usage Monitor</h1>
+                <p class="subtitle">Track your AI provider usage and costs</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px">
+                <div id="user-badge"></div>
+                <nav class="header-nav">
+                    <a href="/dashboard" class="nav-link">Overview</a>
+                    <a href="/dashboard/settings.html" class="nav-link">Settings</a>
+                    <a href="/dashboard/claude.html" class="nav-link">Claude</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Period Selector -->
+        <section class="period-bar">
+            <span class="period-label">Period</span>
+            <div class="period-buttons">
+                <button class="period-btn" data-days="7">7d</button>
+                <button class="period-btn active" data-days="30">30d</button>
+                <button class="period-btn" data-days="90">90d</button>
+            </div>
+            <button class="btn-refresh" onclick="loadAll()">Refresh</button>
+        </section>
+
+        <!-- Provider Cards -->
+        <section class="provider-grid">
+            <!-- Anthropic -->
+            <div class="usage-card" id="card-anthropic">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="provider-dot dot-anthropic"></span>
+                        <span>Anthropic</span>
+                    </div>
+                    <span class="card-status" id="status-anthropic">Loading...</span>
+                </div>
+                <div class="card-body" id="body-anthropic">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+
+            <!-- OpenAI -->
+            <div class="usage-card" id="card-openai">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="provider-dot dot-openai"></span>
+                        <span>OpenAI</span>
+                    </div>
+                    <span class="card-status" id="status-openai">Loading...</span>
+                </div>
+                <div class="card-body" id="body-openai">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+
+            <!-- DeepSeek -->
+            <div class="usage-card" id="card-deepseek">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="provider-dot dot-deepseek"></span>
+                        <span>DeepSeek</span>
+                    </div>
+                    <span class="card-status" id="status-deepseek">Loading...</span>
+                </div>
+                <div class="card-body" id="body-deepseek">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Console-Only Providers -->
+        <section class="console-section">
+            <h2 class="section-title">Console-Only Providers</h2>
+            <div class="console-grid">
+                <a href="https://aistudio.google.com/usage" target="_blank" rel="noopener" class="console-card">
+                    <span class="provider-dot dot-google"></span>
+                    <span class="console-name">Google AI Studio</span>
+                    <span class="console-link-icon">&#8599;</span>
+                </a>
+                <a href="https://console.groq.com/usage" target="_blank" rel="noopener" class="console-card">
+                    <span class="provider-dot dot-groq"></span>
+                    <span class="console-name">Groq Console</span>
+                    <span class="console-link-icon">&#8599;</span>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>TokenRouter v1.2.0 &middot; Usage Monitor &middot; <a href="/dashboard/settings.html" style="color:var(--blue);text-decoration:none">Manage API Keys</a></p>
+    </footer>
+
+    <script src="/dashboard/auth.js"></script>
+    <script>checkAuth().then(ok => { if (ok) renderUserBadge("user-badge"); });</script>
+    <script src="/dashboard/usage.js"></script>
+</body>
+</html>

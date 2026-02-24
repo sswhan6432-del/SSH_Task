@@ -231,6 +231,15 @@ main { max-width: 1120px; margin: 0 auto; padding: 24px; }
 
 .empty-state { text-align: center; padding: 32px; color: var(--gray); font-size: 13px; }
 
+/* User Badge */
+.user-email { font-size: 13px; color: rgba(255,255,255,0.7); }
+.logout-btn {
+    background: rgba(255,255,255,0.15); color: var(--white); border: none;
+    border-radius: 8px; padding: 6px 14px; font-size: 12px; font-family: var(--font);
+    cursor: pointer; margin-left: 10px; transition: background 0.4s var(--ease-spring);
+}
+.logout-btn:hover { background: rgba(255,255,255,0.25); }
+
 /* Footer */
 footer { text-align: center; padding: 24px; color: var(--gray); font-size: 12px; }
 

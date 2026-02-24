@@ -95,7 +95,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="TokenRouter",
     description="Multi-Model AI Token Optimization Service with BYOK",
-    version="1.1.0",
+    version="1.2.0",
     lifespan=lifespan,
 )
 
@@ -211,6 +211,8 @@ from token_router.endpoints.route import router as route_router
 from token_router.endpoints.stats import router as stats_router
 from token_router.endpoints.claude_analytics import router as claude_router
 from token_router.endpoints.auth_endpoints import router as auth_router
+from token_router.endpoints.provider_keys import router as keys_router
+from token_router.endpoints.usage import router as usage_router
 
 app.include_router(auth_router)
 app.include_router(chat_router, tags=["Chat"])
@@ -218,6 +220,8 @@ app.include_router(optimize_router, tags=["Optimize"])
 app.include_router(route_router, tags=["Route"])
 app.include_router(stats_router, tags=["Stats"])
 app.include_router(claude_router, tags=["Claude Analytics"])
+app.include_router(keys_router)
+app.include_router(usage_router)
 
 
 @app.get("/health")
@@ -225,7 +229,7 @@ async def health():
     """Health check endpoint."""
     return {
         "status": "ok",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "providers": ["openai", "anthropic", "groq", "google", "deepseek"],
         "models_available": 11,
         "auth_mode": "BYOK (Bring Your Own Key)",

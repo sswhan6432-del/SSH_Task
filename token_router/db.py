@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 _conn: sqlite3.Connection | None = None
 
-CREATE_TABLE = """
+CREATE_USERS_TABLE = """
 CREATE TABLE IF NOT EXISTS users (
     id            TEXT PRIMARY KEY,
     email         TEXT UNIQUE NOT NULL,
@@ -23,6 +23,19 @@ CREATE TABLE IF NOT EXISTS users (
     created_at    REAL NOT NULL,
     is_active     INTEGER DEFAULT 1,
     api_key       TEXT UNIQUE NOT NULL
+);
+"""
+
+CREATE_PROVIDER_KEYS_TABLE = """
+CREATE TABLE IF NOT EXISTS provider_keys (
+    id         TEXT PRIMARY KEY,
+    user_id    TEXT NOT NULL REFERENCES users(id),
+    provider   TEXT NOT NULL,
+    api_key    TEXT NOT NULL,
+    label      TEXT DEFAULT '',
+    created_at REAL NOT NULL,
+    updated_at REAL NOT NULL,
+    UNIQUE(user_id, provider)
 );
 """
 
@@ -36,7 +49,9 @@ def init_db() -> None:
     global _conn
     _conn = sqlite3.connect(settings.db_path, check_same_thread=False)
     _conn.row_factory = sqlite3.Row
-    _conn.execute(CREATE_TABLE)
+    _conn.execute("PRAGMA foreign_keys = ON")
+    _conn.execute(CREATE_USERS_TABLE)
+    _conn.execute(CREATE_PROVIDER_KEYS_TABLE)
     _conn.commit()
     logger.info("User DB initialized: %s", settings.db_path)
 
@@ -84,3 +99,62 @@ def get_user_by_api_key(api_key: str) -> dict | None:
     conn = _get_conn()
     row = conn.execute("SELECT * FROM users WHERE api_key = ? AND is_active = 1", (api_key,)).fetchone()
     return dict(row) if row else None
+
+
+# ── Provider Keys CRUD ─────────────────────────────────────────
+
+def upsert_provider_key(user_id: str, provider: str, api_key: str, label: str = "") -> dict:
+    """Insert or update a provider API key for a user."""
+    conn = _get_conn()
+    now = time.time()
+    existing = conn.execute(
+        "SELECT id FROM provider_keys WHERE user_id = ? AND provider = ?",
+        (user_id, provider),
+    ).fetchone()
+
+    if existing:
+        conn.execute(
+            "UPDATE provider_keys SET api_key = ?, label = ?, updated_at = ? WHERE id = ?",
+            (api_key, label, now, existing["id"]),
+        )
+        conn.commit()
+        return {"id": existing["id"], "provider": provider, "label": label, "updated_at": now}
+
+    key_id = str(uuid.uuid4())
+    conn.execute(
+        "INSERT INTO provider_keys (id, user_id, provider, api_key, label, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (key_id, user_id, provider, api_key, label, now, now),
+    )
+    conn.commit()
+    return {"id": key_id, "provider": provider, "label": label, "created_at": now}
+
+
+def get_provider_keys(user_id: str) -> list[dict]:
+    """Get all provider keys for a user (returns masked keys)."""
+    conn = _get_conn()
+    rows = conn.execute(
+        "SELECT id, provider, api_key, label, created_at, updated_at FROM provider_keys WHERE user_id = ?",
+        (user_id,),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def get_provider_key(user_id: str, provider: str) -> str | None:
+    """Get the raw API key for a specific provider (for server-side use)."""
+    conn = _get_conn()
+    row = conn.execute(
+        "SELECT api_key FROM provider_keys WHERE user_id = ? AND provider = ?",
+        (user_id, provider),
+    ).fetchone()
+    return row["api_key"] if row else None
+
+
+def delete_provider_key(user_id: str, provider: str) -> bool:
+    """Delete a provider key. Returns True if deleted."""
+    conn = _get_conn()
+    cursor = conn.execute(
+        "DELETE FROM provider_keys WHERE user_id = ? AND provider = ?",
+        (user_id, provider),
+    )
+    conn.commit()
+    return cursor.rowcount > 0

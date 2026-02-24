@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - TokenRouter</title>
+    <link rel="stylesheet" href="/dashboard/settings.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>Settings</h1>
+                <p class="subtitle">Manage your AI provider API keys</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px">
+                <div id="user-badge"></div>
+                <nav class="header-nav">
+                    <a href="/dashboard" class="nav-link">Overview</a>
+                    <a href="/dashboard/usage.html" class="nav-link">Usage</a>
+                    <a href="/dashboard/claude.html" class="nav-link">Claude</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="provider-list" id="provider-list">
+            <!-- Dynamically rendered -->
+        </section>
+
+        <section class="info-card">
+            <h2>About API Keys</h2>
+            <ul class="info-list">
+                <li>Keys are stored encrypted on the server and never exposed in full.</li>
+                <li><strong>Anthropic</strong>: Use an Admin API key (<code>sk-ant-admin-*</code>) for usage data access.</li>
+                <li><strong>OpenAI</strong>: Use your API key or organization admin key for usage data.</li>
+                <li><strong>DeepSeek</strong>: Use your API key to check account balance.</li>
+                <li><strong>Google / Groq</strong>: No usage API available. Keys are used for proxy requests only.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>TokenRouter v1.2.0 &middot; Settings</p>
+    </footer>
+
+    <script src="/dashboard/auth.js"></script>
+    <script>checkAuth().then(ok => { if (ok) renderUserBadge("user-badge"); });</script>
+    <script src="/dashboard/settings.js"></script>
+</body>
+</html>

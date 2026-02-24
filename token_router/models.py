@@ -170,3 +170,23 @@ class UserProfile(BaseModel):
     display_name: str
     api_key: str
     created_at: float
+
+
+# ── Provider Key Models ──────────────────────────────────────
+
+class ProviderKeyRequest(BaseModel):
+    api_key: str
+    label: Optional[str] = ""
+
+
+class ProviderKeyResponse(BaseModel):
+    id: str
+    provider: str
+    masked_key: str
+    label: str
+    created_at: float
+    updated_at: float
+
+
+class ProviderKeysListResponse(BaseModel):
+    keys: List[ProviderKeyResponse]
