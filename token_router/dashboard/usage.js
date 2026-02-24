@@ -3,7 +3,36 @@
  */
 
 // API is defined in auth.js (loaded first)
+// crypto.js provides: loadEncryptionKey, decryptString, hasEncryptionKey
 let currentDays = 30;
+let encKey = null;
+let encryptedKeys = {}; // provider -> encrypted_key blob
+
+async function initUsageCrypto() {
+    encKey = await loadEncryptionKey();
+    // Load encrypted keys from settings API
+    try {
+        const res = await authFetch(API + "/v1/settings/keys");
+        if (res.ok) {
+            const data = await res.json();
+            encryptedKeys = {};
+            for (const k of data.keys) {
+                encryptedKeys[k.provider] = k.encrypted_key;
+            }
+        }
+    } catch (e) {
+        console.error("Failed to load keys:", e);
+    }
+}
+
+async function getDecryptedKey(provider) {
+    if (!encKey || !encryptedKeys[provider]) return "";
+    try {
+        return await decryptString(encryptedKeys[provider], encKey);
+    } catch {
+        return "";
+    }
+}
 
 // Period selector
 document.querySelectorAll(".period-btn").forEach(btn => {
@@ -135,7 +164,10 @@ function renderError(provider, msg) {
 async function loadAnthropic() {
     setStatus("anthropic", "Loading...", "loading");
     try {
-        const res = await authFetch(API + "/v1/usage/anthropic?days=" + currentDays);
+        const key = await getDecryptedKey("anthropic");
+        const res = await authFetch(API + "/v1/usage/anthropic?days=" + currentDays, {
+            headers: key ? { "X-Provider-Key": key } : {},
+        });
         const data = await res.json();
 
         if (data.status === "no_key") return renderNoKey("anthropic");
@@ -229,7 +261,10 @@ async function loadAnthropic() {
 async function loadOpenAI() {
     setStatus("openai", "Loading...", "loading");
     try {
-        const res = await authFetch(API + "/v1/usage/openai?days=" + currentDays);
+        const key = await getDecryptedKey("openai");
+        const res = await authFetch(API + "/v1/usage/openai?days=" + currentDays, {
+            headers: key ? { "X-Provider-Key": key } : {},
+        });
         const data = await res.json();
 
         if (data.status === "no_key") return renderNoKey("openai");
@@ -325,7 +360,10 @@ async function loadOpenAI() {
 async function loadDeepSeek() {
     setStatus("deepseek", "Loading...", "loading");
     try {
-        const res = await authFetch(API + "/v1/usage/deepseek");
+        const key = await getDecryptedKey("deepseek");
+        const res = await authFetch(API + "/v1/usage/deepseek", {
+            headers: key ? { "X-Provider-Key": key } : {},
+        });
         const data = await res.json();
 
         if (data.status === "no_key") return renderNoKey("deepseek");
@@ -365,7 +403,8 @@ async function loadDeepSeek() {
 
 // ── Load All ───────────────────────────────────────────────
 
-function loadAll() {
+async function loadAll() {
+    await initUsageCrypto();
     loadAnthropic();
     loadOpenAI();
     loadDeepSeek();

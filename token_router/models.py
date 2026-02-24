@@ -175,14 +175,14 @@ class UserProfile(BaseModel):
 # ── Provider Key Models ──────────────────────────────────────
 
 class ProviderKeyRequest(BaseModel):
-    api_key: str
+    encrypted_key: str  # AES-256-GCM encrypted blob (base64)
     label: Optional[str] = ""
 
 
 class ProviderKeyResponse(BaseModel):
     id: str
     provider: str
-    masked_key: str
+    encrypted_key: str  # Encrypted blob (server cannot decrypt)
     label: str
     created_at: float
     updated_at: float

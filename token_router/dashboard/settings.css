@@ -126,6 +126,28 @@ main {
     border-radius: 4px;
 }
 
+.encrypted-badge {
+    font-size: 10px;
+    color: var(--green);
+    background: rgba(52,199,89,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.relogin-banner {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+}
+.relogin-banner p {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 16px;
+}
+
 /* Actions */
 .provider-actions { margin-top: 4px; }
 

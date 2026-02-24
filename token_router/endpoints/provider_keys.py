@@ -1,55 +1,59 @@
-"""Provider API key management endpoints."""
+"""Provider API key management endpoints (Zero-Knowledge Encryption).
+
+The server stores only AES-256-GCM encrypted blobs.
+Encryption/decryption happens exclusively in the browser.
+The server NEVER sees plaintext API keys.
+"""
 
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends
+from pydantic import BaseModel
 
 from token_router import db
 from token_router.auth import get_current_user_id
-from token_router.models import ProviderKeyRequest, ProviderKeyResponse, ProviderKeysListResponse
 
 router = APIRouter(prefix="/v1/settings", tags=["Settings"])
 
 VALID_PROVIDERS = {"anthropic", "openai", "deepseek", "google", "groq"}
 
 
-def _mask_key(key: str) -> str:
-    """Mask an API key, showing only first 8 and last 4 chars."""
-    if len(key) <= 12:
-        return key[:4] + "..." + key[-2:]
-    return key[:8] + "..." + key[-4:]
+class EncryptedKeyRequest(BaseModel):
+    encrypted_key: str  # AES-256-GCM encrypted, base64-encoded
+    label: str = ""
 
 
-@router.get("/keys", response_model=ProviderKeysListResponse)
+@router.get("/keys")
 async def list_keys(user_id: str = Depends(get_current_user_id)):
-    """List all saved provider keys (masked) for the current user."""
+    """List all saved provider keys (encrypted blobs) for the current user."""
     rows = db.get_provider_keys(user_id)
     keys = [
-        ProviderKeyResponse(
-            id=r["id"],
-            provider=r["provider"],
-            masked_key=_mask_key(r["api_key"]),
-            label=r["label"],
-            created_at=r["created_at"],
-            updated_at=r["updated_at"],
-        )
+        {
+            "id": r["id"],
+            "provider": r["provider"],
+            "encrypted_key": r["api_key"],  # This IS the encrypted blob
+            "label": r["label"],
+            "created_at": r["created_at"],
+            "updated_at": r["updated_at"],
+        }
         for r in rows
     ]
-    return ProviderKeysListResponse(keys=keys)
+    return {"keys": keys}
 
 
 @router.put("/keys/{provider}")
 async def upsert_key(
     provider: str,
-    body: ProviderKeyRequest,
+    body: EncryptedKeyRequest,
     user_id: str = Depends(get_current_user_id),
 ):
-    """Register or update a provider API key."""
+    """Store an encrypted API key blob. Server cannot decrypt this."""
     if provider not in VALID_PROVIDERS:
         return {"error": f"Invalid provider. Must be one of: {', '.join(sorted(VALID_PROVIDERS))}"}
 
-    result = db.upsert_provider_key(user_id, provider, body.api_key, body.label or "")
-    return {"status": "ok", "provider": provider, "masked_key": _mask_key(body.api_key), **result}
+    # Store the encrypted blob as-is (server treats it as opaque data)
+    result = db.upsert_provider_key(user_id, provider, body.encrypted_key, body.label or "")
+    return {"status": "ok", "provider": provider, **result}
 
 
 @router.delete("/keys/{provider}")

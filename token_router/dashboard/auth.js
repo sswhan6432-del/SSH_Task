@@ -27,6 +27,7 @@ function clearAuth() {
 
 function logout() {
     clearAuth();
+    if (typeof clearEncryptionKey === "function") clearEncryptionKey();
     window.location.href = "/dashboard/login.html";
 }
 

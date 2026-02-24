@@ -58,6 +58,7 @@
         </div>
     </div>
 
+    <script src="/dashboard/crypto.js"></script>
     <script>
         const API = window.location.origin;
 
@@ -88,19 +89,21 @@
             btn.textContent = "Signing in...";
 
             try {
+                const email = document.getElementById("login-email").value;
+                const password = document.getElementById("login-password").value;
                 const res = await fetch(API + "/v1/auth/login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        email: document.getElementById("login-email").value,
-                        password: document.getElementById("login-password").value,
-                    }),
+                    body: JSON.stringify({ email, password }),
                 });
                 const data = await res.json();
                 if (!res.ok) {
                     errEl.textContent = data.detail?.error?.message || "Login failed";
                     return;
                 }
+                // Derive zero-knowledge encryption key from password
+                const ek = await deriveEncryptionKey(password, email);
+                await storeEncryptionKey(ek);
                 localStorage.setItem("tr_jwt", data.token);
                 localStorage.setItem("tr_user", JSON.stringify(data.user));
                 window.location.href = "/dashboard";
@@ -122,12 +125,14 @@
             btn.textContent = "Creating account...";
 
             try {
+                const email = document.getElementById("signup-email").value;
+                const password = document.getElementById("signup-password").value;
                 const res = await fetch(API + "/v1/auth/signup", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        email: document.getElementById("signup-email").value,
-                        password: document.getElementById("signup-password").value,
+                        email,
+                        password,
                         display_name: document.getElementById("signup-name").value,
                     }),
                 });
@@ -136,6 +141,9 @@
                     errEl.textContent = data.detail?.error?.message || "Signup failed";
                     return;
                 }
+                // Derive zero-knowledge encryption key from password
+                const ek = await deriveEncryptionKey(password, email);
+                await storeEncryptionKey(ek);
                 localStorage.setItem("tr_jwt", data.token);
                 localStorage.setItem("tr_user", JSON.stringify(data.user));
                 window.location.href = "/dashboard";
