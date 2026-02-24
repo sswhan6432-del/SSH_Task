@@ -60,7 +60,7 @@
     if (mode === "v5") {
       v5EnabledInput.value = "true";
       pageTitle.textContent = "NLP/ML Engine v5";
-      pageSub.innerHTML = "BERT-based intent detection, ML priority ranking, and smart compression.<br>Powered by AI — select options below.";
+      pageSub.innerHTML = "Hybrid NLP engine: SentenceTransformer embeddings + SVM classifier + keyword analysis.<br>Powered by AI — select options below.";
       requestInput.placeholder = "Example: Build a contact form with email validation and add a thank you page";
       if (btnRun) btnRun.textContent = "Split Tasks";
     } else if (mode === "blueprint") {
@@ -554,11 +554,60 @@
       const statsContent = document.getElementById("v5-stats-content");
       if (data.v5_stats && data.v5_stats.enabled) {
         const s = data.v5_stats;
-        const parts = ["NLP: ON"];
-        if (s.compress) parts.push("Compression: Level " + s.compression_level);
-        if (s.token_reduction_rate) parts.push("Token Reduction: " + (s.token_reduction_rate * 100).toFixed(1) + "%");
-        if (s.processing_time_ms) parts.push("Time: " + s.processing_time_ms.toFixed(0) + "ms");
-        statsContent.textContent = parts.join(" | ");
+        const intentPct = s.intent_accuracy ? (s.intent_accuracy * 100).toFixed(0) : "--";
+        const priorityPct = s.priority_confidence ? (s.priority_confidence * 100).toFixed(0) : "--";
+        const reductionPct = s.token_reduction_rate ? (s.token_reduction_rate * 100).toFixed(1) : "0.0";
+        const timeMs = s.processing_time_ms ? s.processing_time_ms.toFixed(0) : "--";
+        const origTokens = s.original_tokens || "--";
+        const compTokens = s.compressed_tokens || "--";
+        const level = s.compression_level || 2;
+
+        statsContent.innerHTML =
+          '<div class="v5-stats-header">' +
+            '<span class="v5-stats-title">v5.0 NLP/ML Pipeline</span>' +
+          '</div>' +
+          '<div class="v5-pipeline">' +
+            '<div class="v5-pipeline-stage active">' +
+              '<span class="v5-pipeline-check">&#10003;</span>' +
+              '<span class="v5-pipeline-label">Intent Detection</span>' +
+            '</div>' +
+            '<span class="v5-pipeline-arrow">&#9654;</span>' +
+            '<div class="v5-pipeline-stage active">' +
+              '<span class="v5-pipeline-check">&#10003;</span>' +
+              '<span class="v5-pipeline-label">Priority Ranking</span>' +
+            '</div>' +
+            '<span class="v5-pipeline-arrow">&#9654;</span>' +
+            '<div class="v5-pipeline-stage' + (s.compress ? ' active' : '') + '">' +
+              (s.compress ? '<span class="v5-pipeline-check">&#10003;</span>' : '') +
+              '<span class="v5-pipeline-label">Compression</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="v5-stats-grid">' +
+            '<div class="v5-stat-item">' +
+              '<span class="v5-stat-label">Intent</span>' +
+              '<span class="v5-stat-value">' + intentPct + '%</span>' +
+            '</div>' +
+            '<div class="v5-stat-item">' +
+              '<span class="v5-stat-label">Priority</span>' +
+              '<span class="v5-stat-value">ML ' + priorityPct + '%</span>' +
+            '</div>' +
+            '<div class="v5-stat-item">' +
+              '<span class="v5-stat-label">Compress</span>' +
+              '<span class="v5-stat-value">Level ' + level + '</span>' +
+            '</div>' +
+            '<div class="v5-stat-item">' +
+              '<span class="v5-stat-label">Tokens</span>' +
+              '<span class="v5-stat-value">' + origTokens + ' &rarr; ' + compTokens + '</span>' +
+            '</div>' +
+            '<div class="v5-stat-item">' +
+              '<span class="v5-stat-label">Reduction</span>' +
+              '<span class="v5-stat-value">' + reductionPct + '%</span>' +
+            '</div>' +
+            '<div class="v5-stat-item">' +
+              '<span class="v5-stat-label">Time</span>' +
+              '<span class="v5-stat-value">' + timeMs + 'ms</span>' +
+            '</div>' +
+          '</div>';
         statsEl.style.display = "block";
       } else {
         statsEl.style.display = "none";
